@@ -1,4 +1,3 @@
-// hide story stuff on future opens
 var pushupTimerId;
 var rowTimerId;
 var makeVideoTimerId;
@@ -6,6 +5,10 @@ var moneyTimerId;
 var browseRedditTimerId;
 var researchTimerId
 var coffeeTimerId;
+
+// switch disabled buttons to grey
+// review research point growth
+// more upgrades
 
 var stats = {
     energy: {
@@ -15,7 +18,6 @@ var stats = {
         max: 10,
         originalMax: 10,
         enduranceBoost: .1,
-        tryHarderCost: .1,
         coffee: {
             total: 0,
             current: 0,
@@ -146,34 +148,47 @@ var job = {
     upgrades: [
         {
             isPurchased: false,
-            name: "Livestream Pushups",
-            desc: "<strong>Cost: 1 follower</strong> - Annoy a follower by livestreaming pushups all day. Adds a portion of your total pushups to your follower growth.",
+            name: "Go Viral Accidentally",
+            desc: "<strong>Cost: 1 follower</strong> - Not sure what happened. Adds 5000 views",
             cost: 1,
         },
         {
             isPurchased: false,
-            name: "Clickbait Titles",
-            desc: "<strong>Cost: 2.5 followers</strong> - Change all of your video titles to scare people into clicking. Views go up faster per follower.",
+            name: "Make Misleading Claims",
+            desc: "<strong>Cost: 1 followers</strong> - Double your work speed.",
+            cost: 1,
+        },
+        {
+            isPurchased: false,
+            name: "Livestream Pushups",
+            desc: "<strong>Cost: 2.5 follower</strong> - Annoy a follower by livestreaming pushups all day. Adds a portion of your total pushups to your follower growth.",
             cost: 2.5,
         },
         {
             isPurchased: false,
-            name: "Make Misleading Claims",
-            desc: "<strong>Cost: 5 followers</strong> - Double your work speed.",
-            cost: 5,
-        },
-        {
-            isPurchased: false,
-            name: "Put Ads on Videos",
-            desc: "<strong>Cost: 7.5 followers</strong> - Double your money per view.",
-            cost: 7.5,
+            name: "Livestream Rows",
+            desc: "<strong>Cost: 2.5 follower</strong> - Annoy a follower by livestreaming rows all day. Adds a portion of your total rows to your follower growth.",
+            cost: 2.5,
         },
         {
             isPurchased: false,
             name: "Speculate About Fitness",
-            desc: "<strong>Cost: 10 followers</strong> - Unlocks research.",
+            desc: "<strong>Cost: 5 followers</strong> - Unlocks research.",
+            cost: 5,
+        },
+        {
+            isPurchased: false,
+            name: "Clickbait Titles",
+            desc: "<strong>Cost: 7.5 followers</strong> - Change all of your video titles to scare people into clicking. Views go up faster per follower.",
+            cost: 7.5,
+        },
+        {
+            isPurchased: false,
+            name: "Put Ads on Videos",
+            desc: "<strong>Cost: 10 followers</strong> - Double your money per view.",
             cost: 10,
         },
+
 
     ]
 }
@@ -191,7 +206,7 @@ var research = {
     posts: 0.00,
     points: 0.00,
     pointSpeed: 1000,
-    postGrowth: .1,
+    postGrowth: 1,
     pointGrowth: .0001,
     upgrades: [
         {
@@ -203,7 +218,7 @@ var research = {
         {
             isPurchased: false,
             name: "Sleeping Better",
-            desc: "<strong>Cost: 1 research</strong> - Double your energy recovery.",
+            desc: "<strong>Cost: 1 research</strong> - It's time to get serious about sleep hygiene. Double your energy recovery.",
             cost: 2.5,
         },
         {
@@ -218,13 +233,6 @@ var research = {
             desc: "<strong>Cost: 7.5 followers</strong> - Double your money per view.",
             cost: 7.5,
         },
-        {
-            isPurchased: false,
-            name: "Speculate About Fitness",
-            desc: "<strong>Cost: 10 followers</strong> - Unlocks research.",
-            cost: 10,
-        },
-
     ]
 }
 
@@ -272,7 +280,7 @@ $(document).ready(function () {
         setupMoneyTimer()
     }
     if (checks.story3) {
-        $("#viewBtnWrap").addClass("d-none");
+        //$("#story").addClass("d-none");
     }
     if (checks.story4) {
         setupBrowseRedditTimer();
@@ -334,11 +342,6 @@ var refreshId = setInterval(function () {
     }
     else {
         $("#resting").html("");
-        $("#tryHarderBtn").removeClass("disabled");
-    }
-
-    if ((stats.energy.current - stats.energy.tryHarderCost) < 0 || checks.isResting) {
-        $("#tryHarderBtn").addClass("disabled");
     }
 
     $("#pushupProgress").css("width", ((bodyweight.pushups.current / bodyweight.pushups.max) * 100) + "%");
@@ -354,8 +357,7 @@ var refreshId = setInterval(function () {
     $("#browseRedditProgress").css("width", ((research.browseReddit.current / research.browseReddit.max) * 100) + "%");
 
     if (job.views > 100 && !checks.story3) {
-        $("#viewBtnWrap").addClass("d-none");
-        $("#viewBtnClicksDone").removeClass("d-none").addClass("show");
+        $("#story3").removeClass("d-none").addClass("show");
         checks.story3 = true;
     }
 
@@ -374,8 +376,10 @@ var refreshId = setInterval(function () {
 
     for (var i = 0; i < job.upgrades.length; i++) {
         if (job.followers > (job.upgrades[i].cost / 10) && !job.upgrades[i].isPurchased) {
-            $("#jobUpgrade" + i).removeClass("d-none");
-
+            // don't show rows unless rings are purchased
+            if ((i == 3 && bodyweight.upgrades[1].isPurchased) || i != 3) {
+                $("#jobUpgrade" + i).removeClass("d-none");
+            }
             if (job.followers >= job.upgrades[i].cost) {
                 $("#jobUpgrade" + i + "Btn").removeClass("disabled");
             }
@@ -555,8 +559,14 @@ function setupJobTimer() {
         }
         else {
             job.makeVideo.total += 1;
-            if (job.upgrades[0].isPurchased) {
+            if (job.upgrades[2].isPurchased && job.upgrades[3].isPurchased) {
+                job.followers = math.evaluate(job.followers + job.followerGrowth + (bodyweight.pushups.total * .0001) + (bodyweight.rows.total * .0001));
+            }
+            else if (job.upgrades[2].isPurchased) {
                 job.followers = math.evaluate(job.followers + job.followerGrowth + (bodyweight.pushups.total * .0001));
+            }
+            else if (job.upgrades[3].isPurchased) {
+                job.followers = math.evaluate(job.followers + job.followerGrowth + (bodyweight.rows.total * .0001));
             }
             else {
                 job.followers = math.evaluate(job.followers + job.followerGrowth);
@@ -634,59 +644,65 @@ function drinkCoffee() {
     }
 }
 
-function generateView() {
-    if (job.views > 100) {
-        $("#viewBtnWrap").addClass("d-none");
-        $("#viewBtnClicksDone").removeClass("d-none").addClass("show");
-        checks.story3 = true;
-    }
-
-    job.views += 1;
-}
-function tryHarder(button) {
-    if (!$("#tryHarderBtn").hasClass("disabled")) {
-        if (!checks.isResting && (stats.energy.current - stats.energy.tryHarderCost) > 0) {
-            stats.energy.current = math.evaluate(stats.energy.current - stats.energy.tryHarderCost);
-            pushupTick();
-            rowTick();
-        }
-    }
-}
+// function tryHarder(button) {
+//     if (!$("#tryHarderBtn").hasClass("disabled")) {
+//         if (!checks.isResting && (stats.energy.current - stats.energy.tryHarderCost) > 0) {
+//             stats.energy.current = math.evaluate(stats.energy.current - stats.energy.tryHarderCost);
+//             pushupTick();
+//             rowTick();
+//         }
+//     }
+// }
 
 function jobUpgradeClick(button) {
+    // get id and set it
+    var id = $(button).attr("id");
+    //var id = parseInt(buttonId.substring(buttonId.lastIndexOf("Upgrade") + 1, buttonId.lastIndexOf("Btn")));
+    //console.log(buttonId.lastIndexOf("Upgrade") + 1);
+    //console.log(buttonId.lastIndexOf("Btn"));
+    //console.log(id);
     if (!$(button).hasClass("disabled")) {
-        var id = $(button).attr("id");
+        
         switch (id) {
             case "jobUpgrade0Btn":
                 job.upgrades[0].isPurchased = true;
                 job.followers = math.evaluate(job.followers - job.upgrades[0].cost);
+                job.views += 5000;
                 break;
             case "jobUpgrade1Btn":
                 job.upgrades[1].isPurchased = true;
                 job.followers = math.evaluate(job.followers - job.upgrades[1].cost);
-                job.viewGrowth = math.evaluate(job.viewGrowth * 2);
+                job.makeVideo.speedModifier *= 2;
+                clearInterval(makeVideoTimerId);
+                setupJobTimer();
                 break;
             case "jobUpgrade2Btn":
                 job.upgrades[2].isPurchased = true;
                 job.followers = math.evaluate(job.followers - job.upgrades[2].cost);
-                job.makeVideo.speedModifier *= 2;
-                clearInterval(makeVideoTimerId);
-                setupJobTimer();
                 break;
             case "jobUpgrade3Btn":
                 job.upgrades[3].isPurchased = true;
                 job.followers = math.evaluate(job.followers - job.upgrades[3].cost);
                 break;
             case "jobUpgrade4Btn":
-                // unlock research
                 job.upgrades[4].isPurchased = true;
                 job.followers = math.evaluate(job.followers - job.upgrades[4].cost);
                 setupBrowseRedditTimer();
                 setupResearchTimer();
                 $("#research-tab").removeClass("d-none");
-                $("researchText").removeClass("d-none");
-                $("#story4").removeClass("d-none");
+                $("#researchText").removeClass("d-none");
+                $("#story4").removeClass("d-none").addClass("show");
                 checks.story4 = true;
+                break;
+            case "jobUpgrade5Btn":
+                job.upgrades[5].isPurchased = true;
+                job.followers = math.evaluate(job.followers - job.upgrades[5].cost);
+                job.viewGrowth *= 2;
+                break;
+            case "jobUpgrade6Btn":
+                job.upgrades[6].isPurchased = true;
+                job.followers = math.evaluate(job.followers - job.upgrades[6].cost);
+                job.moneyGrowth *= 2;
             default:
         }
     }
@@ -694,7 +710,6 @@ function jobUpgradeClick(button) {
 
 function upgradeClick(button) {
     if (!$(button).hasClass("disabled")) {
-        console.log("test");
         var id = $(button).attr("id");
         switch (id) {
             case "upgrade0Btn":
@@ -731,7 +746,6 @@ function bwUpgradeClick(button) {
             case "bwUpgrade1Btn":
                 bodyweight.upgrades[1].isPurchased = true;
                 stats.money = math.evaluate(stats.money - bodyweight.upgrades[0].cost);
-                stats.energy.tryHarderCost *= 2;
                 $("#bwRows").removeClass("d-none");
                 setupRowTimer();
                 break;
