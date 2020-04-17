@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css">
+    <title>Gainz</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <br />
+                <ul class="nav nav-tabs" id="tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#workout" role="tab"
+                            aria-controls="workout" aria-selected="true">Workout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-none" id="work-tab" data-toggle="tab" href="#work" role="tab"
+                            aria-controls="work" aria-selected="false">Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-none" id="research-tab" data-toggle="tab" href="#researchTab" role="tab"
+                            aria-controls="research" aria-selected="false">Research</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <br />
+                Energy <span id="resting"></span>
+                <div class="progress">
+                    <div class="progress-bar" id="energyProgress" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="10"></div>
+                </div>
+                <div class="d-none" id="coffee">
+                    <br />
+                    <button type="button" id="coffeeBtn" class="btn btn-primary" onclick="drinkCoffee()">Drink
+                        Coffee</button>
+                </div>
+                <br />
+                <p>
+                    Strength: <span id="strength"></span><br />
+                    Endurance: <span id="endurance"></span><br />
+                    Agility: <span id="agility"></span><br />
+                    Intelligence: <span id="intelligence"></span><br /><br />
+
+                    Money: <span id="money"></span><br />
+                    <span id="researchText" class="d-none">
+                        Research: <span id="research"></span>
+                    </span>
+                </p>
+            </div>
+            <div class="col">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="workout" role="tabpanel" aria-labelledby="workout-tab">
+
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <div id="tryHarder">
+                                    <button type="button" id="tryHarderBtn" class="btn btn-success btn-block"
+                                        onclick="tryHarder();">Try Harder</button>
+                                </div>
+                                <br />
+                                <div id="bwPushups">
+                                    <span id="pushupText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="pushupProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="pushupUpgradeProgress"
+                                            role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="bwRows" class="d-none">
+                                    <span id="rowText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="rowProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="rowUpgradeProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-none" id="upgrade0">
+                                    <button type="button" id="upgrade0Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="upgradeClick(this);"></button>
+                                    <p id="upgrade0Desc"></p>
+                                </div>
+                                <div class="d-none" id="bwUpgrade0">
+                                    <button type="button" id="bwUpgrade0Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="bwUpgradeClick(this);"></button>
+                                    <p id="bwUpgrade0Desc"></p>
+                                </div>
+                                <div class="d-none" id="upgrade1">
+                                    <button type="button" id="upgrade1Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="upgradeClick(this);"></button>
+                                    <p id="upgrade1Desc"></p>
+                                </div>
+                                <div class="d-none" id="bwUpgrade1">
+                                    <button type="button" id="bwUpgrade1Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="bwUpgradeClick(this);"></button>
+                                    <p id="bwUpgrade1Desc"></p>
+                                </div>
+                                <div class="d-none" id="upgrade2">
+                                    <button type="button" id="upgrade2Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="upgradeClick(this);"></button>
+                                    <p id="upgrade2Desc"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                Make YouTube Videos About Exercise
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" id="makeVideoProgress" role="progressbar"
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                </div>
+                                <div id="viewBtnWrap">
+                                    <br />
+                                    <button type="button" id="viewBtn" class="btn btn-success"
+                                        onclick="generateView()">Generate View</button>
+                                </div>
+                                <p>
+                                    <div id="viewBtnClicksDone"
+                                        class="alert alert-primary alert-dismissible fade d-none" role="alert">
+                                        <strong>My finger hurts!</strong> I think I've refreshed my videos enough now
+                                        that I'm getting some money. Maybe I should see if I can buy anything? (check
+                                        workout tab)
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    Views: <span id="views"></span><br />
+                                    Followers: <span id="followers"></span><br />
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="d-none" id="jobUpgrade0">
+                                    <button type="button" id="jobUpgrade0Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="jobUpgradeClick(this);"></button>
+                                    <p id="jobUpgrade0Desc"></p>
+                                </div>
+                                <div class="d-none" id="jobUpgrade1">
+                                    <button type="button" id="jobUpgrade1Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="jobUpgradeClick(this);"></button>
+                                    <p id="jobUpgrade1Desc"></p>
+                                </div>
+                                <div class="d-none" id="jobUpgrade2">
+                                    <button type="button" id="jobUpgrade2Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="jobUpgradeClick(this);"></button>
+                                    <p id="jobUpgrade2Desc"></p>
+                                </div>
+                                <div class="d-none" id="jobUpgrade3">
+                                    <button type="button" id="jobUpgrade3Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="jobUpgradeClick(this);"></button>
+                                    <p id="jobUpgrade3Desc"></p>
+                                </div>
+                                <div class="d-none" id="jobUpgrade4">
+                                    <button type="button" id="jobUpgrade4Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="jobUpgradeClick(this);"></button>
+                                    <p id="jobUpgrade4Desc"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="researchTab" role="tabpanel" aria-labelledby="research-tab">
+                        <div class="row">
+                            <div class="col"><br />
+                                Browse Reddit Posts About Fitness
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" id="browseRedditProgress" role="progressbar"
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                </div><br />
+                                <p>
+                                    Posts Reviewed: <span id="posts"></span><br />
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="d-none" id="resUpgrade0">
+                                    <button type="button" id="resUpgrade0Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="resUpgradeClick(this);"></button>
+                                    <p id="resUpgrade0Desc"></p>
+                                </div>
+                                <div class="d-none" id="resUpgradee1">
+                                    <button type="button" id="resUpgrade1Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="resUpgradeClick(this);"></button>
+                                    <p id="resUpgrade1Desc"></p>
+                                </div>
+                                <div class="d-none" id="resUpgrade2">
+                                    <button type="button" id="resUpgrade2Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="resUpgradeClick(this);"></button>
+                                    <p id="resUpgrade2Desc"></p>
+                                </div>
+                                <div class="d-none" id="resUpgrade3">
+                                    <button type="button" id="resUpgrade3Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="resUpgradeClick(this);"></button>
+                                    <p id="resUpgrade3Desc"></p>
+                                </div>
+                                <div class="d-none" id="resUpgrade4">
+                                    <button type="button" id="resUpgrade4Btn" class="btn btn-primary btn-block disabled"
+                                        onclick="resUpgradeClick(this);"></button>
+                                    <p id="resUpgrade4Desc"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <br />
+                <div id="story1" class="alert alert-primary alert-dismissible fade d-none" role="alert">
+                    <strong>Wow I'm out of shape!</strong> I'll do some pushups to get stronger.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="story2" class="alert alert-primary alert-dismissible fade d-none" role="alert">
+                    <strong>I need a break!</strong> I'm actually so strong now, I should start a YouTube channel!
+                    (check work tab)
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="story4" class="alert alert-primary alert-dismissible fade d-none" role="alert">
+                    <strong>Why do my followers keep leaving?</strong> I'll browse Reddit for some insights and fitness
+                    information. (check research tab)
+                    (check work tab)
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.3/math.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
