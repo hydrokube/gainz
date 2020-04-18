@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css">
-    <title>Gainz</title>
+    <title>Idle Gainz</title>
 </head>
 
 <body>
@@ -68,10 +68,6 @@
                         <br />
                         <div class="row">
                             <div class="col">
-                                <!-- <div id="tryHarder">
-                                    <button type="button" id="tryHarderBtn" class="btn btn-success btn-block"
-                                        onclick="tryHarder();">Try Harder</button>
-                                </div> -->
                                 <div id="bwPushups">
                                     <span id="pushupText"></span>
                                     <div class="progress">
@@ -96,33 +92,60 @@
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                     </div>
                                 </div>
+                                <br />
+                                <div id="bwDips" class="d-none">
+                                    <span id="dipText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="dipProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="dipUpgradeProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="bwPullups" class="d-none">
+                                    <span id="pullupText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="pullupProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="pullupUpgradeProgress"
+                                            role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="bwSquats" class="d-none">
+                                    <span id="bwSquatText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="bwSquatProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="bwSquatUpgradeProgress"
+                                            role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="bwRdl" class="d-none">
+                                    <span id="bwRdlText"></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="bwRdlProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <div class="progress progress-upgrade">
+                                        <div class="progress-bar bg-warning" id="bwRdlUpgradeProgress"
+                                            role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col">
-                                <div class="d-none" id="upgrade0">
-                                    <button type="button" id="upgrade0Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="upgradeClick(this);"></button>
-                                    <p id="upgrade0Desc"></p>
-                                </div>
-                                <div class="d-none" id="bwUpgrade0">
-                                    <button type="button" id="bwUpgrade0Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="bwUpgradeClick(this);"></button>
-                                    <p id="bwUpgrade0Desc"></p>
-                                </div>
-                                <div class="d-none" id="upgrade1">
-                                    <button type="button" id="upgrade1Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="upgradeClick(this);"></button>
-                                    <p id="upgrade1Desc"></p>
-                                </div>
-                                <div class="d-none" id="bwUpgrade1">
-                                    <button type="button" id="bwUpgrade1Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="bwUpgradeClick(this);"></button>
-                                    <p id="bwUpgrade1Desc"></p>
-                                </div>
-                                <div class="d-none" id="upgrade2">
-                                    <button type="button" id="upgrade2Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="upgradeClick(this);"></button>
-                                    <p id="upgrade2Desc"></p>
-                                </div>
+                                <div id="upgrades"></div>
                             </div>
                         </div>
 
@@ -137,88 +160,43 @@
                                     <div class="progress-bar bg-success" id="makeVideoProgress" role="progressbar"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                 </div>
+                                <br />
                                 <p>
                                     Views: <span id="views"></span><br />
                                     Followers: <span id="followers"></span><br />
                                 </p>
+                                <div id="influencerWrap" class="d-none">
+                                    Recruit Influencers
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="influencerProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div>
+                                    <br />
+                                    <p>
+                                        Influencers: <span id="influencers"></span><br />
+                                    </p>
+                                </div>
                             </div>
                             <div class="col">
-                                <div class="d-none" id="jobUpgrade0">
-                                    <button type="button" id="jobUpgrade0Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade0Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade1">
-                                    <button type="button" id="jobUpgrade1Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade1Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade2">
-                                    <button type="button" id="jobUpgrade2Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade2Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade3">
-                                    <button type="button" id="jobUpgrade3Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade3Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade4">
-                                    <button type="button" id="jobUpgrade4Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade4Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade5">
-                                    <button type="button" id="jobUpgrade5Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade5Desc"></p>
-                                </div>
-                                <div class="d-none" id="jobUpgrade6">
-                                    <button type="button" id="jobUpgrade6Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="jobUpgradeClick(this);"></button>
-                                    <p id="jobUpgrade6Desc"></p>
-                                </div>
+                                <div id="jobUpgrades"></div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="researchTab" role="tabpanel" aria-labelledby="research-tab">
+                        <br />
                         <div class="row">
-                            <div class="col"><br />
+                            <div class="col">
                                 Browse Reddit Posts About Fitness
                                 <div class="progress">
                                     <div class="progress-bar bg-success" id="browseRedditProgress" role="progressbar"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                 </div><br />
                                 <p>
-                                    Posts Reviewed: <span id="posts"></span><br />
+                                    Posts Read: <span id="posts"></span><br />
                                 </p>
                             </div>
                             <div class="col">
-                                <div class="d-none" id="resUpgrade0">
-                                    <button type="button" id="resUpgrade0Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="resUpgradeClick(this);"></button>
-                                    <p id="resUpgrade0Desc"></p>
-                                </div>
-                                <div class="d-none" id="resUpgrade1">
-                                    <button type="button" id="resUpgrade1Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="resUpgradeClick(this);"></button>
-                                    <p id="resUpgrade1Desc"></p>
-                                </div>
-                                <div class="d-none" id="resUpgrade2">
-                                    <button type="button" id="resUpgrade2Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="resUpgradeClick(this);"></button>
-                                    <p id="resUpgrade2Desc"></p>
-                                </div>
-                                <div class="d-none" id="resUpgrade3">
-                                    <button type="button" id="resUpgrade3Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="resUpgradeClick(this);"></button>
-                                    <p id="resUpgrade3Desc"></p>
-                                </div>
-                                <div class="d-none" id="resUpgrade4">
-                                    <button type="button" id="resUpgrade4Btn" class="btn btn-primary btn-block disabled"
-                                        onclick="resUpgradeClick(this);"></button>
-                                    <p id="resUpgrade4Desc"></p>
-                                </div>
+                                <div id="resUpgrades"></div>
                             </div>
                         </div>
                     </div>
