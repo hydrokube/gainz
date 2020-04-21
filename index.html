@@ -30,7 +30,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-none" id="research-tab" data-toggle="tab" href="#researchTab" role="tab"
-                            aria-controls="research" aria-selected="false">Research</a>
+                            aria-controls="researchTab" aria-selected="false">Research</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-none" id="deload-tab" data-toggle="tab" href="#deloadTab" role="tab"
+                            aria-controls="deloadTab" aria-selected="false">Deload</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="options-tab" data-toggle="tab" href="#optionsTab" role="tab"
+                            aria-controls="optionsTab" aria-selected="false">Options</a>
                     </li>
                 </ul>
             </div>
@@ -45,7 +53,7 @@
                 </div>
                 <div class="d-none" id="coffee">
                     <br />
-                    <button type="button" id="coffeeBtn" class="btn btn-primary" onclick="drinkCoffee()">Drink
+                    <button type="button" id="coffeeBtn" class="btn btn-primary disabled" onclick="drinkCoffee()">Drink
                         Coffee</button>
                 </div>
                 <br />
@@ -92,8 +100,8 @@
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                     </div>
                                 </div>
-                                <br />
                                 <div id="bwDips" class="d-none">
+                                    <br />
                                     <span id="dipText"></span>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="dipProgress" role="progressbar"
@@ -104,8 +112,8 @@
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                     </div>
                                 </div>
-                                <br />
                                 <div id="bwPullups" class="d-none">
+                                    <br />
                                     <span id="pullupText"></span>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="pullupProgress" role="progressbar"
@@ -117,8 +125,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br />
                                 <div id="bwSquats" class="d-none">
+                                    <br />
                                     <span id="bwSquatText"></span>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwSquatProgress" role="progressbar"
@@ -130,8 +138,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br />
                                 <div id="bwRdl" class="d-none">
+                                    <br />
                                     <span id="bwRdlText"></span>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwRdlProgress" role="progressbar"
@@ -164,6 +172,7 @@
                                 <p>
                                     Views: <span id="views"></span><br />
                                     Followers: <span id="followers"></span><br />
+                                    Follower Growth: <span id="followerGrowth"></span><br />
                                 </p>
                                 <div id="influencerWrap" class="d-none">
                                     Recruit Influencers
@@ -193,50 +202,57 @@
                                 </div><br />
                                 <p>
                                     Posts Read: <span id="posts"></span><br />
+                                    Post Growth: <span id="postGrowth"></span><br />
                                 </p>
+                                <div id="botWrap" class="d-none">
+                                    Code Bots
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="codeBotsProgress" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+                                    </div><br />
+                                    <p>
+                                        Bots: <span id="bots"></span><br />
+                                    </p>
+                                </div>
                             </div>
                             <div class="col">
                                 <div id="resUpgrades"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="deloadTab" role="tabpanel" aria-labelledby="deload-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <p>Not yet implemented</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="optionsTab" role="tabpanel" aria-labelledby="options-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" id="saveBtn" class="btn btn-primary"
+                                    onclick="save()">Save</button>
+                                <button type="button" id="loadBtn" class="btn btn-primary"
+                                    onclick="load(this)">Load</button>
+                                <button type="button" id="resetBtn" class="btn btn-danger" onclick="reset()">Reset
+                                    Game</button>
+                                <br />
+                                <br />
+                                <div id="saveWrapper"></div>
+                                <div id="loadWrapper"></div>
+                                <div id="resetWrapper"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
-
         </div>
         <div class="row">
             <div class="col">
                 <br />
-                <div id="story1" class="alert alert-primary alert-dismissible fade d-none" role="alert">
-                    <strong>Wow I'm out of shape!</strong> I'll do some pushups to get stronger.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="story2" class="alert alert-primary alert-dismissible fade d-none" role="alert">
-                    <strong>I need a break!</strong> I'm actually so strong now, I should start a YouTube channel!
-                    (check work tab)
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="story3" class="alert alert-primary alert-dismissible fade d-none" role="alert">
-                    <strong>It might take a while to become popular</strong>. Let's see if there's anything I can buy in
-                    the meantime to get harder better faster stronger. (check
-                    workout tab)
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="story4" class="alert alert-primary alert-dismissible fade d-none" role="alert">
-                    <strong>Why do my followers keep leaving?</strong> I'll browse Reddit for some insights and fitness
-                    information. (check research tab)
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                <div id="story"></div>
             </div>
         </div>
     </div>
@@ -255,6 +271,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.3/math.min.js"></script>
+    <script src="js/stats.js"></script>
     <script src="js/app.js"></script>
 </body>
 
