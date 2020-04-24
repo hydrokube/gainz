@@ -32,6 +32,8 @@ var stats = {
 };
 var bodyweight = {
     pushups: {
+        id: 0,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,
@@ -72,6 +74,8 @@ var bodyweight = {
         ],
     },
     rows: {
+        id: 1,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,
@@ -112,6 +116,8 @@ var bodyweight = {
         ],
     },
     dips: {
+        id: 2,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,
@@ -152,6 +158,8 @@ var bodyweight = {
         ],
     },
     pullups: {
+        id: 3,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,
@@ -192,6 +200,8 @@ var bodyweight = {
         ],
     },
     squats: {
+        id: 4,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,
@@ -233,6 +243,8 @@ var bodyweight = {
 
     },
     rdl: {
+        id: 5,
+        isStopped: 0,
         total: 0,
         current: 0,
         increase: 10,

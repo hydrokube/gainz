@@ -18,8 +18,8 @@ var coffeeTimerId;
 
     buttons to pause exercises
     favicon
-    move javascript local
     follower and post growth should reflect the multiplier
+    move javascript local
 
 Future
 
@@ -52,6 +52,10 @@ Optional/Maybe
     good/evil path for follower upgrades
     show upgrades?
     offline time
+
+Done
+
+
 
 */
 
@@ -166,7 +170,8 @@ function load(button) {
     $('[data-toggle="tooltip"]').tooltip();
 
     setupEnergyTimer();
-    setupPushupTimer();
+
+    startStop(bodyweight.pushups, pushupTimerId, true);
 
     if (!checks.story1) {
         $("#story").append("<div id='story1' class='alert alert-primary alert-dismissible fade show' role='alert'><strong>Wow I'm out of shape!</strong> I'll do some pushups to get stronger.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
@@ -184,21 +189,21 @@ function load(button) {
     }
     if (bodyweight.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 1 })[0].isPurchased) {
         $("#bwRows").removeClass("d-none");
-        setupRowTimer();
+        startStop(bodyweight.rows, rowTimerId, true);
     }
     if (research.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 4 })[0].isPurchased) {
         $("#bwDips").removeClass("d-none");
-        setupDipTimer();
+        startStop(bodyweight.dips, dipTimerId, true);
     }
     if (bodyweight.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 4 })[0].isPurchased) {
         $("#bwPullups").removeClass("d-none");
-        setupPullupTimer();
+        startStop(bodyweight.pullups, pullupTimerId, true);
     }
     if (research.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 11 })[0].isPurchased) {
         $("#bwRdl").removeClass("d-none");
         $("#bwSquats").removeClass("d-none");
-        setupBwSquatTimer();
-        setupBwRdlTimer();
+        startStop(bodyweight.squats, bwSquatTimerId, true);
+        startStop(bodyweight.rdl, bwRdlTimerId, true);
     }
     if (research.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 10 })[0].isPurchased) {
         $("#influencerWrap").removeClass("d-none");
@@ -328,7 +333,7 @@ var refreshId = setInterval(function () {
         clearInterval(coffeeTimerId);
     }
 
-    energyPerSecond < 1000000 ? $("#energyPerSecond").html("<span class='text-success'>(" + energyPerSecond.toFixed(2) + "/s)</span>") :  "<span class='text-success'>(" + math.format(energyPerSecond, 3) + "/s)</span>";
+    energyPerSecond < 1000000 ? $("#energyPerSecond").html("<span class='text-success'>(" + energyPerSecond.toFixed(2) + "/s)</span>") : "<span class='text-success'>(" + math.format(energyPerSecond, 3) + "/s)</span>";
 
     if (checks.isResting) {
         $("#resting").html(" <em>(Resting)</em>");
@@ -342,6 +347,13 @@ var refreshId = setInterval(function () {
     else {
         $("#resting").html("");
     }
+
+    bodyweight.pushups.isStopped ? $("#startStopPushups").html("Start").removeClass("text-danger") : $("#startStopPushups").html("Stop").addClass("text-danger")
+    bodyweight.rows.isStopped ? $("#startStopRows").html("Start").removeClass("text-danger") : $("#startStopRows").html("Stop").addClass("text-danger")
+    bodyweight.dips.isStopped ? $("#startStopDips").html("Start").removeClass("text-danger") : $("#startStopDips").html("Stop").addClass("text-danger")
+    bodyweight.pullups.isStopped ? $("#startStopPullups").html("Start").removeClass("text-danger") : $("#startStopPullups").html("Stop").addClass("text-danger")
+    bodyweight.squats.isStopped ? $("#startStopBwSquats").html("Start").removeClass("text-danger") : $("#startStopBwSquats").html("Stop").addClass("text-danger")
+    bodyweight.rdl.isStopped ? $("#startStopBwRdls").html("Start").removeClass("text-danger") : $("#startStopBwRdls").html("Stop").addClass("text-danger")
 
     refreshProgressBars("pushup", bodyweight.pushups);
     refreshProgressBars("row", bodyweight.rows);
@@ -377,7 +389,7 @@ var refreshId = setInterval(function () {
     job.followers < 1000000 ? $(".followers").html(job.followers.toFixed(2)) : $(".followers").html(math.format(job.followers, 3));
     followersPerSecond < 1000000 ? $(".followers").append(" <span class='text-success'>(" + followersPerSecond.toFixed(3) + "/s)</span>") : $(".followers").append(" <span class='text-success'>(" + math.format(followersPerSecond, 3) + "/s)</span>");
 
-    var followerGrowthPerSecond = math.evaluate(job.influencers * job.influencerMulti);
+    var followerGrowthPerSecond = math.evaluate(job.influencers * job.influencerMulti * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
     followerFormula() < 1000000 ? $("#followerGrowth").html(followerFormula().toFixed(4)) : $("#followerGrowth").html(math.format(followerFormula(), 3));
     if (followerGrowthPerSecond > 0) {
         followerGrowthPerSecond < 1000000 ? $("#followerGrowth").append(" <span class='text-success'>(" + followerGrowthPerSecond.toFixed(4) + "/s)</span>") : $("#followerGrowth").append(" <span class='text-success'>(" + math.format(followerGrowthPerSecond, 3) + "/s)</span>");
@@ -541,6 +553,40 @@ function setupPushupTimer() {
     pushupTimerId = setInterval(function () {
         exerciseTick(bodyweight.pushups);
     }, bodyweight.pushups.speed / bodyweight.pushups.speedModifier);
+}
+
+function startStop(exercise, timerId, load) {
+    if ((exercise.isStopped && !load) || (load && !exercise.isStopped)) {
+        switch (exercise.id) {
+            case 0:
+                setupPushupTimer();
+                break;
+            case 1:
+                setupRowTimer();
+                break;
+            case 2:
+                setupDipTimer();
+                break;
+            case 3:
+                setupPullupTimer();
+                break;
+            case 4:
+                setupBwSquatTimer();
+                break;
+            case 5:
+                setupBwRdlTimer();
+                break;
+            default:
+        }
+
+        exercise.isStopped = false;
+    }
+    else {
+        clearInterval(timerId);
+        if (!load) {
+            exercise.isStopped = true;
+        }
+    }
 }
 
 function setupRowTimer() {
@@ -785,7 +831,7 @@ function bwUpgradeClick(button) {
             case 0:
                 bodyweight.pushups.speedModifier *= 2;
                 clearInterval(pushupTimerId);
-                setupPushupTimer();
+                startStop(bodyweight.pushups, pushupTimerId, true);
                 break;
             case 1:
                 $("#bwRows").removeClass("d-none");
@@ -798,7 +844,7 @@ function bwUpgradeClick(button) {
             case 3:
                 bodyweight.rows.speedModifier *= 2;
                 clearInterval(rowTimerId);
-                setupRowTimer();
+                startStop(bodyweight.rows, rowTimerId, true);
                 break;
             case 4:
                 $("#bwPullups").removeClass("d-none");
@@ -807,12 +853,12 @@ function bwUpgradeClick(button) {
             case 5:
                 bodyweight.pullups.speedModifier *= 2;
                 clearInterval(pullupTimerId);
-                setupPullupTimer();
+                startStop(bodyweight.pullups, pullupTimerId, true);
                 break;
             case 6:
                 bodyweight.dips.speedModifier *= 2;
                 clearInterval(dipTimerId);
-                setupDipTimer();
+                startStop(bodyweight.dips, dipTimerId, true);
                 break;
             case 7:
                 bodyweight.pullups.energy /= 2;
@@ -823,12 +869,12 @@ function bwUpgradeClick(button) {
             case 9:
                 bodyweight.squats.speedModifier *= 2;
                 clearInterval(bwSquatTimerId);
-                setupBwSquatTimer();
+                startStop(bodyweight.squats, bwSquatTimerId, true);
                 break;
             case 10:
                 bodyweight.rdl.speedModifier *= 2;
                 clearInterval(bwRdlTimerId);
-                setupBwRdlTimer();
+                startStop(bodyweight.rdl, bwRdlTimerId, true);
                 break;
             case 11:
                 bodyweight.rdl.energy /= 2;

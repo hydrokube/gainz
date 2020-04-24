@@ -20,30 +20,33 @@
 <body>
     <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <div class="container">
-          <a href="#" class="navbar-brand">Idle Gainz</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="https://discord.gg/hrbStn" target="_blank">Discord</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Fitness <span class="caret"></span></a>
-                <div class="dropdown-menu" aria-labelledby="fitness">
-                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/bodyweightfitness">Bodyweight Fitness</a>
-                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/fitness">Lifting</a>
-                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/running">Running</a>
-                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/yoga">Yoga</a>
-                </div>
-              </li>
-            </ul>
-  
-          </div>
+            <a href="#" class="navbar-brand">Idle Gainz</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://discord.gg/hrbStn" target="_blank">Discord</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Fitness <span
+                                class="caret"></span></a>
+                        <div class="dropdown-menu" aria-labelledby="fitness">
+                            <a class="dropdown-item" target="_blank"
+                                href="https://www.reddit.com/r/bodyweightfitness">Bodyweight Fitness</a>
+                            <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/fitness">Lifting</a>
+                            <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/running">Running</a>
+                            <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/yoga">Yoga</a>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
         </div>
-      </div>
-      <br /><br /><br />
+    </div>
+    <br /><br /><br />
     <div class="container">
         <div class="row">
             <div class="col">
@@ -121,7 +124,7 @@
                                 <div id="bwPushups">
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Incline Pushups -> Pushups -> Diamond Pushups -> Pseudo Planche Pushups -> Planche Pushups. <br /><br />Base Energy: 1<br />Base Strength: .05<br />Base Endurance: .025<br />Base Agility: .01<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="pushupText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="pushupText"></span></a> &nbsp; <a id="startStopPushups" class="text-danger float-right" onclick="startStop(bodyweight.pushups, pushupTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="pushupProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -136,7 +139,7 @@
                                 <div id="bwRows" class="d-none">
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Incline Rows -> Horizontal Rows -> Tuck Front Lever Rows -> Advanced Tuck Front Lever Rows -> Front Lever Rows. <br /><br />Base Energy: 1<br />Base Strength: .025<br />Base Endurance: .05<br />Base Agility: .01<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="rowText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="rowText"></span></a> &nbsp; <a id="startStopRows" class="text-danger float-right" onclick="startStop(bodyweight.rows, rowTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="rowProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -150,7 +153,7 @@
                                     <br />
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Support Holds -> Dip Negatives -> Dips -> Ring Dips -> Rings Turned-Out Dips. <br /><br />Base Energy: 2<br />Base Strength: .05<br />Base Endurance: .1<br />Base Agility: .02<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="dipText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="dipText"></span></a> &nbsp; <a id="startStopDips" class="text-danger float-right" onclick="startStop(bodyweight.dips, dipTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="dipProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -164,7 +167,7 @@
                                     <br />
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Arch Hangs -> Pullup Negatives -> Pullups -> Assisted One-Arm Pullups -> One-Arm Pullups. <br /><br />Base Energy: 2<br />Base Strength: .1<br />Base Endurance: .05<br />Base Agility: .02<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="pullupText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="pullupText"></span></a> &nbsp; <a id="startStopPullups" class="text-danger float-right" onclick="startStop(bodyweight.pullups, pullupTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="pullupProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -179,7 +182,7 @@
                                     <br />
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Assisted Squat -> Squat -> Split Squat -> Bulgarian Split Squat -> Pistol Squat. <br /><br />Base Energy: 4<br />Base Strength: .15<br />Base Endurance: .05<br />Base Agility: .15<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="bwSquatText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="bwSquatText"></span></a> &nbsp; <a id="startStopBwSquats" class="text-danger float-right" onclick="startStop(bodyweight.squats, bwSquatTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwSquatProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -194,7 +197,7 @@
                                     <br />
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Romanian Deadlifts (No Weight) -> Single-Legged Deadlifts -> Banded Nordic Curl Negatives -> Banded Nordic Curls -> Nordic Curls. <br /><br />Base Energy: 4<br />Base Strength: .15<br />Base Endurance: .05<br />Base Agility: .15<br /><br />Energy and stat growth is doubled every progression."
-                                        data-html="true" onclick="toggleAlert(this);"><span id="bwRdlText"></span></a>
+                                        data-html="true" onclick="toggleAlert(this);"><span id="bwRdlText"></span></a> &nbsp; <a id="startStopBwRdls" class="text-danger float-right" onclick="startStop(bodyweight.rdl, bwRdlTimerId, false)" href="#">Stop</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwRdlProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -334,6 +337,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="js/hacktimer.min.js"></script>
+    <!--
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -344,6 +348,11 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.3/math.min.js"></script>
+-->
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/math.min.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/app.js"></script>
 </body>
