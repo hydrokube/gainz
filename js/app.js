@@ -17,9 +17,9 @@ var coffeeTimerId;
  QoL
 
     buttons to pause exercises
-    start a discord
     favicon
     move javascript local
+    follower and post growth should reflect the multiplier
 
 Future
 
@@ -391,7 +391,7 @@ var refreshId = setInterval(function () {
     research.posts < 1000000 ? $("#posts").html(research.posts.toFixed(2)) : $("#posts").html(math.format(research.posts, 3));
     postsPerSecond < 1000000 ? $("#posts").append(" <span class='text-success'>(" + postsPerSecond.toFixed(2) + "/s)</span>") : $("#posts").append(" <span class='text-success'>(" + math.format(postsPerSecond, 3) + "/s)</span>");
 
-    var postGrowthPerSecond = math.evaluate(research.bots * research.botMulti);
+    var postGrowthPerSecond = math.evaluate(research.bots * research.botMulti * (1 + (stats.strength * stats.strengthBoost * research.postStrengthMod)));
     postFormula() < 1000000 ? $("#postGrowth").html(postFormula().toFixed(4)) : $("#postGrowth").html(math.format(postFormula(), 3));
     if (postGrowthPerSecond > 0) {
         postGrowthPerSecond < 1000000 ? $("#postGrowth").append(" <span class='text-success'>(" + postGrowthPerSecond.toFixed(4) + "/s)</span>") : $("#postGrowth").append(" <span class='text-success'>(" + math.format(postGrowthPerSecond, 3) + "/s)</span>");
