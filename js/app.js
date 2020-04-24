@@ -1,3 +1,4 @@
+var energyTimerId;
 var pushupTimerId;
 var rowTimerId;
 var dipTimerId;
@@ -10,6 +11,49 @@ var oneSecondTimerId;
 var browseRedditTimerId;
 var codeBotsTimerId;
 var coffeeTimerId;
+
+
+/* 
+ QoL
+
+    buttons to pause exercises
+    start a discord
+    favicon
+    move javascript local
+
+Future
+
+    Unique researches, upgrades for each
+    general upgrades, and exercise modality specific upgrades
+    Gym
+        Franchise points grow very slowly
+        Franchise points give boosts across entire game
+        Spent on gym upgrades that are persistent
+    lifting
+        run comps 
+        leadership stat that increases the stat growth of all proteges
+        competitions will give you money
+        each upgrade gives 1.01* the energy cost and stat boost
+    bodyweight
+        start a street workout gang
+        notoriety? stat that increases money gain 
+    yoga
+        Run through routines and different types of yoga
+        Flexibility that increases a stat or resource of your choice, unlock ability to add another eventually. 
+        What to do for competition-style stuff?
+    cardio  
+        exercises are of varying speeds, run through different types of training before upgrading. 
+        Setup races and compete in them to increase
+        overall tick speed for that run
+        speed stat that grows and adds to all tick speeds
+
+Optional/Maybe
+
+    good/evil path for follower upgrades
+    show upgrades?
+    offline time
+
+*/
 
 $(document).ready(function () {
     load(null);
@@ -30,6 +74,7 @@ function save() {
 }
 
 function loadReset() {
+    clearInterval(energyTimerId);
     clearInterval(pushupTimerId);
     clearInterval(rowTimerId);
     clearInterval(dipTimerId);
@@ -43,6 +88,7 @@ function loadReset() {
     clearInterval(codeBotsTimerId);
     clearInterval(coffeeTimerId);
     $("#work-tab").addClass("d-none");
+    $("#followerWrap").removeClass("d-none");
     $("#research-tab").addClass("d-none");
     $("#researchText").addClass("d-none");
     $("#bwRows").addClass("d-none");
@@ -117,6 +163,9 @@ function load(button) {
         $.extend(true, checks, saveData[5]);
     }
 
+    $('[data-toggle="tooltip"]').tooltip();
+
+    setupEnergyTimer();
     setupPushupTimer();
 
     if (!checks.story1) {
@@ -124,6 +173,7 @@ function load(button) {
     }
     if (checks.story2) {
         $("#work-tab").removeClass("d-none");
+        $("#followerWrap").removeClass("d-none");
         setupMakeVideoTimer();
         setupOneSecondTimer()
     }
@@ -164,7 +214,7 @@ function load(button) {
 
     var tempUpgrades = job.upgrades;
     tempUpgrades.sort(function (a, b) {
-        return a.cost > b.cost
+        return a.cost > b.cost ? 1 : -1
     });
 
     for (var i = 0; i < tempUpgrades.length; i++) {
@@ -178,7 +228,7 @@ function load(button) {
     tempUpgrades = upgrades;
     tempUpgrades = tempUpgrades.concat(bodyweight.upgrades);
     tempUpgrades.sort(function (a, b) {
-        return a.cost > b.cost
+        return a.cost > b.cost ? 1 : -1
     });
 
     for (var i = 0; i < tempUpgrades.length; i++) {
@@ -204,7 +254,7 @@ function load(button) {
 
     tempUpgrades = research.upgrades;
     tempUpgrades.sort(function (a, b) {
-        return a.cost > b.cost
+        return a.cost > b.cost ? 1 : -1
     });
 
     for (var i = 0; i < tempUpgrades.length; i++) {
@@ -256,8 +306,9 @@ function reset() {
 
 
 var refreshId = setInterval(function () {
-    var energyCurrent = stats.energy.current < 1000000 ? stats.energy.current.toFixed(2) : math.format(stats.energy.current, 5);
-    var energyMax = stats.energy.max < 1000000 ? stats.energy.max.toFixed(2) : math.format(stats.energy.max, 5);
+    var energyPerSecond = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) / (stats.energy.energyAdjust / 2))
+    var energyCurrent = stats.energy.current < 1000000 ? stats.energy.current.toFixed(2) : math.format(stats.energy.current, 3);
+    var energyMax = stats.energy.max < 1000000 ? stats.energy.max.toFixed(2) : math.format(stats.energy.max, 3);
     $("#energyProgress").css("width", ((stats.energy.current / stats.energy.max) * 100) + "%");
     $("#energyProgress").html(energyCurrent + "/" + energyMax);
     stats.energy.max = math.evaluate(stats.energy.originalMax * ((stats.endurance * stats.enduranceBoost) + 1));
@@ -265,6 +316,7 @@ var refreshId = setInterval(function () {
     if (stats.energy.coffee.isActive == true) {
         $("#coffeeBtn").html("COFFEE ACTIVATED! - " + (stats.energy.coffee.timer - stats.energy.coffee.current) + "s");
         $("#coffeeBtn").addClass("disabled");
+        energyPerSecond *= stats.energy.coffee.boost;
     }
     else if (stats.energy.coffee.isCooldown == true) {
         $("#coffeeBtn").html("coffee gone - " + (stats.energy.coffee.cooldown - stats.energy.coffee.current) + "s");
@@ -275,6 +327,8 @@ var refreshId = setInterval(function () {
         $("#coffeeBtn").removeClass("disabled");
         clearInterval(coffeeTimerId);
     }
+
+    energyPerSecond < 1000000 ? $("#energyPerSecond").html("<span class='text-success'>(" + energyPerSecond.toFixed(2) + "/s)</span>") :  "<span class='text-success'>(" + math.format(energyPerSecond, 3) + "/s)</span>";
 
     if (checks.isResting) {
         $("#resting").html(" <em>(Resting)</em>");
@@ -306,31 +360,62 @@ var refreshId = setInterval(function () {
         checks.story3 = true;
     }
 
-    stats.strength < 1000000 ? $("#strength").html(stats.strength.toFixed(2)) : $("#strength").html(math.format(stats.strength, 5));
-    stats.endurance < 1000000 ? $("#endurance").html(stats.endurance.toFixed(2)) : $("#endurance").html(math.format(stats.endurance, 5));
-    stats.agility < 1000000 ? $("#agility").html(stats.agility.toFixed(2)) : $("#agility").html(math.format(stats.agility, 5));
-    stats.intelligence < 1000000 ? $("#intelligence").html(stats.intelligence.toFixed(2)) : $("#intelligence").html(math.format(stats.intelligence, 5));
-    stats.money < 1000000 ? $("#money").html(stats.money.toFixed(2)) : $("#money").html(math.format(stats.money, 5));
+    stats.strength < 1000000 ? $("#strength").html(stats.strength.toFixed(2)) : $("#strength").html(math.format(stats.strength, 3));
+    stats.endurance < 1000000 ? $("#endurance").html(stats.endurance.toFixed(2)) : $("#endurance").html(math.format(stats.endurance, 3));
+    stats.agility < 1000000 ? $("#agility").html(stats.agility.toFixed(2)) : $("#agility").html(math.format(stats.agility, 3));
+    stats.intelligence < 1000000 ? $("#intelligence").html(stats.intelligence.toFixed(2)) : $("#intelligence").html(math.format(stats.intelligence, 3));
 
-    var followerFormula = math.evaluate((job.followerGrowth + (bodyweight.pushups.total * job.pushupFollowerMod) + (bodyweight.rows.total * job.rowFollowerMod) + (bodyweight.dips.total * job.dipFollowerMod) + (bodyweight.pullups.total * job.pullupFollowerMod) + (bodyweight.squats.total * job.bwSquatFollowerMod) + (bodyweight.rdl.total * job.bwRdlFollowerMod) + (research.posts * job.postFollowerMod)) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
-    job.views < 1000000 ? $("#views").html(job.views.toFixed(2)) : $("#views").html(math.format(job.views, 5));
-    job.followers < 1000000 ? $("#followers").html(job.followers.toFixed(2)) : $("#followers").html(math.format(job.followers, 5));
-    job.followerGrowth < 1000000 ? $("#followerGrowth").html(followerFormula.toFixed(4)) : $("#followerGrowth").html(math.format(followerFormula, 5));
-    job.influencers < 1000000 ? $("#influencers").html(job.influencers.toFixed(2)) : $("#influencers").html(math.format(job.influencers, 5));
+    var moneyPerSecond = math.evaluate((job.views * job.moneyGrowth) - job.moneyDrain);
+    stats.money < 1000000 ? $("#money").html(stats.money.toFixed(2)) : $("#money").html(math.format(stats.money, 3));
+    moneyPerSecond < 1000000 ? $("#money").append(" <span class='text-success'>(" + moneyPerSecond.toFixed(2) + "/s)</span>") : $("#money").append(" <span class='text-success'>(" + math.format(moneyPerSecond, 3) + "/s)</span>");
 
-    var postFormula = math.evaluate(research.postGrowth * (1 + (stats.strength * stats.strengthBoost * research.postStrengthMod)));
-    research.posts < 1000000 ? $("#posts").html(research.posts.toFixed(2)) : $("#posts").html(math.format(research.posts, 5));
-    research.postGrowth < 1000000 ? $("#postGrowth").html(postFormula.toFixed(4)) : $("#postGrowth").html(math.format(postFormula, 5));
-    research.points < 1000000 ? $("#research").html(research.points.toFixed(2)) : $("#research").html(math.format(research.points, 5));
-    research.bots < 1000000 ? $("#bots").html(research.bots.toFixed(2)) : $("#bots").html(math.format(research.bots, 5));
+    var viewsPerSecond = math.evaluate((job.viewGrowth * (job.followers + followerFormula())) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000)));
+    job.views < 1000000 ? $("#views").html(job.views.toFixed(2)) : $("#views").html(math.format(job.views, 3));
+    viewsPerSecond < 1000000 ? $("#views").append(" <span class='text-success'>(" + viewsPerSecond.toFixed(3) + "/s)</span>") : $("#views").append(" <span class='text-success'>(" + math.format(viewsPerSecond, 3) + "/s)</span>");
+
+    var followersPerSecond = math.evaluate(followerFormula()) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000));
+    job.followers < 1000000 ? $(".followers").html(job.followers.toFixed(2)) : $(".followers").html(math.format(job.followers, 3));
+    followersPerSecond < 1000000 ? $(".followers").append(" <span class='text-success'>(" + followersPerSecond.toFixed(3) + "/s)</span>") : $(".followers").append(" <span class='text-success'>(" + math.format(followersPerSecond, 3) + "/s)</span>");
+
+    var followerGrowthPerSecond = math.evaluate(job.influencers * job.influencerMulti);
+    followerFormula() < 1000000 ? $("#followerGrowth").html(followerFormula().toFixed(4)) : $("#followerGrowth").html(math.format(followerFormula(), 3));
+    if (followerGrowthPerSecond > 0) {
+        followerGrowthPerSecond < 1000000 ? $("#followerGrowth").append(" <span class='text-success'>(" + followerGrowthPerSecond.toFixed(4) + "/s)</span>") : $("#followerGrowth").append(" <span class='text-success'>(" + math.format(followerGrowthPerSecond, 3) + "/s)</span>");
+    }
+
+    var influencersPerSecond = math.evaluate(job.influencerGrowth / ((job.recruitInfluencers.max / job.recruitInfluencers.increase) / (job.recruitInfluencers.speed / 1000)));
+    job.influencers < 1000000 ? $("#influencers").html(job.influencers.toFixed(2)) : $("#influencers").html(math.format(job.influencers, 3));
+    influencersPerSecond < 1000000 ? $("#influencers").append(" <span class='text-success'>(" + influencersPerSecond.toFixed(3) + "/s)</span>") : $("#influencers").append(" <span class='text-success'>(" + math.format(influencersPerSecond, 3) + "/s)</span>");
+
+    var postsPerSecond = math.evaluate(postFormula() / ((research.browseReddit.max / research.browseReddit.increase) / (research.browseReddit.speed / 1000)));
+    research.posts < 1000000 ? $("#posts").html(research.posts.toFixed(2)) : $("#posts").html(math.format(research.posts, 3));
+    postsPerSecond < 1000000 ? $("#posts").append(" <span class='text-success'>(" + postsPerSecond.toFixed(2) + "/s)</span>") : $("#posts").append(" <span class='text-success'>(" + math.format(postsPerSecond, 3) + "/s)</span>");
+
+    var postGrowthPerSecond = math.evaluate(research.bots * research.botMulti);
+    postFormula() < 1000000 ? $("#postGrowth").html(postFormula().toFixed(4)) : $("#postGrowth").html(math.format(postFormula(), 3));
+    if (postGrowthPerSecond > 0) {
+        postGrowthPerSecond < 1000000 ? $("#postGrowth").append(" <span class='text-success'>(" + postGrowthPerSecond.toFixed(4) + "/s)</span>") : $("#postGrowth").append(" <span class='text-success'>(" + math.format(postGrowthPerSecond, 3) + "/s)</span>");
+    }
+
+    var researchPerSecond = math.evaluate(research.posts * research.pointGrowth);
+    research.points < 1000000 ? $("#research").html(research.points.toFixed(2)) : $("#research").html(math.format(research.points, 3));
+    researchPerSecond < 1000000 ? $("#research").append(" <span class='text-success'>(" + researchPerSecond.toFixed(3) + "/s)</span>") : $("#research").append(" <span class='text-success'>(" + math.format(researchPerSecond, 3) + "/s)</span>");
+
+    var botsPerSecond = math.evaluate(research.botGrowth / ((research.codeBots.max / research.codeBots.increase) / (research.codeBots.speed / 1000)));
+    research.bots < 1000000 ? $("#bots").html(research.bots.toFixed(2)) : $("#bots").html(math.format(research.bots, 3));
+    botsPerSecond < 1000000 ? $("#bots").append(" <span class='text-success'>(" + botsPerSecond.toFixed(3) + "/s)</span>") : $("#bots").append(" <span class='text-success'>(" + math.format(botsPerSecond, 3) + "/s)</span>");
 
     for (var i = 0; i < job.upgrades.length; i++) {
         if (job.followers > (job.upgrades[i].cost / 4) && !job.upgrades[i].isPurchased) {
             job.upgrades[i].isActive = true;
             // don't show rows unless rings are purchased
-            if ((job.upgrades[i].id == 3 && bodyweight.upgrades[1].isPurchased) || job.upgrades[i].id != 3) {
+            if ((job.upgrades[i].id == 3 && bodyweight.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 1 })[0].isPurchased) || job.upgrades[i].id != 3) {
                 $("#jobUpgrade" + job.upgrades[i].id).removeClass("d-none");
             }
+            else {
+                $("#jobUpgrade" + job.upgrades[i].id).addClass("d-none");
+            }
+
             if (job.followers >= job.upgrades[i].cost) {
                 $("#jobUpgradeBtn" + job.upgrades[i].id).removeClass("disabled").removeClass("btn-secondary").addClass("btn-primary");
             }
@@ -422,33 +507,35 @@ function refreshProgressBars(text, exercise) {
 }
 
 var saveTimerId = setInterval(function () {
-   save();
+    save();
 }, 30000)
 
-var energyTimerId = setInterval(function () {
-    if (stats.energy.current < stats.energy.max) {
-        var increase = math.evaluate(stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1));
-        if (math.evaluate(stats.energy.current + increase) > stats.energy.max) {
-            stats.energy.current = stats.energy.max;
-        }
-        else {
-            if (stats.energy.coffee.isActive) {
-                if ((stats.energy.current + (increase * stats.energy.coffee.boost)) > stats.energy.max) {
-                    stats.energy.current = stats.energy.max;
-                }
-                else {
-                    stats.energy.current += math.evaluate(increase * stats.energy.coffee.boost);
-                }
+function setupEnergyTimer() {
+    energyTimerId = setInterval(function () {
+        if (stats.energy.current < stats.energy.max) {
+            var increase = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) / stats.energy.energyAdjust);
+            if (math.evaluate(stats.energy.current + increase) > stats.energy.max) {
+                stats.energy.current = stats.energy.max;
             }
             else {
-                stats.energy.current += increase;
+                if (stats.energy.coffee.isActive) {
+                    if ((stats.energy.current + (increase * stats.energy.coffee.boost)) > stats.energy.max) {
+                        stats.energy.current = stats.energy.max;
+                    }
+                    else {
+                        stats.energy.current += math.evaluate(increase * stats.energy.coffee.boost);
+                    }
+                }
+                else {
+                    stats.energy.current += increase;
+                }
             }
         }
-    }
-    else {
-        checks.isResting = false;
-    }
-}, stats.energy.speed)
+        else {
+            checks.isResting = false;
+        }
+    }, stats.energy.speed / stats.energy.energyAdjust)
+}
 
 function setupPushupTimer() {
     pushupTimerId = setInterval(function () {
@@ -486,7 +573,6 @@ function setupBwSquatTimer() {
     }, bodyweight.pullups.speed / bodyweight.pullups.speedModifier);
 }
 
-
 function exerciseTick(exercise) {
     if (stats.energy.current < exercise.energy && exercise.current == 0) {
         checks.isResting = true;
@@ -505,6 +591,7 @@ function exerciseTick(exercise) {
                 exercise.strength *= exercise.tiers[exercise.tier].multiplier;
                 exercise.endurance *= exercise.tiers[exercise.tier].multiplier;
                 exercise.agility *= exercise.tiers[exercise.tier].multiplier;
+                exercise.energy *= 2;
                 exercise.tier += 1;
             }
             stats.strength += math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1));
@@ -522,7 +609,7 @@ function setupMakeVideoTimer() {
         }
         else {
             job.makeVideo.total += 1;
-            job.followers += math.evaluate((job.followerGrowth + (bodyweight.pushups.total * job.pushupFollowerMod) + (bodyweight.rows.total * job.rowFollowerMod) + (bodyweight.dips.total * job.dipFollowerMod) + (bodyweight.pullups.total * job.pullupFollowerMod) + (bodyweight.squats.total * job.bwSquatFollowerMod) + (bodyweight.rdl.total * job.bwRdlFollowerMod) + (research.posts * job.postFollowerMod)) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
+            job.followers += followerFormula();
             job.views += math.evaluate(job.viewGrowth * job.followers);
             job.makeVideo.current = 0;
         }
@@ -565,7 +652,7 @@ function setupBrowseRedditTimer() {
         }
         else {
             research.browseReddit.total += 1;
-            research.posts += math.evaluate(research.postGrowth * (1 + (stats.strength * stats.strengthBoost * research.postStrengthMod)));
+            research.posts += postFormula();
             stats.intelligence += math.evaluate(research.browseReddit.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1));
             research.browseReddit.current = 0;
         }
@@ -590,6 +677,7 @@ function setupStory2() {
     checks.story2 = true;
     $("#story").append("<div id='story2' class='alert alert-primary alert-dismissible fade show' role='alert'><strong>I need a break!</strong> I'm actually so strong now, I should start a YouTube channel! (check work tab)<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
     $("#work-tab").removeClass("d-none");
+    $("#followerWrap").removeClass("d-none");
     setupMakeVideoTimer();
     setupOneSecondTimer();
 }
@@ -620,6 +708,18 @@ function setupCoffeeTimer() {
             }
         }
     }, 1000);
+}
+
+function followerFormula() {
+    return math.evaluate((job.followerGrowth + (bodyweight.pushups.total * job.pushupFollowerMod) + (bodyweight.rows.total * job.rowFollowerMod) + (bodyweight.dips.total * job.dipFollowerMod) + (bodyweight.pullups.total * job.pullupFollowerMod) + (bodyweight.squats.total * job.bwSquatFollowerMod) + (bodyweight.rdl.total * job.bwRdlFollowerMod) + (research.posts * job.postFollowerMod)) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
+}
+
+function postFormula() {
+    return math.evaluate(research.postGrowth * (1 + (stats.strength * stats.strengthBoost * research.postStrengthMod)));
+}
+
+function toggleAlert(alert) {
+    $(alert).tooltip("toggle");
 }
 
 function upgradeClick(button) {

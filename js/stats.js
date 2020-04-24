@@ -6,6 +6,7 @@ var stats = {
         speedModifier: 1,
         max: 10,
         originalMax: 10,
+        energyAdjust: 10,
         coffee: {
             total: 0,
             current: 0,
@@ -164,7 +165,7 @@ var bodyweight = {
         tier: 0,
         tiers: [
             {
-                name: "Arch Holds",
+                name: "Arch Hangs",
                 multiplier: 2,
                 upgrade: 100,
             },
@@ -557,7 +558,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Livestream Pushups",
-            desc: "<strong>Cost: 2.5 follower</strong> - Annoy a follower by livestreaming pushups all day. Adds a portion of your total pushups to your follower growth.",
+            desc: "<strong>Cost: 2.5 follower</strong> - Annoy some followers by livestreaming pushups all day. Adds a portion of your total pushups to your follower growth.",
             cost: 2.5,
         },
         {
@@ -565,7 +566,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Livestream Rows",
-            desc: "<strong>Cost: 2.5 follower</strong> - Annoy a follower by livestreaming rows all day. Adds a portion of your total rows to your follower growth.",
+            desc: "<strong>Cost: 2.5 follower</strong> - Annoy some followers by livestreaming rows all day. Adds a portion of your total rows to your follower growth.",
             cost: 2.5,
         },
         {
@@ -645,7 +646,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Film Romanian Deadlifts",
-            desc: "<strong>Cost: 500 followers</strong> - No one can ever do romanian deadlifts correctly. I'll show them show. Adds romanian deadlifts to follower growth.",
+            desc: "<strong>Cost: 500 followers</strong> - No one can ever do romanian deadlifts correctly. I'll show them. Adds romanian deadlifts to follower growth.",
             cost: 500,
         },
         {

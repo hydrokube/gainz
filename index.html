@@ -5,16 +5,45 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
     <title>Idle Gainz</title>
 </head>
 
 <body>
-
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+          <a href="#" class="navbar-brand">Idle Gainz</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Discord</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Fitness <span class="caret"></span></a>
+                <div class="dropdown-menu" aria-labelledby="fitness">
+                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/bodyweightfitness">Bodyweight Fitness</a>
+                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/fitness">Lifting</a>
+                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/running">Running</a>
+                  <a class="dropdown-item" target="_blank" href="https://www.reddit.com/r/yoga">Yoga</a>
+                </div>
+              </li>
+            </ul>
+  
+          </div>
+        </div>
+      </div>
+      <br /><br /><br />
     <div class="container">
         <div class="row">
             <div class="col">
@@ -46,7 +75,7 @@
         <div class="row">
             <div class="col-3">
                 <br />
-                Energy <span id="resting"></span>
+                Energy <span id="resting"></span> <span id="energyPerSecond"></span>
                 <div class="progress">
                     <div class="progress-bar" id="energyProgress" role="progressbar" aria-valuenow="0" aria-valuemin="0"
                         aria-valuemax="10"></div>
@@ -58,16 +87,29 @@
                 </div>
                 <br />
                 <p>
-                    Strength: <span id="strength"></span><br />
-                    Endurance: <span id="endurance"></span><br />
-                    Agility: <span id="agility"></span><br />
-                    Intelligence: <span id="intelligence"></span><br /><br />
-
-                    Money: <span id="money"></span><br />
-                    <span id="researchText" class="d-none">
-                        Research: <span id="research"></span>
-                    </span>
+                    <a href="#" data-toggle="tooltip" class="text-info"
+                        title="A portion is multiplied against 1 for the total number of reps per bar fill. A smaller portion is multiplied against the follower growth rate."
+                        data-html="true" onclick="toggleAlert(this);">Strength:</a> <span id="strength"></span><br />
+                    <a href="#" data-toggle="tooltip" class="text-info"
+                        title="A portion is multiplied against max energy. A smaller portion is multiplied against the follower growth rate."
+                        data-html="true" onclick="toggleAlert(this);">Endurance:</a> <span id="endurance"></span><br />
+                    <a href="#" data-toggle="tooltip" class="text-info"
+                        title="A portion is multiplied against energy regeneration. A smaller portion is multiplied against the follower growth rate."
+                        data-html="true" onclick="toggleAlert(this);">Agility:</a> <span id="agility"></span><br />
+                    <a href="#" data-toggle="tooltip" class="text-info"
+                        title="A portion is multiplied against any stat increase. A smaller portion is multiplied against the follower growth rate."
+                        data-html="true" onclick="toggleAlert(this);">Intelligence:</a> <span
+                        id="intelligence"></span><br />
                 </p>
+
+                Money: <span id="money"></span><br />
+                <div id="followerWrap" class="d-none">
+                    Followers: <span class="followers"></span><br />
+                </div>
+                <div id="researchText" class="d-none">
+                    Research: <span id="research"></span><br />
+                </div>
+
             </div>
             <div class="col">
                 <div class="tab-content" id="myTabContent">
@@ -77,7 +119,9 @@
                         <div class="row">
                             <div class="col">
                                 <div id="bwPushups">
-                                    <span id="pushupText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Incline Pushups -> Pushups -> Diamond Pushups -> Pseudo Planche Pushups -> Planche Pushups. <br /><br />Base Energy: 1<br />Base Strength: .05<br />Base Endurance: .025<br />Base Agility: .01<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="pushupText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="pushupProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -90,7 +134,9 @@
                                 </div>
                                 <br />
                                 <div id="bwRows" class="d-none">
-                                    <span id="rowText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Incline Rows -> Horizontal Rows -> Tuck Front Lever Rows -> Advanced Tuck Front Lever Rows -> Front Lever Rows. <br /><br />Base Energy: 1<br />Base Strength: .025<br />Base Endurance: .05<br />Base Agility: .01<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="rowText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="rowProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -102,7 +148,9 @@
                                 </div>
                                 <div id="bwDips" class="d-none">
                                     <br />
-                                    <span id="dipText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Support Holds -> Dip Negatives -> Dips -> Ring Dips -> Rings Turned-Out Dips. <br /><br />Base Energy: 2<br />Base Strength: .05<br />Base Endurance: .1<br />Base Agility: .02<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="dipText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="dipProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -114,7 +162,9 @@
                                 </div>
                                 <div id="bwPullups" class="d-none">
                                     <br />
-                                    <span id="pullupText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Arch Hangs -> Pullup Negatives -> Pullups -> Assisted One-Arm Pullups -> One-Arm Pullups. <br /><br />Base Energy: 2<br />Base Strength: .1<br />Base Endurance: .05<br />Base Agility: .02<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="pullupText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="pullupProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -127,7 +177,9 @@
                                 </div>
                                 <div id="bwSquats" class="d-none">
                                     <br />
-                                    <span id="bwSquatText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Assisted Squat -> Squat -> Split Squat -> Bulgarian Split Squat -> Pistol Squat. <br /><br />Base Energy: 4<br />Base Strength: .15<br />Base Endurance: .05<br />Base Agility: .15<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="bwSquatText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwSquatProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -140,7 +192,9 @@
                                 </div>
                                 <div id="bwRdl" class="d-none">
                                     <br />
-                                    <span id="bwRdlText"></span>
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Romanian Deadlifts (No Weight) -> Single-Legged Deadlifts -> Banded Nordic Curl Negatives -> Banded Nordic Curls -> Nordic Curls. <br /><br />Base Energy: 4<br />Base Strength: .15<br />Base Endurance: .05<br />Base Agility: .15<br /><br />Energy and stat growth is doubled every progression."
+                                        data-html="true" onclick="toggleAlert(this);"><span id="bwRdlText"></span></a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="bwRdlProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -170,9 +224,17 @@
                                 </div>
                                 <br />
                                 <p>
-                                    Views: <span id="views"></span><br />
-                                    Followers: <span id="followers"></span><br />
-                                    Follower Growth: <span id="followerGrowth"></span><br />
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="Each view generates money." data-html="true"
+                                        onclick="toggleAlert(this);">Views:</a> <span id="views"></span><br />
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="Each follower generates views." data-html="true"
+                                        onclick="toggleAlert(this);">Followers:</a> <span
+                                        class="followers"></span><br />
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="The amount of followers gained per bar fill." data-html="true"
+                                        onclick="toggleAlert(this);">Follower Growth:</a> <span
+                                        id="followerGrowth"></span><br />
                                 </p>
                                 <div id="influencerWrap" class="d-none">
                                     Recruit Influencers
@@ -182,7 +244,10 @@
                                     </div>
                                     <br />
                                     <p>
-                                        Influencers: <span id="influencers"></span><br />
+                                        <a href="#" data-toggle="tooltip" class="text-info"
+                                            title="Each influencer generates follower growth." data-html="true"
+                                            onclick="toggleAlert(this);">Influencers:</a> <span
+                                            id="influencers"></span><br />
                                     </p>
                                 </div>
                             </div>
@@ -201,8 +266,13 @@
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                 </div><br />
                                 <p>
-                                    Posts Read: <span id="posts"></span><br />
-                                    Post Growth: <span id="postGrowth"></span><br />
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="Each post generates research." data-html="true"
+                                        onclick="toggleAlert(this);">Posts Read:</a> <span id="posts"></span><br />
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="The number of posts added per bar fill." data-html="true"
+                                        onclick="toggleAlert(this);">Posts Growth:</a> <span
+                                        id="postGrowth"></span><br />
                                 </p>
                                 <div id="botWrap" class="d-none">
                                     Code Bots
@@ -211,7 +281,9 @@
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
                                     </div><br />
                                     <p>
-                                        Bots: <span id="bots"></span><br />
+                                        <a href="#" data-toggle="tooltip" class="text-info"
+                                            title="Each bot increases post growth." data-html="true"
+                                            onclick="toggleAlert(this);">Bots:</a> <span id="bots"></span><br />
                                     </p>
                                 </div>
                             </div>
@@ -261,6 +333,7 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/hacktimer.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
