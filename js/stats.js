@@ -1,12 +1,11 @@
 var stats = {
     energy: {
         current: 10,
-        increase: 0.1,
-        speed: 5000,
+        increase: 0.01,
+        speed: 500,
         speedModifier: 1,
         max: 10,
         originalMax: 10,
-        energyAdjust: 10,
         coffee: {
             total: 0,
             current: 0,

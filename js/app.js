@@ -311,7 +311,7 @@ function reset() {
 
 
 var refreshId = setInterval(function () {
-    var energyPerSecond = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) / (stats.energy.energyAdjust / 2))
+    var energyPerSecond = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) * 2);
     var energyCurrent = stats.energy.current < 1000000 ? stats.energy.current.toFixed(2) : math.format(stats.energy.current, 3);
     var energyMax = stats.energy.max < 1000000 ? stats.energy.max.toFixed(2) : math.format(stats.energy.max, 3);
     $("#energyProgress").css("width", ((stats.energy.current / stats.energy.max) * 100) + "%");
@@ -525,7 +525,7 @@ var saveTimerId = setInterval(function () {
 function setupEnergyTimer() {
     energyTimerId = setInterval(function () {
         if (stats.energy.current < stats.energy.max) {
-            var increase = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) / stats.energy.energyAdjust);
+            var increase = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)));
             if (math.evaluate(stats.energy.current + increase) > stats.energy.max) {
                 stats.energy.current = stats.energy.max;
             }
@@ -546,7 +546,7 @@ function setupEnergyTimer() {
         else {
             checks.isResting = false;
         }
-    }, stats.energy.speed / stats.energy.energyAdjust)
+    }, stats.energy.speed)
 }
 
 function setupPushupTimer() {
