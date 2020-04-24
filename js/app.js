@@ -47,6 +47,8 @@ Future
         overall tick speed for that run
         speed stat that grows and adds to all tick speeds
 
+Challenges could be per prestige 2
+
 Optional/Maybe
 
     good/evil path for follower upgrades
@@ -397,7 +399,7 @@ var refreshId = setInterval(function () {
 
     var influencersPerSecond = math.evaluate(job.influencerGrowth / ((job.recruitInfluencers.max / job.recruitInfluencers.increase) / (job.recruitInfluencers.speed / 1000)));
     job.influencers < 1000000 ? $("#influencers").html(job.influencers.toFixed(2)) : $("#influencers").html(math.format(job.influencers, 3));
-    influencersPerSecond < 1000000 ? $("#influencers").append(" <span class='text-success'>(" + influencersPerSecond.toFixed(3) + "/s)</span>") : $("#influencers").append(" <span class='text-success'>(" + math.format(influencersPerSecond, 3) + "/s)</span>");
+    influencersPerSecond < 1000000 ? $("#influencers").append(" <span class='text-success'>(" + influencersPerSecond.toFixed(4) + "/s)</span>") : $("#influencers").append(" <span class='text-success'>(" + math.format(influencersPerSecond, 3) + "/s)</span>");
 
     var postsPerSecond = math.evaluate(postFormula() / ((research.browseReddit.max / research.browseReddit.increase) / (research.browseReddit.speed / 1000)));
     research.posts < 1000000 ? $("#posts").html(research.posts.toFixed(2)) : $("#posts").html(math.format(research.posts, 3));
@@ -415,7 +417,7 @@ var refreshId = setInterval(function () {
 
     var botsPerSecond = math.evaluate(research.botGrowth / ((research.codeBots.max / research.codeBots.increase) / (research.codeBots.speed / 1000)));
     research.bots < 1000000 ? $("#bots").html(research.bots.toFixed(2)) : $("#bots").html(math.format(research.bots, 3));
-    botsPerSecond < 1000000 ? $("#bots").append(" <span class='text-success'>(" + botsPerSecond.toFixed(3) + "/s)</span>") : $("#bots").append(" <span class='text-success'>(" + math.format(botsPerSecond, 3) + "/s)</span>");
+    botsPerSecond < 1000000 ? $("#bots").append(" <span class='text-success'>(" + botsPerSecond.toFixed(4) + "/s)</span>") : $("#bots").append(" <span class='text-success'>(" + math.format(botsPerSecond, 3) + "/s)</span>");
 
     for (var i = 0; i < job.upgrades.length; i++) {
         if (job.followers > (job.upgrades[i].cost / 4) && !job.upgrades[i].isPurchased) {
