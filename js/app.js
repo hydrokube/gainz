@@ -541,7 +541,7 @@ function setupEnergyTimer() {
                 else {
                     stats.energy.current += increase;
                 }
-            }
+            } 
         }
         else {
             checks.isResting = false;
