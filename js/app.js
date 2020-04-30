@@ -36,6 +36,7 @@ Patch Notes
 -Added street workout gangs
 -Added confidence points
 -Added importing/exporting saves
+-Added custom art in the left nav
 -Fixed a bug for starting/stopping exercises when you purchase upgrades out of order
 -Updated save paths for production, beta, and local testing to avoid corrupting any production saves for beta testers
 
@@ -398,9 +399,9 @@ function load(button, prestigeCheck, firstLoad) {
         }, 5000);
     }
     if (firstLoad) {
-        // saveTimerId = setInterval(function () {
-        //     save();
-        // }, 30000);
+        saveTimerId = setInterval(function () {
+            save();
+        }, 30000);
     }
 }
 
