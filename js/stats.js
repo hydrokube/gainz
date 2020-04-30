@@ -26,8 +26,18 @@ var stats = {
     intelligenceBoost: .001,
     allStatBoost: .000125,
     money: 0,
+    prestigePoints: 0,
+    bodyweightPoints: 0,
+    liftingPoints: 0,
+    yogaPoints: 0,
+    cardioPoints: 0,
+    totalPrestige: 0,
+    totalBwPrestige: 0,
+    totalLiftingPrestige: 0,
+    totalYogaPrestige: 0,
+    totalCardioPrestige: 0,
     saveTime: 0,
-    gameVersion: .1,
+    gameVersion: .2,
 };
 var bodyweight = {
     pushups: {
@@ -404,7 +414,120 @@ var bodyweight = {
             desc: "<strong>Cost: $25000</strong> - Double energy expenditure of bodyweight leg exercises, but double stat gains as well.",
             cost: 25000,
         }
-    ]
+    ],
+    gang: {
+        on: 0,
+        name: "Your Gang",
+        strength: 0,
+        strengthAmount: .1,
+        members: 0,
+        memberAmount: .01,
+        playerFightPowerTemp: 0,
+        rivalFightPowerTemp: 0,
+        rivalId: -1,
+        rivals: [
+            {
+                name: "Girl Scouts",
+                desc: "They need to earn their 'gainz' badge",
+                strength: 20,
+                strengthAmount: .001,
+                members: 5,
+                memberAmount: .0001,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Lumbering Llamas",
+                desc: "Slow and steady, time under tension",
+                strength: 40,
+                strengthAmount: .002,
+                members: 10,
+                memberAmount: .0002,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Bored Gamers",
+                desc: "They've played it all, and now they're playing a real life incremental game",
+                strength: 80,
+                strengthAmount: .003,
+                members: 20,
+                memberAmount: .0003,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Bob Squad",
+                desc: "Only Bobs need apply",
+                strength: 160,
+                strengthAmount: .004,
+                members: 40,
+                memberAmount: .0004,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Screaming Cats",
+                desc: "Every rep is loud and obnoxious",
+                strength: 320,
+                strengthAmount: .005,
+                members: 80,
+                memberAmount: .0005,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Bootcamp Brides",
+                desc: "They got in shape for their wedding and they're ready to prove it",
+                strength: 640,
+                strengthAmount: .006,
+                members: 160,
+                memberAmount: .0006,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Obvious Onions",
+                desc: "Prepare to cry",
+                strength: 1280,
+                strengthAmount: .007,
+                members: 320,
+                memberAmount: .0007,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Skull Busters",
+                desc: "You know they're serious when the name is serious",
+                strength: 2560,
+                strengthAmount: .008,
+                members: 640,
+                memberAmount: .0008,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Shriveled Prunes",
+                desc: "These grannies are deceptively agile",
+                strength: 5120,
+                strengthAmount: .009,
+                members: 1280,
+                memberAmount: .0009,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+            {
+                name: "Dream Eaters",
+                desc: "They're so good that they make you question your life choices",
+                strength: 10240,
+                strengthAmount: .01,
+                members: 2560,
+                memberAmount: .001,
+                isDefeated: false,
+                isAbsorbed: false,
+            },
+        ],
+    },
 };
 
 var upgrades = [
@@ -745,7 +868,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Ads Within Ads",
-            desc: "<strong>Cost: 1000 followers</strong> - Inception. Doubles view growth.",
+            desc: "<strong>Cost: 1000 followers</strong> - Adception. Doubles view growth.",
             cost: 1000,
         },
         {
@@ -777,10 +900,10 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Ads Within Ads Within Ads",
-            desc: "<strong>Cost: 5000 followers</strong> - Double inception. Doubles money growth.",
+            desc: "<strong>Cost: 5000 followers</strong> - Double Adception. Doubles money growth.",
             cost: 5000,
         },
-    ]
+    ],
 };
 
 var research = {
@@ -953,8 +1076,8 @@ var research = {
             id: 17,
             isActive: false,
             isPurchased: false,
-            name: "Deload",
-            desc: "<strong>Cost: 25000 research</strong> - Unlock deloading (prestige).",
+            name: "Opening a New Gym",
+            desc: "<strong>Cost: 25000 research</strong> - Unlock Open Gym (prestige).",
             cost: 25000,
         },
         {
@@ -997,21 +1120,1191 @@ var research = {
             desc: "<strong>Cost: 250 research</strong> - Eat big to get big. Doubles energy recovery.",
             cost: 250,
         },
-    ]
+    ],
+};
+
+var gym = {
+    employees: {
+        trainers: {
+            current: 0.00,
+            increase: 1.00,
+            cost: 1.00,
+            costMultiplier: 2.00,
+        },
+        coordinators: {
+            current: 0,
+            increase: 1,
+            cost: 1,
+            costMultiplier: 2,
+        },
+        nutritionists: {
+            current: 0,
+            boost: .01,
+            cost: 1,
+            costMultiplier: 2,
+        },
+        sales: {
+            current: 0,
+            boost: .01,
+            cost: 1,
+            costMultiplier: 2,
+        },
+    },
+    trainMembers: {
+        total: 0,
+        current: 0,
+        increase: 0,
+        speed: 1000,
+        speedModifier: 1,
+        max: 50,
+        trainAmount: .1,
+        barIncrease: 1.00,
+    },
+    createClasses: {
+        total: 0,
+        current: 0,
+        increase: 0,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        classAmount: 1,
+        barIncrease: 1.00,
+    },
+    runCampaigns: {
+        total: 0,
+        current: 0,
+        increase: 0,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        barIncrease: 1.00,
+        intelligence: .05,
+    },
+    designAds: {
+        total: 0,
+        current: 0,
+        increase: 0,
+        speed: 1000,
+        speedModifier: 1,
+        max: 200,
+        barIncrease: 1.00,
+        intelligence: .1,
+    },
+    money: {
+        flatIncrease: 0.00,
+        growth: 0.0001,
+        classMultiplier: 0.001
+    },
+    classes: 0,
+    members: {
+        current: 0,
+        capacity: 50,
+        growth: .01,
+        tiers: [
+            {
+                id: 0,
+                name: "Subpar",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 1,
+                name: "Untrained",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 2,
+                name: "Novice",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 3,
+                name: "Intermediate",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 4,
+                name: "Proficient",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 5,
+                name: "Advanced",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 6,
+                name: "Exceptional",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 7,
+                name: "Elite",
+                current: 0,
+                multiplier: .10,
+            },
+            {
+                id: 8,
+                name: "World Class",
+                current: 0,
+                multiplier: .10,
+            },
+        ]
+    },
+    advertising: {
+        campaigns: 0,
+        campaignGrowth: 1,
+        ads: 0,
+        adGrowth: .1,
+        adMulti: .00001,
+        influence: 0,
+        influenceGrowth: .00001,
+        employees: {
+            coordinators: {
+                current: 0.00,
+                increase: 1.00,
+                cost: 1.00,
+                costMultiplier: 2.00,
+            },
+            designers: {
+                current: 0,
+                increase: 1,
+                cost: 1,
+                costMultiplier: 2,
+            },
+            managers: {
+                current: 0,
+                boost: .01,
+                cost: 1,
+                costMultiplier: 2,
+            },
+        }
+    },
+    upgrades: [
+        {
+            id: 0,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy Stronger Coffee",
+            desc: "<strong>Cost: $5</strong> - Increase energy with coffee",
+            cost: 5
+        },
+        {
+            id: 1,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy Creatine",
+            desc: "<strong>Cost: $10</strong> - Creatine will double your energy recovery.",
+            cost: 10
+        },
+        {
+            id: 2,
+            isActive: false,
+            isPurchased: false,
+            name: "Protein Shakes",
+            desc: "<strong>Cost: $50</strong> - Protein shakes let you build strength faster. Why get your protein from chicken when you can drink it. Makes strength more effective.",
+            cost: 50
+        },
+        {
+            id: 3,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy Endurance Supplements",
+            desc: "<strong>Cost: $100</strong> - Supplements should give my endurance more of an impact.",
+            cost: 100
+        },
+        {
+            id: 4,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy Agility Supplements",
+            desc: "<strong>Cost: $250</strong> - Supplements should give my agility more of an impact.",
+            cost: 250
+        },
+        {
+            id: 5,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy Intelligence Supplements",
+            desc: "<strong>Cost: $500</strong> - Supplements should give my intelligence more of an impact.",
+            cost: 500
+        },
+        {
+            id: 6,
+            isActive: false,
+            isPurchased: false,
+            name: "Buy L-Citrulline in Bulk",
+            desc: "<strong>Cost: $2500</strong> - A bit more expensive, but doubles energy recovery again.",
+            cost: 2500
+        },
+        {
+            id: 7,
+            isActive: false,
+            isPurchased: false,
+            name: "Experimental Supplements for Strength",
+            desc: "<strong>Cost: $5000</strong> - Very expensive, but doubles the effectiveness of strength.",
+            cost: 5000
+        },
+        {
+            id: 8,
+            isActive: false,
+            isPurchased: false,
+            name: "Experimental Supplements for Agility",
+            desc: "<strong>Cost: $10000</strong> - Very expensive, but doubles the effectiveness of agility.",
+            cost: 10000
+        },
+        {
+            id: 9,
+            isActive: false,
+            isPurchased: false,
+            name: "Experimental Supplements for Endurance",
+            desc: "<strong>Cost: $25000</strong> - Very expensive, but doubles the effectiveness of endurance.",
+            cost: 25000
+        },
+        {
+            id: 10,
+            isActive: false,
+            isPurchased: false,
+            name: "Experimental Supplements for Intelligence",
+            desc: "<strong>Cost: $50000</strong> - Very expensive, but doubles the effectiveness of intelligence.",
+            cost: 50000
+        },
+        {
+            id: 11,
+            isActive: false,
+            isPurchased: false,
+            name: "Purchase Bulk Supplements to Sell",
+            desc: "<strong>Cost: $1000</strong> - Improves gym and research based on all stats.",
+            cost: 1000
+        },
+        {
+            id: 12,
+            isActive: false,
+            isPurchased: false,
+            name: "Many Cups of Coffee",
+            desc: "<strong>Cost: $1</strong> - Why stop at one? Doubles the time coffee lasts.",
+            cost: 1
+        },
+    ],
+    adUpgrades: [
+        {
+            id: 0,
+            isActive: false,
+            isPurchased: false,
+            name: "Effective Marketing",
+            desc: "<strong>Cost: 1 influence</strong> - Market your gym more effectively to double money gain.",
+            cost: 1,
+        },
+        {
+            id: 1,
+            isActive: false,
+            isPurchased: false,
+            name: "Sleeping at the Gym",
+            desc: "<strong>Cost: 2.5 influence</strong> - It's time to get serious about sleep. Double your energy recovery.",
+            cost: 2.5,
+        },
+        {
+            id: 2,
+            isActive: false,
+            isPurchased: false,
+            name: "Work Smarter, Not Harder",
+            desc: "<strong>Cost: 5 influence</strong> - Efficiency is key. Double your influence generation.",
+            cost: 5,
+        },
+        {
+            id: 3,
+            isActive: false,
+            isPurchased: false,
+            name: "Study the Opposition",
+            desc: "<strong>Cost: 5 influence</strong> - How are they monetizing their gyms? Double your money growth.",
+            cost: 5,
+        },
+        {
+            id: 4,
+            isActive: false,
+            isPurchased: false,
+            name: "Setup Hypertrophy Classes",
+            desc: "<strong>Cost: 10 influence</strong> - How to build muscle. Doubles the effectiveness of strength.",
+            cost: 10,
+        },
+        {
+            id: 5,
+            isActive: false,
+            isPurchased: false,
+            name: "Purge Negative Reviews",
+            desc: "<strong>Cost: 10 influence</strong> - No bad comments allowed. Doubles influence generation.",
+            cost: 10,
+        },
+        {
+            id: 6,
+            isActive: false,
+            isPurchased: false,
+            name: "Setup High Intensity Interval Training Classes",
+            desc: "<strong>Cost: 25 influence</strong> - Get that heart rate up! Doubles the effectiveness of agility.",
+            cost: 25,
+        },
+        {
+            id: 7,
+            isActive: false,
+            isPurchased: false,
+            name: "Teach High Reps",
+            desc: "<strong>Cost: 50 influence</strong> - How to build endurance. Doubles the effectiveness of endurance.",
+            cost: 50,
+        },
+        {
+            id: 8,
+            isActive: false,
+            isPurchased: false,
+            name: "Advanced Advertising Techniques",
+            desc: "<strong>Cost: 100 influence</strong> - We are one with the economy. Doubles the effectivess of intelligence.",
+            cost: 100,
+        },
+        {
+            id: 9,
+            isActive: false,
+            isPurchased: false,
+            name: "Host Classes in Different Buildings",
+            desc: "<strong>Cost: 250 influence</strong> - Doubles gym capacity.",
+            cost: 250,
+        },
+        {
+            id: 10,
+            isActive: false,
+            isPurchased: false,
+            name: "Economic Fundamentals",
+            desc: "<strong>Cost: 1000 influence</strong> - Double the intellect growth of advertising.",
+            cost: 1000,
+        },
+        {
+            id: 11,
+            isActive: false,
+            isPurchased: false,
+            name: "More Effective Designers",
+            desc: "<strong>Cost: 2500 influence</strong> - Design is not subjective at all. Doubles the effect of ads on campaign growth.",
+            cost: 2500,
+        },
+        {
+            id: 12,
+            isActive: false,
+            isPurchased: false,
+            name: "Efficient Coding",
+            desc: "<strong>Cost: 5000 influence</strong> - Ads are doubled per bar fill.",
+            cost: 5000,
+        },
+        {
+            id: 13,
+            isActive: false,
+            isPurchased: false,
+            name: "Manager Training",
+            desc: "<strong>Cost: 10000 influence</strong> - Managers are twice as effective.",
+            cost: 10000,
+        },
+        {
+            id: 14,
+            isActive: false,
+            isPurchased: false,
+            name: "Opening a New Gym",
+            desc: "<strong>Cost: 25000 influence</strong> - Unlock Open Gym (prestige).",
+            cost: 25000,
+        },
+        {
+            id: 15,
+            isActive: false,
+            isPurchased: false,
+            name: "More Coordination",
+            desc: "<strong>Cost: 25 influence</strong> - Ad Coordinators are twice as effective.",
+            cost: 25,
+        },
+        {
+            id: 16,
+            isActive: false,
+            isPurchased: false,
+            name: "Teach Technique",
+            desc: "<strong>Cost: 2.5 influence</strong> - Teach technique. Doubles the stat modifier that applies to gym and advertising (all stats).",
+            cost: 2.5,
+        },
+        {
+            id: 17,
+            isActive: false,
+            isPurchased: false,
+            name: "Certifications",
+            desc: "<strong>Cost: 500 influence</strong> - Go legit. Doubles members trained per trainer.",
+            cost: 500,
+        },
+        {
+            id: 18,
+            isActive: false,
+            isPurchased: false,
+            name: "Better Classes",
+            desc: "<strong>Cost: 2500 influence</strong> - Charge more for classes. Doubles the value of classes on money growth.",
+            cost: 2500,
+        },
+        {
+            id: 19,
+            isActive: false,
+            isPurchased: false,
+            name: "Teach Bulking",
+            desc: "<strong>Cost: 250 influence</strong> - Eat big to get big. Doubles energy recovery.",
+            cost: 250,
+        },
+    ],
+    gymUpgrades: [
+        {
+            id: 0,
+            isActive: false,
+            isPurchased: false,
+            name: "Rearrange Equipment",
+            desc: "<strong>Cost: $1</strong> - Basic space management. Double gym capacity",
+            cost: 1,
+        },
+        {
+            id: 1,
+            isActive: false,
+            isPurchased: false,
+            name: "Slimmer Equipment",
+            desc: "<strong>Cost: $250</strong> - Basic space management. Double gym capacity",
+            cost: 250,
+        },
+        {
+            id: 2,
+            isActive: false,
+            isPurchased: false,
+            name: "Remove Walls",
+            desc: "<strong>Cost: $1000</strong> - Let's make even better use of the space we have - no more walls! Double gym capacity",
+            cost: 1000,
+        },
+        {
+            id: 3,
+            isActive: false,
+            isPurchased: false,
+            name: "Rent More Space",
+            desc: "<strong>Cost: $5000</strong> - Should have done this long ago. Double gym capacity",
+            cost: 5000,
+        },
+        {
+            id: 4,
+            isActive: false,
+            isPurchased: false,
+            name: "Second Story",
+            desc: "<strong>Cost: $25000</strong> - Adding a new level will make the gym much bigger. Double gym capacity",
+            cost: 25000,
+        },
+        {
+            id: 5,
+            isActive: false,
+            isPurchased: false,
+            name: "Open Floor Plan",
+            desc: "<strong>Cost: $100</strong> - Everyone must see each other at all times. Double gym capacity",
+            cost: 100,
+        },
+        {
+            id: 6,
+            isActive: false,
+            isPurchased: false,
+            name: "Cleaning Stations",
+            desc: "<strong>Cost: $2.5</strong> - A must have for any filthy gym. Double the effectivness of nutritionists.",
+            cost: 2.5,
+        },
+        {
+            id: 7,
+            isActive: false,
+            isPurchased: false,
+            name: "Tours",
+            desc: "<strong>Cost: $5</strong> - Give tours around the facility. Doubles the effectiveness of sales reps.",
+            cost: 5,
+        },
+        {
+            id: 8,
+            isActive: false,
+            isPurchased: false,
+            name: "Train the Trainer",
+            desc: "<strong>Cost: $10</strong> - They must get better!. Doubles the effectiveness of trainers.",
+            cost: 10,
+        },
+        {
+            id: 9,
+            isActive: false,
+            isPurchased: false,
+            name: "Cleaner Facilities",
+            desc: "<strong>Cost: $25</strong> - You can call me Mr. Clean. Doubles the stat modifier that applies to gym and advertising (all stats).",
+            cost: 25,
+        },
+        {
+            id: 10,
+            isActive: false,
+            isPurchased: false,
+            name: "Cross-Pollinating",
+            desc: "<strong>Cost: $50</strong> - Trainers will train the advertising folks. Doubles the intellect gain from advertising.",
+            cost: 50,
+        },
+        {
+            id: 11,
+            isActive: false,
+            isPurchased: false,
+            name: "Fundamentals",
+            desc: "<strong>Cost: $7500</strong> - Teach everyone the basics. Doubles the stat modifier that applies to gym and advertising (all stats).",
+            cost: 7500,
+        },
+        {
+            id: 12,
+            isActive: false,
+            isPurchased: false,
+            name: "Socialize Employees",
+            desc: "<strong>Cost: $25000</strong> - Make them all talk to each other. Doubles the intellect gain from advertising.",
+            cost: 25000,
+        },
+        {
+            id: 13,
+            isActive: false,
+            isPurchased: false,
+            name: "Virtual Tours",
+            desc: "<strong>Cost: $100</strong> - Sales reps can provide virtual tours. Doubles the effectiveness of sales reps.",
+            cost: 100,
+        },
+        {
+            id: 14,
+            isActive: false,
+            isPurchased: false,
+            name: "Eating Plans",
+            desc: "<strong>Cost: $250</strong> - Nutritionists create custom eating plans for client. Doubles the effectiveness of nutritionists.",
+            cost: 250,
+        },
+        {
+            id: 15,
+            isActive: false,
+            isPurchased: false,
+            name: "More Classroom Space",
+            desc: "<strong>Cost: $500</strong> - Classes can fit more people, so more money. Doubles the effect of each class on money growth.",
+            cost: 500,
+        },
+        {
+            id: 16,
+            isActive: false,
+            isPurchased: false,
+            name: "Tiered Classes",
+            desc: "<strong>Cost: $1000</strong> - Make members work to get to the next level. Doubles the amount of classes per program coordinator.",
+            cost: 1000,
+        },
+        {
+            id: 17,
+            isActive: false,
+            isPurchased: false,
+            name: "Sales Recruiting",
+            desc: "<strong>Cost: $2500</strong> - Pay to help recruit more sales reps. Halves the cost of sales reps.",
+            cost: 2500,
+        },
+        {
+            id: 18,
+            isActive: false,
+            isPurchased: false,
+            name: "Trainer Recruiting",
+            desc: "<strong>Cost: $5000</strong> - Pay to help recruit more trainers. Halves the cost of trainers.",
+            cost: 5000,
+        },
+        {
+            id: 19,
+            isActive: false,
+            isPurchased: false,
+            name: "Program Coordinator Recruiting",
+            desc: "<strong>Cost: $15000</strong> - Pay to help recruit more program coordinators. Halves the cost of program coordinators.",
+            cost: 15000,
+        },
+        {
+            id: 20,
+            isActive: false,
+            isPurchased: false,
+            name: "Nutritionist Recruiting",
+            desc: "<strong>Cost: $10000</strong> - Pay to help recruit more nutritionists. Halves the cost of nutritionists.",
+            cost: 10000,
+        },
+        {
+            id: 21,
+            isActive: false,
+            isPurchased: false,
+            name: "Post Fliers Around Town",
+            desc: "<strong>Cost: $50</strong> - Post some fliers around town. Doubles money growth.",
+            cost: 50,
+        },
+        {
+            id: 22,
+            isActive: false,
+            isPurchased: false,
+            name: "Rent Apartments Upstairs in Exchange for Maintenance",
+            desc: "<strong>Cost: $10</strong> - Doubles gym capacity.",
+            cost: 10,
+        },
+        {
+            id: 23,
+            isActive: false,
+            isPurchased: false,
+            name: "Pay Members to Advertise at Other Gyms",
+            desc: "<strong>Cost: $100000</strong> - Sneaky sneaky! Doubles influence generation.",
+            cost: 100000,
+        },
+        {
+            id: 24,
+            isActive: false,
+            isPurchased: false,
+            name: "Hiring Tests",
+            desc: "<strong>Cost: $10000</strong> - Let's actually vet out some of these people before hiring. Doubles the intellect gain from advertising.",
+            cost: 10000,
+        },
+    ],
+    bw: {
+        upgrades: [
+            {
+                id: 0,
+                isActive: false,
+                isPurchased: false,
+                name: "Homemade Pushup Handles",
+                desc: "<strong>Cost: $2.5</strong> - Pushup handles should double my protege's pushup speed. That's how physics work.",
+                cost: 2.5,
+            },
+            {
+                id: 1,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay Coach to Teach You",
+                desc: "<strong>Cost: $25</strong> - My coach wants to show me the correct way to do pushups and rows. Halves the energy expenditure of pushups and rows.",
+                cost: 25,
+            },
+            {
+                id: 2,
+                isActive: false,
+                isPurchased: false,
+                name: "Buy Wooden Gymnastic Rings",
+                desc: "<strong>Cost: $50</strong> - These nice, wooden made gymnastic rings should let me do rows at double speed.",
+                cost: 50,
+            },
+            {
+                id: 3,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Pullup Training",
+                desc: "<strong>Cost: $250</strong> - My coach keeps wanting more money. Doubles pullup speed.",
+                cost: 250,
+            },
+            {
+                id: 4,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Dip Training",
+                desc: "<strong>Cost: $250</strong> - It's still worth it to double dip. Doubles dip speed.",
+                cost: 250,
+            },
+            {
+                id: 5,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Pullup Form Training",
+                desc: "<strong>Cost: $500</strong> - I need to reduce the leg swing and coach is there for me. Halves the energy expenditure of pullups.",
+                cost: 500,
+            },
+            {
+                id: 6,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Dip Form Training",
+                desc: "<strong>Cost: $500</strong> - My coach has big plans for keeping tighter in dips. Halves the energy expenditure of dips.",
+                cost: 500,
+            },
+            {
+                id: 7,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Squat Training",
+                desc: "<strong>Cost: $1000</strong> - Coach is really putting me to work. Doubles Squat Speed.",
+                cost: 1000,
+            },
+            {
+                id: 8,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay Romanian Deadlift Training",
+                desc: "<strong>Cost: $1000</strong> - I better be good enough to take over this gym by the end of it. Doubles Romanian Deadlift Speed.",
+                cost: 1000,
+            },
+            {
+                id: 9,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Leg Hypertrophy Guide",
+                desc: "<strong>Cost: $2500</strong> - Seems reasonable, coach is reselling it. Halves the energy expenditure of bodyweight leg exercises.",
+                cost: 2500,
+            },
+            {
+                id: 10,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Pushups and Rows",
+                desc: "<strong>Cost: $5000</strong> - Best coach I've ever had, hands down. Double energy expenditure of pushups and rows, but double stat gains as well.",
+                cost: 5000,
+            },
+            {
+                id: 11,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Dips and Pullups",
+                desc: "<strong>Cost: $10000</strong> - Also the only coach I've worked with so far. Double energy expenditure of dips and pullups, but double stat gains as well.",
+                cost: 10000,
+            },
+            {
+                id: 12,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Bodyweight Legs Exercises",
+                desc: "<strong>Cost: $25000</strong> - I'm nearly ready to take over this gym. Double energy expenditure of bodyweight leg exercises, but double stat gains as well.",
+                cost: 25000,
+            }
+        ],
+        gymUpgrades: [
+
+        ],
+        adUpgrades: [
+
+        ]
+    },
+    lifting: {
+        upgrades: [
+
+        ],
+        gymUpgrades: [
+
+        ],
+        adUpgrades: [
+        ]
+    },
+    yoga: {
+        upgrades: [
+
+        ],
+        gymUpgrades: [
+
+        ],
+        adUpgrades: [
+        ]
+    },
+    cardio: {
+        upgrades: [
+
+        ],
+        gymUpgrades: [
+
+        ],
+        adUpgrades: [
+        ]
+    },
+}
+
+var prestige = {
+    current: 0,
+    total: 0,
+    upgrades: [
+        {
+            id: 0,
+            isActive: false,
+            isPurchased: false,
+            name: "Loyal Employees",
+            desc: "<strong>Cost: 2 Global Point</strong> - Always start with one of each gym employee and +$10.",
+            cost: 2
+        },
+        {
+            id: 1,
+            isActive: false,
+            isPurchased: false,
+            name: "Still Insta-Famous",
+            desc: "<strong>Cost: 1 Global Point</strong> - Always start with a flat $.05/s. This money is not affected by any doubling upgrades",
+            cost: 1
+        },
+        {
+            id: 2,
+            isActive: false,
+            isPurchased: false,
+            name: "Meditation",
+            desc: "<strong>Cost: 3 Global Point</strong> - Double energy recovery and max energy",
+            cost: 3
+        },
+        {
+            id: 3,
+            isActive: false,
+            isPurchased: false,
+            name: "More Loyalty",
+            desc: "<strong>Cost: 2 Global Point</strong> - Is this deserved? Always start with one of each advertising employee and +$10.",
+            cost: 2
+        },
+        {
+            id: 4,
+            isActive: false,
+            isPurchased: false,
+            name: "Bigger Starting Locations",
+            desc: "<strong>Cost: 3 Global Point</strong> - Doubles starting gym capacity.",
+            cost: 3
+        },
+        {
+            id: 5,
+            isActive: false,
+            isPurchased: false,
+            name: "Faster Training",
+            desc: "<strong>Cost: 4 Global Point</strong> - Doubles trainer effectiveness.",
+            cost: 4
+        },
+        {
+            id: 6,
+            isActive: false,
+            isPurchased: false,
+            name: "Faster Start",
+            desc: "<strong>Cost: 4 Global Point</strong> - Strength, endurance, agility, and intelligence all start at 10.",
+            cost: 4
+        },
+        {
+            id: 7,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Sales Reps",
+            desc: "<strong>Cost: 5 Global Point</strong> - Buy sales reps as they become available.",
+            cost: 5
+        },
+        {
+            id: 8,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Trainers",
+            desc: "<strong>Cost: 6 Global Point</strong> - Buy trainers as they become available.",
+            cost: 6
+        },
+        {
+            id: 9,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Ad Coordinators",
+            desc: "<strong>Cost: 6 Global Point</strong> - Buy ad coordinators as they become available.",
+            cost: 6
+        },
+        {
+            id: 10,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Program Coordinators",
+            desc: "<strong>Cost: 8 Global Point</strong> - Buy ad coordinators as they become available.",
+            cost: 8
+        },
+        {
+            id: 11,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Ad Designers",
+            desc: "<strong>Cost: 8 Global Point</strong> - Buy ad designers as they become available.",
+            cost: 8
+        },
+        {
+            id: 12,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Nutritionists",
+            desc: "<strong>Cost: 10 Global Point</strong> - Buy nutritionists as they become available.",
+            cost: 10
+        },
+        {
+            id: 13,
+            isActive: false,
+            isPurchased: false,
+            name: "Autobuy Marketing Managers",
+            desc: "<strong>Cost: 10 Global Point</strong> - Buy marketing managers as they become available.",
+            cost: 10
+        },
+        {
+            id: 14,
+            isActive: false,
+            isPurchased: false,
+            name: "Powerful",
+            desc: "<strong>Cost: 20 Global Point</strong> - Doubles strength modifier.",
+            cost: 20
+        },
+        {
+            id: 15,
+            isActive: false,
+            isPurchased: false,
+            name: "Long-Lasting",
+            desc: "<strong>Cost: 20 Global Point</strong> - Doubles endurance modifier.",
+            cost: 20
+        },
+        {
+            id: 16,
+            isActive: false,
+            isPurchased: false,
+            name: "Speedy",
+            desc: "<strong>Cost: 20 Global Point</strong> - Doubles agility modifier.",
+            cost: 20
+        },
+        {
+            id: 17,
+            isActive: false,
+            isPurchased: false,
+            name: "Braniac",
+            desc: "<strong>Cost: 20 Global Point</strong> - Doubles intelligence modifier.",
+            cost: 20
+        },
+        {
+            id: 18,
+            isActive: false,
+            isPurchased: false,
+            name: "Good Business",
+            desc: "<strong>Cost: 20 Global Point</strong> - Doubles gym and advertising modifier (all stats).",
+            cost: 20
+        },
+        // {
+        //     id: 7,
+        //     isActive: false,
+        //     isPurchased: false,
+        //     name: "Unlock Lifting",
+        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock lifting gyms.",
+        //     cost: 5
+        // },
+        // {
+        //     id: 8,
+        //     isActive: false,
+        //     isPurchased: false,
+        //     name: "Unlock Yoga",
+        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock yoga gyms.",
+        //     cost: 5
+        // },
+        // {
+        //     id: 9,
+        //     isActive: false,
+        //     isPurchased: false,
+        //     name: "Unlock Cardio",
+        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock cardio gyms.",
+        //     cost: 5
+        // },
+
+    ],
+    bw: {
+        current: 0,
+        total: 0,
+        confidence: 0,
+        confidenceBoost: 0,
+        upgrades: [
+            {
+                id: 0,
+                isActive: false,
+                isPurchased: false,
+                name: "Street Workout Gangs",
+                desc: "<strong>Cost: 1 Bodyweight Point</strong> - Unlock street workout gangs.",
+                cost: 1
+            },
+            {
+                id: 1,
+                isActive: false,
+                isPurchased: false,
+                name: "Unlock Permanent Confidence",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Confidence gained from absorbing gangs provides a permanent 1% per point boost to all gym functions.",
+                cost: 2
+            },
+            {
+                id: 2,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Pushups",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Pushups use half the energy.",
+                cost: 2
+            },
+            {
+                id: 3,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Rows",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Rows use half the energy.",
+                cost: 2
+            },
+            {
+                id: 4,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Dips",
+                desc: "<strong>Cost: 3 Bodyweight Points</strong> - Dips use half the energy.",
+                cost: 3
+            },
+            {
+                id: 5,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Pullups",
+                desc: "<strong>Cost: 3 Bodyweight Points</strong> - Pullups use half the energy.",
+                cost: 3
+            },
+            {
+                id: 6,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Pushups",
+                desc: "<strong>Cost: 4 Bodyweight Points</strong> - Pushups give double stats per bar fill.",
+                cost: 4
+            },
+            {
+                id: 7,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Rows",
+                desc: "<strong>Cost: 4 Bodyweight Points</strong> - Rows give double stats per bar fill.",
+                cost: 4
+            },
+            {
+                id: 8,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Squats",
+                desc: "<strong>Cost: 5 Bodyweight Points</strong> - Squats use half the energy.",
+                cost: 5
+            },
+            {
+                id: 9,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Romanian Deadlifts",
+                desc: "<strong>Cost: 5 Bodyweight Points</strong> - Romanian Deadlifts use half the energy.",
+                cost: 5
+            },
+            {
+                id: 10,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Dips",
+                desc: "<strong>Cost: 6 Bodyweight Points</strong> - Dips give double stats per bar fill.",
+                cost: 6
+            },
+            {
+                id: 11,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Pullups",
+                desc: "<strong>Cost: 6 Bodyweight Points</strong> - Pullups give double stats per bar fill.",
+                cost: 6
+            },
+            {
+                id: 12,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Squats",
+                desc: "<strong>Cost: 8 Bodyweight Points</strong> - Squats give double stats per bar fill.",
+                cost: 8
+            },
+            {
+                id: 13,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Romanian Deadlifts",
+                desc: "<strong>Cost: 8 Bodyweight Points</strong> - Romanian Deadlifts give double stats per bar fill.",
+                cost: 8
+            },
+            {
+                id: 14,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Workout Upgrades",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy workout upgrades as they become available.",
+                cost: 10
+            },
+            {
+                id: 15,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Gym Upgrades",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy gym upgrades as they become available.",
+                cost: 10
+            },
+            {
+                id: 16,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Advertising Upgrades",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy advertising upgrades as they become available.",
+                cost: 10
+            },
+            {
+                id: 17,
+                isActive: false,
+                isPurchased: false,
+                name: "Gang Recruiting",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Double member recruitment for the gang.",
+                cost: 2
+            },
+            {
+                id: 18,
+                isActive: false,
+                isPurchased: false,
+                name: "Gang Workouts",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Double strength gain for the gang.",
+                cost: 2
+            },
+        ]
+    },
+    lifting: {
+        current: 0,
+        total: 0,
+        upgrades: [
+
+        ],
+    },
+    yoga: {
+        current: 0,
+        total: 0,
+        upgrades: [
+
+        ],
+    },
+    cardio: {
+        current: 0,
+        total: 0,
+        upgrades: [
+
+        ],
+    }
 };
 
 var checks = {
     isResting: false,
+    isPrestige: false,
+    gymType: -1,
     story1: false,
     story2: false,
     story3: false,
     story4: false,
     story5: false,
+    story6: false,
+    gymSalesBuyer: false,
+    gymSalesBuyerOn: false,
+    gymTrainerBuyer: false,
+    gymTrainerBuyerOn: false,
+    gymCoordinatorBuyer: false,
+    gymCoordinatorBuyerOn: false,
+    gymNutritionistBuyer: false,
+    gymNutritionistBuyerOn: false,
+    adCoordinatorBuyer: false,
+    adCoordinatorBuyerOn: false,
+    adDesignerBuyer: false,
+    adDesignerBuyerOn: false,
+    adManagerBuyer: false,
+    adManagerBuyerOn: false,
+    bwUpgradeBuyer: false,
+    bwUpgradeBuyerOn: false,
+    bwGymBuyer: false,
+    bwGymBuyerOn: false,
+    bwAdBuyer: false,
+    bwAdBuyerOn: false,
 };
 
+
 var baseStats = JSON.parse(JSON.stringify(stats));
-var baseBodyweight = JSON.parse(JSON.stringify(bodyweight));;
-var baseUpgrades = JSON.parse(JSON.stringify(upgrades));;
-var baseJob = JSON.parse(JSON.stringify(job));;
-var baseResearch = JSON.parse(JSON.stringify(research));;
-var baseChecks = JSON.parse(JSON.stringify(checks));;
+var baseBodyweight = JSON.parse(JSON.stringify(bodyweight));
+var baseUpgrades = JSON.parse(JSON.stringify(upgrades));
+var baseJob = JSON.parse(JSON.stringify(job));
+var baseResearch = JSON.parse(JSON.stringify(research));
+var baseChecks = JSON.parse(JSON.stringify(checks));
+var baseGym = JSON.parse(JSON.stringify(gym));
+var basePrestige = JSON.parse(JSON.stringify(prestige));
