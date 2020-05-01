@@ -247,7 +247,9 @@
                         <br />
                         <div class="row">
                             <div class="col">
-                                Make YouTube Videos About Exercise
+                                <a href="#" data-toggle="tooltip" class="text-warning"
+                                title="Each bar fill gives followers and views. Followers generate views, but you always get 1 view per bar fill."
+                                data-html="true" onclick="toggleAlert(this);">Make YouTube Videos About Exercise</a>
                                 <div class="progress">
                                     <div class="progress-bar bg-success" id="makeVideoProgress" role="progressbar"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -267,7 +269,9 @@
                                         id="followerGrowth"></span><br />
                                 </p>
                                 <div id="influencerWrap" class="d-none">
-                                    Recruit Influencers
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                    title="Each bar fill gives influencers."
+                                    data-html="true" onclick="toggleAlert(this);">Recruit Influencers</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="influencerProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -412,7 +416,9 @@
                         <div id="phase2Research" class="d-none">
                             <div class="row">
                                 <div class="col">
-                                    Running Ad Campaigns
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                    title="Each bar fill gives campaigns and intelligence. <br /><br />Base intelligence: .05"
+                                    data-html="true" onclick="toggleAlert(this);">Running Ad Campaigns</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="runCampaignProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -428,7 +434,9 @@
                                             data-html="true" onclick="toggleAlert(this);">Ad Campaign Growth: </a> <span
                                             id="campaignGrowth"></span>
                                     </p>
-                                    Designing Ads
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                    title="Each bar fill gives ads and intelligence. <br /><br />Base intelligence: .1"
+                                    data-html="true" onclick="toggleAlert(this);">Designing Ads</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="designAdProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -481,7 +489,9 @@
                         <div id="phase1Research">
                             <div class="row">
                                 <div class="col">
-                                    Browse Reddit Posts About Fitness
+                                    <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Each bar fill gives posts and intelligence. <br /><br />Base intelligence: .05"
+                                        data-html="true" onclick="toggleAlert(this);">Browse Reddit Posts About Fitness</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="browseRedditProgress"
                                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -497,7 +507,9 @@
                                             id="postGrowth"></span><br />
                                     </p>
                                     <div id="botWrap" class="d-none">
-                                        Code Bots
+                                        <a href="#" data-toggle="tooltip" class="text-warning"
+                                        title="Each bar fill gives bots and intelligence. <br /><br />Base intelligence: .1"
+                                        data-html="true" onclick="toggleAlert(this);">Code Bots</a>
                                         <div class="progress">
                                             <div class="progress-bar bg-success" id="codeBotsProgress"
                                                 role="progressbar" aria-valuenow="0" aria-valuemin="0"
@@ -647,7 +659,7 @@
                         <br />
                         <div class="row">
                             <div class="col">
-                                <h2 class="text-success"><span id="gangName"></span></h2>
+                                <h3 class="text-success"><span id="gangName"></span></h3>
                                 <p><small><a href="#" onclick="editGangName()" class="text-info">Edit Gang
                                             Name</a></small></p>
                                 <div class="form-group form-inline d-none" id="editGangNameGroup">
@@ -693,7 +705,7 @@
                                 </table>
                                 <div id="gangRivalWrap">
                                     <div id="gangFight" class="d-none">
-                                        <h2 class="text-warning">COMPETE!</h2>
+                                        <h4 class="text-warning">COMPETE!</h4>
                                         <div class="progress bg-danger progress-bar-striped progress-bar-animated">
                                             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
                                                 id="gangFightProgress" role="progressbar" aria-valuenow="0"
@@ -701,10 +713,9 @@
                                         </div>
                                         <br />
                                     </div>
-                                    <div id="gangWinLoseMessage"></div>
-                                    <h2>VS</h2>
+                                    <h4>VS</h4>
                                     <p>
-                                        <h2 class="text-danger"><span id="rivalGangName"></span></h2>
+                                        <h3 class="text-danger"><span id="rivalGangName"></span></h3>
                                         <span id="rivalGangDesc"></span>
                                     </p>
                                     <table class="table table-sm">
@@ -739,6 +750,8 @@
                                     </table>
                                     <button type='button' id="gangFightBtn" class="btn btn-primary btn-block"
                                         onclick="fightGang()">Fight Gang</button>
+                                        <br />
+                                        <div id="gangWinLoseMessage"></div>
 
                                 </div>
                                 <div id="gangCompleteWrap" class="d-none">

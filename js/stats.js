@@ -740,7 +740,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Guest Stars",
-            desc: "<strong>Cost: 50 followers</strong> - Bring some important people into the channel to discuss with me. Intellect gain is doubled from research.",
+            desc: "<strong>Cost: 50 followers</strong> - Bring some important people into the channel to discuss with me. Intelligence gain is doubled from research.",
             cost: 50,
         },
         {
@@ -868,7 +868,7 @@ var job = {
             isActive: false,
             isPurchased: false,
             name: "Ads Within Ads",
-            desc: "<strong>Cost: 1000 followers</strong> - Adception. Doubles view growth.",
+            desc: "<strong>Cost: 1000 followers</strong> - Adception. Doubles views per follower.",
             cost: 1000,
         },
         {
@@ -1037,7 +1037,7 @@ var research = {
             isActive: false,
             isPurchased: false,
             name: "Examine Your Beliefs",
-            desc: "<strong>Cost: 1000 research</strong> - Double the intellect growth of research.",
+            desc: "<strong>Cost: 1000 research</strong> - Double the intelligence growth of research.",
             cost: 1000,
         },
         {
@@ -1478,7 +1478,7 @@ var gym = {
             isActive: false,
             isPurchased: false,
             name: "Economic Fundamentals",
-            desc: "<strong>Cost: 1000 influence</strong> - Double the intellect growth of advertising.",
+            desc: "<strong>Cost: 1000 influence</strong> - Double intelligence gain from advertising.",
             cost: 1000,
         },
         {
@@ -1640,7 +1640,7 @@ var gym = {
             isActive: false,
             isPurchased: false,
             name: "Cross-Pollinating",
-            desc: "<strong>Cost: $50</strong> - Trainers will train the advertising folks. Doubles the intellect gain from advertising.",
+            desc: "<strong>Cost: $50</strong> - Trainers will train the advertising folks. Doubles intelligence gain from advertising.",
             cost: 50,
         },
         {
@@ -1656,7 +1656,7 @@ var gym = {
             isActive: false,
             isPurchased: false,
             name: "Socialize Employees",
-            desc: "<strong>Cost: $25000</strong> - Make them all talk to each other. Doubles the intellect gain from advertising.",
+            desc: "<strong>Cost: $25000</strong> - Make them all talk to each other. Doubles intelligence gain from advertising.",
             cost: 25000,
         },
         {
@@ -1752,7 +1752,7 @@ var gym = {
             isActive: false,
             isPurchased: false,
             name: "Hiring Tests",
-            desc: "<strong>Cost: $10000</strong> - Let's actually vet out some of these people before hiring. Doubles the intellect gain from advertising.",
+            desc: "<strong>Cost: $10000</strong> - Let's actually vet out some of these people before hiring. Doubles intelligence gain from advertising.",
             cost: 10000,
         },
     ],

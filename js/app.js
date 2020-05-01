@@ -67,9 +67,9 @@ Challenges could be per prestige 2
 
 Optional/Maybe/Low priority
 
-    good/evil path for follower upgrades
     show upgrades?
     offline time
+    review segmenting off upgrade data
 
 */
 
@@ -860,17 +860,22 @@ function fightGang() {
             var winner = false;
             // is there a winner
             if (bodyweight.gang.rivalFightPowerTemp < 0) {
-                if (math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .3) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
+                if (math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .4) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
                     bodyweight.gang.rivals[bodyweight.gang.rivalId].isAbsorbed = true;
                     bodyweight.gang.members += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
-                    $("#gangWinLoseMessage").append("<div class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
 
                     // gain confidence points
                     prestige.bw.confidence += .1;
                 }
                 else {
-                    $("#gangWinLoseMessage").append("<div class='alert alert-success alert-dismissible fade show' role='alert'><strong>Success!</strong> 10% of their members joined me!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Success!</strong> 10% of their members joined me!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
                 }
+
+                setTimeout(function () {
+                    $("#gangWinLoseAlert").alert('close');
+                }, 10000);
+
                 var members = math.evaluate(bodyweight.gang.rivals[bodyweight.gang.rivalId].members * .1)
                 bodyweight.gang.members += members
                 bodyweight.gang.rivals[bodyweight.gang.rivalId].members -= members;
@@ -879,7 +884,12 @@ function fightGang() {
                 winner = true;
             }
             else if (bodyweight.gang.playerFightPowerTemp < 0) {
-                $("#gangWinLoseMessage").append("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>Failure!</strong> 10% of my members left to join them!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                $("#gangWinLoseMessage").append("<div id='gangWinLoseAlert' class='alert alert-danger alert-dismissible fade show' role='alert'><strong>Failure!</strong> 10% of my members left to join them!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+               
+                setTimeout(function () {
+                    $("#gangWinLoseAlert").alert('close');
+                }, 10000);
+               
                 var members = math.evaluate(bodyweight.gang.members * .1)
                 bodyweight.gang.members -= members
                 bodyweight.gang.rivals[bodyweight.gang.rivalId].members += members;
@@ -938,7 +948,7 @@ function writeGangInfo() {
             bodyweight.gang.rivals[i].members < 1000000 ? $("#rivalGangMembers").html(bodyweight.gang.rivals[i].members.toFixed(2)) : $("#rivalGangMembers").html(math.format(bodyweight.gang.rivals[i].members, 3));
             rivalPower < 1000000 ? $("#rivalGangPower").html(rivalPower.toFixed(2)) : $("#rivalGangPower").html(math.format(rivalPower, 3));
 
-            if (math.evaluate(_gangPower * .3) >= rivalPower) {
+            if (math.evaluate(_gangPower * .4) >= rivalPower) {
                 $("#gangFightBtn").html("Absorb Gang");
             }
             else {
