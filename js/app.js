@@ -885,11 +885,11 @@ function fightGang() {
             }
             else if (bodyweight.gang.playerFightPowerTemp < 0) {
                 $("#gangWinLoseMessage").append("<div id='gangWinLoseAlert' class='alert alert-danger alert-dismissible fade show' role='alert'><strong>Failure!</strong> 10% of my members left to join them!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-               
+
                 setTimeout(function () {
                     $("#gangWinLoseAlert").alert('close');
                 }, 10000);
-               
+
                 var members = math.evaluate(bodyweight.gang.members * .1)
                 bodyweight.gang.members -= members
                 bodyweight.gang.rivals[bodyweight.gang.rivalId].members += members;
@@ -1350,9 +1350,11 @@ function toggleAutobuyer(buyerId) {
 
 function hireEmployee(button, employee) {
     if (!$(button).hasClass("disabled")) {
-        stats.money -= getEmployeeCost(employee);
-        employee.cost *= employee.costMultiplier;
-        employee.current += 1;
+        if (stats.money >= getEmployeeCost(employee)) {
+            stats.money -= getEmployeeCost(employee);
+            employee.cost *= employee.costMultiplier;
+            employee.current += 1;
+        }
     }
 }
 
