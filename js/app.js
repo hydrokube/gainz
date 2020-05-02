@@ -604,7 +604,7 @@ var refreshId = setInterval(function () {
         for (var i = 0; i < gym.members.tiers.length; i++) {
             var amountAtTier = math.evaluate(gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1)))));
             $("#gymMemberTier" + i).html(gym.members.tiers[i].current.toFixed(3));
-            amountAtTier < 1000000 ?  $("#gymAmountTier" + i).html(" <span class='text-success'>" + amountAtTier.toFixed(4) + "/s</span>") : $("#gymAmountTier").html(" <span class='text-success'>" + math.format(gymAdsPerSecond(), 3) + "/s</span>");
+            amountAtTier < 1000000 ?  $("#gymAmountTier" + i).html("<span class='text-success'>$" + amountAtTier.toFixed(4) + "/s</span>") : $("#gymAmountTier").html("<span class='text-success'>$" + math.format(gymAdsPerSecond(), 3) + "/s</span>");
         }
 
         var classMulti = math.evaluate((gym.classes * gym.money.classMultiplier) + 1)
