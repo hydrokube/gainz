@@ -35,10 +35,14 @@ Patch Notes
 -Pacing/rebalancing for prestige
 -Added street workout gangs
 -Added confidence points
+-Added member tier income /s and class multiplier to help clarify formulas
+-fixed some language on upgrade
+-random bug fixes for minor stuff
 -Added importing/exporting saves
 -Added custom art in the left nav
 -Fixed a bug for starting/stopping exercises when you purchase upgrades out of order
 -Updated save paths for production, beta, and local testing to avoid corrupting any production saves for beta testers
+-game runs in a background tab without issue now
 
 TODO:
     resize man
