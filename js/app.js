@@ -598,8 +598,13 @@ var refreshId = setInterval(function () {
         prestige.bw.confidence < 1000000 ? $("#confidence").html(prestige.bw.confidence.toFixed(2)) : $("#confidence").html(math.format(prestige.bw.confidence, 3));
 
         for (var i = 0; i < gym.members.tiers.length; i++) {
+            var amountAtTier = math.evaluate(gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1)))));
             $("#gymMemberTier" + i).html(gym.members.tiers[i].current.toFixed(3));
+            amountAtTier < 1000000 ?  $("#gymAmountTier" + i).html(" <span class='text-success'>" + amountAtTier.toFixed(4) + "/s</span>") : $("#gymAmountTier").html(" <span class='text-success'>" + math.format(gymAdsPerSecond(), 3) + "/s</span>");
         }
+
+        var classMulti = math.evaluate((gym.classes * gym.money.classMultiplier) + 1)
+        classMulti < 1000000 ? $("#classMulti").html(classMulti.toFixed(3) + "x") : $("#classMulti").html(math.format(classMulti,3) + "x");
 
         if (prestige.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
             writeGangInfo();
@@ -1365,6 +1370,7 @@ function gymMoneyPerSecond() {
     }
     return math.evaluate(total + gym.money.flatIncrease);
 }
+
 function gymInfluencePerSecond() {
     return math.evaluate(gym.advertising.campaigns * gym.advertising.influenceGrowth);
 }
