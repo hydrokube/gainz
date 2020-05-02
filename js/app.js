@@ -1225,6 +1225,7 @@ function newGym(type) {
             research = JSON.parse(JSON.stringify(baseResearch));
             gym = JSON.parse(JSON.stringify(baseGym));
 
+            bodyweight.gang.name = gang;
             $("#gym-tab").removeClass("d-none");
             checks.story6 = true;
 
@@ -1249,7 +1250,6 @@ function newGym(type) {
                 default:
             }
 
-            bodyweight.gang.name = gang;
             $("#story").prepend("<div id='story6' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>My new gym is open!</strong> I can now train my replacement before opening another franchise location.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
             updatePrestigeValues();
         }
