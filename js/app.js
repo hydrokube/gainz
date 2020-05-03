@@ -45,7 +45,10 @@ Patch Notes
 -game runs in a background tab without issue now
 
 TODO:
-    resize man
+    more tooltips or a stats page
+    add name of exercise in paren
+    tell trainer which spot to train
+    update description of marketing manager/nutritionist after updates
     
 Future
 
@@ -2290,7 +2293,7 @@ function jobUpgradeClick(button) {
                 research.codeBots.intelligence *= 2;
                 break;
             case 9:
-                job.makeVideo.viewGrowth *= 2;
+                job.viewGrowth *= 2;
                 break;
             case 10:
                 job.pullupFollowerMod += .0001;
