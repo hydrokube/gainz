@@ -32,6 +32,7 @@ TODO:
     update description of marketing manager/nutritionist after updates?
     autoclick on upgrades
     update aria values
+    Add disabled attribute
     
 Future
 
@@ -1576,7 +1577,7 @@ function gymUpgradeClick(button) {
                 gym.members.capacity *= 2;
                 break;
             case 23:
-                gym.influenceGrowth *= 2;
+                gym.advertising.influenceGrowth *= 2;
                 break;
             case 24:
                 gym.designAds.intelligence *= 2;
