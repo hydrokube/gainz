@@ -25,30 +25,13 @@ var fightGangTimerId;
 
 Patch Notes
 
--Added one view per make video completion regardless of follower count
--Changed Deload to Open Gym and adjusted UI
--Added prestige points for global and bodyweight
--Added upgrade area for prestige global and bodyweight upgrades
--Added many upgrades for global and bodyweight prestige
--Added Gym, new upgrades and jobs
--Added Advertising, new upgrades and jobs
--Pacing/rebalancing for prestige
--Added street workout gangs
--Added confidence points
--Added member tier income /s and class multiplier to help clarify formulas
--fixed some language on upgrade
--random bug fixes for minor stuff
--Added importing/exporting saves
--Added custom art in the left nav
--Fixed a bug for starting/stopping exercises when you purchase upgrades out of order
--Updated save paths for production, beta, and local testing to avoid corrupting any production saves for beta testers
--game runs in a background tab without issue now
-
 TODO:
     more tooltips or a stats page
     add name of exercise in paren
     tell trainer which spot to train
-    update description of marketing manager/nutritionist after updates
+    update description of marketing manager/nutritionist after updates?
+    autoclick on upgrades
+    update aria values
     
 Future
 
@@ -443,6 +426,8 @@ var refreshId = setInterval(function () {
     var energyPerSecond = math.evaluate((stats.energy.increase * ((stats.agility * stats.agilityBoost) + 1)) * 2);
     var energyCurrent = stats.energy.current < 1000000 ? stats.energy.current.toFixed(2) : math.format(stats.energy.current, 3);
     var energyMax = stats.energy.max < 1000000 ? stats.energy.max.toFixed(2) : math.format(stats.energy.max, 3);
+    $("#energyProgress").attr("aria-valuenow", energyCurrent);
+    $("#energyProgress").attr("aria-valuemax", energyMax);
     $("#energyProgress").css("width", ((stats.energy.current / stats.energy.max) * 100) + "%");
     $("#energyProgress").html(energyCurrent + "/" + energyMax);
     stats.energy.max = math.evaluate(stats.energy.originalMax * ((stats.endurance * stats.enduranceBoost) + 1));
