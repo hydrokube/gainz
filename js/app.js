@@ -1070,6 +1070,16 @@ function setupOneSecondTimer() {
             }
 
             // check for autoclickers
+            if (checks.bwUpgradeBuyerOn) {
+                autobuyUpgrades(gym.upgrades, "upgrade", stats.money);
+                autobuyUpgrades(gym.bw.upgrades, "bwUpgrade", stats.money);
+            }
+            if (checks.bwGymBuyerOn) {
+                autobuyUpgrades(gym.gymUpgrades, "gymUpgrade", stats.money);
+            }
+            if (checks.bwAdBuyerOn) {
+                autobuyUpgrades(gym.adUpgrades, "adUpgrade", gym.advertising.influence);
+            }
             if (checks.gymSalesBuyerOn) {
                 autobuyEmployees(gym.employees.sales, "salesBtn", stats.money);
             }
@@ -1091,16 +1101,6 @@ function setupOneSecondTimer() {
             if (checks.adManagerBuyerOn) {
                 autobuyEmployees(gym.advertising.employees.managers, "managerBtn", stats.money);
             }
-            if (checks.bwGymBuyerOn) {
-                autobuyUpgrades(gym.gymUpgrades, "gymUpgrade", stats.money);
-            }
-            if (checks.bwUpgradeBuyerOn) {
-                autobuyUpgrades(gym.upgrades, "upgrade", stats.money);
-                autobuyUpgrades(gym.bw.upgrades, "bwUpgrade", stats.money);
-            }
-            if (checks.bwAdBuyerOn) {
-                autobuyUpgrades(gym.adUpgrades, "adUpgrade", gym.advertising.influence);
-            }
             if (checks.coffeeClickerOn) {
                 $("#coffeeBtn").click();
             }
@@ -1121,10 +1121,12 @@ function setupOneSecondTimer() {
 }
 
 function autobuyUpgrades(upgradeArray, text, points) {
+    var done = false;
     for (var i = 0; i < upgradeArray.length; i++) {
         if (!upgradeArray[i].isPurchased && points >= upgradeArray[i].cost && !done) {
             $("#" + text + "Btn" + upgradeArray[i].id).click();
             points -= upgradeArray[i].cost;
+            done = true;
         }
     }
 }
