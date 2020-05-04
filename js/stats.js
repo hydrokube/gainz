@@ -1911,7 +1911,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Loyal Employees",
-            desc: "<strong>Cost: 2 Global Point</strong> - Always start with one of each gym employee and +$10.",
+            desc: "<strong>Cost: 2 Global Points</strong> - Always start with one of each gym employee and +$10.",
             cost: 2
         },
         {
@@ -1927,7 +1927,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Meditation",
-            desc: "<strong>Cost: 3 Global Point</strong> - Double energy recovery and max energy",
+            desc: "<strong>Cost: 3 Global Points</strong> - Double energy recovery and max energy",
             cost: 3
         },
         {
@@ -1935,7 +1935,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "More Loyalty",
-            desc: "<strong>Cost: 2 Global Point</strong> - Is this deserved? Always start with one of each advertising employee and +$10.",
+            desc: "<strong>Cost: 2 Global Points</strong> - Is this deserved? Always start with one of each advertising employee and +$10.",
             cost: 2
         },
         {
@@ -1943,7 +1943,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Bigger Starting Locations",
-            desc: "<strong>Cost: 3 Global Point</strong> - Doubles starting gym capacity.",
+            desc: "<strong>Cost: 3 Global Points</strong> - Doubles starting gym capacity.",
             cost: 3
         },
         {
@@ -1951,7 +1951,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Faster Training",
-            desc: "<strong>Cost: 4 Global Point</strong> - Doubles trainer effectiveness.",
+            desc: "<strong>Cost: 4 Global Points</strong> - Doubles trainer effectiveness.",
             cost: 4
         },
         {
@@ -1959,7 +1959,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Faster Start",
-            desc: "<strong>Cost: 4 Global Point</strong> - Strength, endurance, agility, and intelligence all start at 10.",
+            desc: "<strong>Cost: 4 Global Points</strong> - Strength, endurance, agility, and intelligence all have 10 added at the start.",
             cost: 4
         },
         {
@@ -1967,7 +1967,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Sales Reps",
-            desc: "<strong>Cost: 5 Global Point</strong> - Buy sales reps as they become available.",
+            desc: "<strong>Cost: 5 Global Points</strong> - Buy sales reps as they become available.",
             cost: 5
         },
         {
@@ -1975,7 +1975,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Trainers",
-            desc: "<strong>Cost: 6 Global Point</strong> - Buy trainers as they become available.",
+            desc: "<strong>Cost: 6 Global Points</strong> - Buy trainers as they become available.",
             cost: 6
         },
         {
@@ -1983,7 +1983,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Ad Coordinators",
-            desc: "<strong>Cost: 6 Global Point</strong> - Buy ad coordinators as they become available.",
+            desc: "<strong>Cost: 6 Global Points</strong> - Buy ad coordinators as they become available.",
             cost: 6
         },
         {
@@ -1991,7 +1991,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Program Coordinators",
-            desc: "<strong>Cost: 8 Global Point</strong> - Buy ad coordinators as they become available.",
+            desc: "<strong>Cost: 8 Global Points</strong> - Buy ad coordinators as they become available.",
             cost: 8
         },
         {
@@ -1999,7 +1999,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Ad Designers",
-            desc: "<strong>Cost: 8 Global Point</strong> - Buy ad designers as they become available.",
+            desc: "<strong>Cost: 8 Global Points</strong> - Buy ad designers as they become available.",
             cost: 8
         },
         {
@@ -2007,7 +2007,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Nutritionists",
-            desc: "<strong>Cost: 10 Global Point</strong> - Buy nutritionists as they become available.",
+            desc: "<strong>Cost: 10 Global Points</strong> - Buy nutritionists as they become available.",
             cost: 10
         },
         {
@@ -2015,7 +2015,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Marketing Managers",
-            desc: "<strong>Cost: 10 Global Point</strong> - Buy marketing managers as they become available.",
+            desc: "<strong>Cost: 10 Global Points</strong> - Buy marketing managers as they become available.",
             cost: 10
         },
         {
@@ -2023,7 +2023,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Powerful",
-            desc: "<strong>Cost: 20 Global Point</strong> - Doubles strength modifier.",
+            desc: "<strong>Cost: 20 Global Points</strong> - Doubles strength modifier.",
             cost: 20
         },
         {
@@ -2031,7 +2031,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Long-Lasting",
-            desc: "<strong>Cost: 20 Global Point</strong> - Doubles endurance modifier.",
+            desc: "<strong>Cost: 20 Global Points</strong> - Doubles endurance modifier.",
             cost: 20
         },
         {
@@ -2039,7 +2039,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Speedy",
-            desc: "<strong>Cost: 20 Global Point</strong> - Doubles agility modifier.",
+            desc: "<strong>Cost: 20 Global Points</strong> - Doubles agility modifier.",
             cost: 20
         },
         {
@@ -2047,7 +2047,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Braniac",
-            desc: "<strong>Cost: 20 Global Point</strong> - Doubles intelligence modifier.",
+            desc: "<strong>Cost: 20 Global Points</strong> - Doubles intelligence modifier.",
             cost: 20
         },
         {
@@ -2055,8 +2055,48 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Good Business",
-            desc: "<strong>Cost: 20 Global Point</strong> - Doubles gym and advertising modifier (all stats).",
+            desc: "<strong>Cost: 20 Global Points</strong> - Doubles gym and advertising modifier (all stats).",
             cost: 20
+        },
+        {
+            id: 19,
+            isActive: false,
+            isPurchased: false,
+            name: "Good Investing",
+            desc: "<strong>Cost: 5 Global Points</strong> - Always start with an additional flat $.05/s. This money is not affected by any doubling upgrades.",
+            cost: 5
+        },
+        {
+            id: 20,
+            isActive: false,
+            isPurchased: false,
+            name: "Even More Loyalty",
+            desc: "<strong>Cost: 8 Global Points</strong> - Always start with +1 of each gym employee and +$50",
+            cost: 8
+        },
+        {
+            id: 21,
+            isActive: false,
+            isPurchased: false,
+            name: "Most Loyalty",
+            desc: "<strong>Cost: 8 Global Points</strong> - Always start with +1 of each advertising employee and +$50",
+            cost: 8
+        },
+        {
+            id: 22,
+            isActive: false,
+            isPurchased: false,
+            name: "Fastest Start",
+            desc: "<strong>Cost: 10 Global Points</strong> - Strength, endurance, agility, and intelligence all have 100 added at the start",
+            cost: 10
+        },
+        {
+            id: 23,
+            isActive: false,
+            isPurchased: false,
+            name: "Smarter Advertising",
+            desc: "<strong>Cost: 4 Global Points</strong> - Doubles the intelligence generation of advertising.",
+            cost: 4
         },
         // {
         //     id: 7,

@@ -26,13 +26,17 @@ var fightGangTimerId;
 Patch Notes
 
 TODO:
-    more tooltips or a stats page
-    add name of exercise in paren
-    tell trainer which spot to train
+    stats page to show modifiers for everything - for those math nerds :)
+    add name of exercise in parenthesis
     update description of marketing manager/nutritionist after updates?
-    autoclick on upgrades
-    update aria values
-    Add disabled attribute
+
+    autoclick on upgrades bug, check for price first
+
+    Add disabled attribute to buttons for low/no vision users
+
+    autoclicker for coffee - 15pt
+    Autofight gang upgrade? - 20pt
+        tell trainer which spot to train, global upgrade - 5pts
     
 Future
 
@@ -41,9 +45,6 @@ Future
         leadership stat that increases the stat growth of all proteges
         competitions will give you money
         each upgrade gives 1.01* the energy cost and stat boost
-    bodyweight
-        start a street workout gang
-        notoriety? stat that increases money gain 
     yoga
         Run through routines and different types of yoga
         Flexibility that increases a stat or resource of your choice, unlock ability to add another eventually. 
@@ -55,12 +56,6 @@ Future
         speed stat that grows and adds to all tick speeds
 
 Challenges could be per prestige 2
-
-Optional/Maybe/Low priority
-
-    show upgrades?
-    offline time
-    review segmenting off upgrade data
 
 */
 
@@ -593,11 +588,11 @@ var refreshId = setInterval(function () {
         for (var i = 0; i < gym.members.tiers.length; i++) {
             var amountAtTier = math.evaluate(gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1)))));
             $("#gymMemberTier" + i).html(gym.members.tiers[i].current.toFixed(3));
-            amountAtTier < 1000000 ?  $("#gymAmountTier" + i).html("<span class='text-success'>$" + amountAtTier.toFixed(4) + "/s</span>") : $("#gymAmountTier").html("<span class='text-success'>$" + math.format(gymAdsPerSecond(), 3) + "/s</span>");
+            amountAtTier < 1000000 ? $("#gymAmountTier" + i).html("<span class='text-success'>$" + amountAtTier.toFixed(4) + "/s</span>") : $("#gymAmountTier").html("<span class='text-success'>$" + math.format(gymAdsPerSecond(), 3) + "/s</span>");
         }
 
         var classMulti = math.evaluate((gym.classes * gym.money.classMultiplier) + 1)
-        classMulti < 1000000 ? $("#classMulti").html(classMulti.toFixed(3) + "x") : $("#classMulti").html(math.format(classMulti,3) + "x");
+        classMulti < 1000000 ? $("#classMulti").html(classMulti.toFixed(3) + "x") : $("#classMulti").html(math.format(classMulti, 3) + "x");
 
         if (prestige.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
             writeGangInfo();
@@ -1861,10 +1856,10 @@ function globalUpgradeClick(button, prestigeCheck) {
                 gym.trainMembers.trainAmount *= 2;
                 break;
             case 6:
-                stats.strength = 10;
-                stats.endurance = 10;
-                stats.agility = 10;
-                stats.intelligence = 10;
+                stats.strength += 10;
+                stats.endurance += 10;
+                stats.agility += 10;
+                stats.intelligence += 10;
                 break;
             case 7:
                 checks.gymSalesBuyer = true;
@@ -1915,6 +1910,32 @@ function globalUpgradeClick(button, prestigeCheck) {
                 break;
             case 18:
                 stats.allStatBoost *= 2;
+                break;
+            case 19:
+                gym.money.flatIncrease += .05;
+                break;
+            case 20:
+                gym.employees.sales.current += 1;
+                gym.employees.trainers.current += 1;
+                gym.employees.nutritionists.current += 1;
+                gym.employees.coordinators.current += 1;
+                stats.money += 50;
+                break;
+            case 21:
+                gym.advertising.employees.coordinators.current += 1;
+                gym.advertising.employees.managers.current += 1;
+                gym.advertising.employees.designers.current += 1;
+                stats.money += 50;
+                break;
+            case 22:
+                stats.strength += 100;
+                stats.endurance += 100;
+                stats.agility += 100;
+                stats.intelligence += 100;
+                break;
+            case 23:
+                gym.designAds.intelligence *= 2;
+                gym.runCampaigns.intelligence *= 2;
                 break;
             default:
         }
