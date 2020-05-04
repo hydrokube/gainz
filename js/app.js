@@ -1122,7 +1122,7 @@ function setupOneSecondTimer() {
 
 function autobuyUpgrades(upgradeArray, text, points) {
     for (var i = 0; i < upgradeArray.length; i++) {
-        if (!upgradeArray[i].isPurchased && points >= upgradeArray[i].cost && !done) {
+        if (!upgradeArray[i].isPurchased && points >= upgradeArray[i].cost) {
             $("#" + text + "Btn" + upgradeArray[i].id).click();
             points -= upgradeArray[i].cost;
         }
