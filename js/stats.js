@@ -2295,8 +2295,8 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Gang Colors",
-                desc: "<strong>Cost: 20 Bodyweight Points</strong> - Auto-Absorb Gangs.",
-                cost: 20
+                desc: "<strong>Cost: 15 Bodyweight Points</strong> - Auto-Absorb Gangs.",
+                cost: 15
             },
         ]
     },
