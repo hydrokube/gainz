@@ -2098,6 +2098,14 @@ var prestige = {
             desc: "<strong>Cost: 4 Global Points</strong> - Doubles the intelligence generation of advertising.",
             cost: 4
         },
+        {
+            id: 24,
+            isActive: false,
+            isPurchased: false,
+            name: "Intravenous Coffee",
+            desc: "<strong>Cost: 15 Global Points</strong> - Autoclicks coffee.",
+            cost: 15
+        },
         // {
         //     id: 7,
         //     isActive: false,
@@ -2282,6 +2290,14 @@ var prestige = {
                 desc: "<strong>Cost: 2 Bodyweight Points</strong> - Double strength gain for the gang.",
                 cost: 2
             },
+            {
+                id: 19,
+                isActive: false,
+                isPurchased: false,
+                name: "Gang Colors",
+                desc: "<strong>Cost: 20 Bodyweight Points</strong> - Auto-Absorb Gangs.",
+                cost: 20
+            },
         ]
     },
     lifting: {
@@ -2337,6 +2353,10 @@ var checks = {
     bwGymBuyerOn: false,
     bwAdBuyer: false,
     bwAdBuyerOn: false,
+    coffeeClicker: false,
+    coffeeClickerOn: false,
+    absorbGangs: false,
+    absorbGangsOn: false,
 };
 
 

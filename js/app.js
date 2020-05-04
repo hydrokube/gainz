@@ -25,19 +25,17 @@ var fightGangTimerId;
 
 Patch Notes
 
+    autoclick on upgrades bug, check for price first
+    Autofight gang upgrade - 20pt
+    Autoclick coffee - 15pt
+    update description of marketing manager/nutritionist after updates
+
 TODO:
     stats page to show modifiers for everything - for those math nerds :)
-    add name of exercise in parenthesis
-    update description of marketing manager/nutritionist after updates?
-
-    autoclick on upgrades bug, check for price first
-
+    tell trainer which spot to train, global upgrade - 5pts
     Add disabled attribute to buttons for low/no vision users
 
-    autoclicker for coffee - 15pt
-    Autofight gang upgrade? - 20pt
-        tell trainer which spot to train, global upgrade - 5pts
-    
+   
 Future
 
     lifting
@@ -580,6 +578,9 @@ var refreshId = setInterval(function () {
         checkEmployeeDisable(gym.advertising.employees.designers, stats.money, "designer");
         checkEmployeeDisable(gym.advertising.employees.managers, stats.money, "manager");
 
+        $("#nutritionistMulti").html(math.evaluate(gym.employees.nutritionists.boost * 100))
+        $("#managerMulti").html(math.evaluate(gym.advertising.employees.managers.boost * 100))
+
         if (prestige.bw.confidence > 0) {
             $("#confidenceWrap").removeClass("d-none");
         }
@@ -952,7 +953,6 @@ function writeGangInfo() {
     if (!found) {
         $("#gangRivalWrap").addClass("d-none");
         $("#gangCompleteWrap").removeClass("d-none");
-
     }
 }
 
@@ -1104,6 +1104,21 @@ function setupOneSecondTimer() {
             }
             if (checks.adManagerBuyerOn) {
                 autobuyEmployees(gym.advertising.employees.managers, "managerBtn", stats.money);
+            }
+            if (checks.coffeeClickerOn) {
+                $("#coffeeBtn").click();
+            }
+
+            var found = false;
+            for (var i = 0; i < bodyweight.gang.rivals.length; i++) {
+                if (!bodyweight.gang.rivals[i].isAbsorbed && !found) {
+                    found = true;
+                    bodyweight.gang.rivalId = i;
+                }
+            }
+
+            if (checks.absorbGangsOn && checks.gymType == 0 && found && math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .4) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
+                $("#gangFightBtn").click();
             }
         }
     }, 1000);
@@ -1269,7 +1284,7 @@ function reapplyPrestige(upgradeArray, text, type) {
 
 function updateAutobuyerToggles() {
     $("#autoBuyers").html("");
-    if (checks.bwAdBuyer || checks.bwUpgradeBuyer || checks.bwAdBuyer || checks.gymSalesBuyer || checks.gymTrainerBuyer || checks.gymCoordinatorBuyer || checks.gymNutritionistBuyer || checks.adCoordinatorBuyer || checks.adDesignerBuyer || checks.adManagerBuyer) {
+    if (checks.absorbGangs || checks.coffeeClicker || checks.bwAdBuyer || checks.bwUpgradeBuyer || checks.bwAdBuyer || checks.gymSalesBuyer || checks.gymTrainerBuyer || checks.gymCoordinatorBuyer || checks.gymNutritionistBuyer || checks.adCoordinatorBuyer || checks.adDesignerBuyer || checks.adManagerBuyer) {
         $("#autoBuyers").append("<h5>Autobuyers</h5>");
         $("#autoBuyers").append("<div class='form-group' id='autoBuyerGroup'></div>");
     }
@@ -1302,6 +1317,12 @@ function updateAutobuyerToggles() {
     }
     if (checks.adManagerBuyer) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='adManagerBuyer' onchange='toggleAutobuyer(9);'" + (checks.adManagerBuyerOn ? " checked" : "") + "><label class='form-check-label' for='adManagerBuyer'>Buy Marketing Managers</label></div>");
+    }
+    if (checks.coffeeClicker) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='coffeeBuyer' onchange='toggleAutobuyer(10);'" + (checks.coffeeClickerOn ? " checked" : "") + "><label class='form-check-label' for='coffeeBuyer'>Click Coffee</label></div>");
+    }
+    if (checks.absorbGangs && checks.gymType == 0) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='absorbGangs' onchange='toggleAutobuyer(11);'" + (checks.absorbGangsOn ? " checked" : "") + "><label class='form-check-label' for='absorbGangs'>Absorb Gangs</label></div>");
     }
 }
 
@@ -1336,6 +1357,12 @@ function toggleAutobuyer(buyerId) {
             break;
         case 9:
             checks.adManagerBuyerOn ? checks.adManagerBuyerOn = false : checks.adManagerBuyerOn = true;
+            break;
+        case 10:
+            checks.coffeeClickerOn ? checks.coffeeClickerOn = false : checks.coffeeClickerOn = true;
+            break;
+        case 11:
+            checks.absorbGangsOn ? checks.absorbGangsOn = false : checks.absorbGangsOn = true;
             break;
         default:
     }
@@ -1497,88 +1524,90 @@ function gymUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("gymUpgradeBtn")[1]);
         var upgrade = gym.gymUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                gym.members.capacity *= 2;
-                break;
-            case 1:
-                gym.members.capacity *= 2;
-                break;
-            case 2:
-                gym.members.capacity *= 2;
-                break;
-            case 3:
-                gym.members.capacity *= 2;
-                break;
-            case 4:
-                gym.members.capacity *= 2;
-                break;
-            case 5:
-                gym.members.capacity *= 2;
-                break;
-            case 6:
-                gym.employees.nutritionists.boost *= 2;
-                break;
-            case 7:
-                gym.employees.sales.boost *= 2;
-                break;
-            case 8:
-                gym.trainMembers.trainAmount *= 2;
-                break;
-            case 9:
-                stats.allStatBoost *= 2;
-                break;
-            case 10:
-                gym.designAds.intelligence *= 2;
-                gym.runCampaigns.intelligence *= 2;
-                break;
-            case 11:
-                stats.allStatBoost *= 2;
-                break;
-            case 12:
-                gym.designAds.intelligence *= 2;
-                gym.runCampaigns.intelligence *= 2;
-                break;
-            case 13:
-                gym.employees.sales.boost *= 2;
-                break;
-            case 14:
-                gym.employees.nutritionists.boost *= 2;
-                break;
-            case 15:
-                gym.money.classMultiplier *= 2;
-                break;
-            case 16:
-                gym.createClasses.classAmount *= 2;
-                break;
-            case 17:
-                gym.employees.sales.cost /= 2;
-                break;
-            case 18:
-                gym.employees.trainers.cost /= 2;
-                break;
-            case 19:
-                gym.employees.coordinators.cost /= 2;
-                break;
-            case 20:
-                gym.employees.nutritionists.cost /= 2;
-                break;
-            case 21:
-                gym.money.growth *= 2;
-                break;
-            case 22:
-                gym.members.capacity *= 2;
-                break;
-            case 23:
-                gym.advertising.influenceGrowth *= 2;
-                break;
-            case 24:
-                gym.designAds.intelligence *= 2;
-                gym.runCampaigns.intelligence *= 2;
-                break;
-            default:
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    gym.members.capacity *= 2;
+                    break;
+                case 1:
+                    gym.members.capacity *= 2;
+                    break;
+                case 2:
+                    gym.members.capacity *= 2;
+                    break;
+                case 3:
+                    gym.members.capacity *= 2;
+                    break;
+                case 4:
+                    gym.members.capacity *= 2;
+                    break;
+                case 5:
+                    gym.members.capacity *= 2;
+                    break;
+                case 6:
+                    gym.employees.nutritionists.boost *= 2;
+                    break;
+                case 7:
+                    gym.employees.sales.boost *= 2;
+                    break;
+                case 8:
+                    gym.trainMembers.trainAmount *= 2;
+                    break;
+                case 9:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 10:
+                    gym.designAds.intelligence *= 2;
+                    gym.runCampaigns.intelligence *= 2;
+                    break;
+                case 11:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 12:
+                    gym.designAds.intelligence *= 2;
+                    gym.runCampaigns.intelligence *= 2;
+                    break;
+                case 13:
+                    gym.employees.sales.boost *= 2;
+                    break;
+                case 14:
+                    gym.employees.nutritionists.boost *= 2;
+                    break;
+                case 15:
+                    gym.money.classMultiplier *= 2;
+                    break;
+                case 16:
+                    gym.createClasses.classAmount *= 2;
+                    break;
+                case 17:
+                    gym.employees.sales.cost /= 2;
+                    break;
+                case 18:
+                    gym.employees.trainers.cost /= 2;
+                    break;
+                case 19:
+                    gym.employees.coordinators.cost /= 2;
+                    break;
+                case 20:
+                    gym.employees.nutritionists.cost /= 2;
+                    break;
+                case 21:
+                    gym.money.growth *= 2;
+                    break;
+                case 22:
+                    gym.members.capacity *= 2;
+                    break;
+                case 23:
+                    gym.advertising.influenceGrowth *= 2;
+                    break;
+                case 24:
+                    gym.designAds.intelligence *= 2;
+                    gym.runCampaigns.intelligence *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -1588,11 +1617,13 @@ function gymBwUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("gymBwUpgradeBtn")[1]);
         var upgrade = gym.bw.gymUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
 
-            default:
+                default:
+            }
         }
     }
 }
@@ -1602,73 +1633,75 @@ function adUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("adUpgradeBtn")[1]);
         var upgrade = gym.adUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        gym.advertising.influence -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                gym.money.growth *= 2;
-                break;
-            case 1:
-                stats.energy.increase *= 2;
-                break;
-            case 2:
-                gym.advertising.influenceGrowth *= 2;
-                break;
-            case 3:
-                gym.money.growth *= 2;
-                break;
-            case 4:
-                stats.strengthBoost *= 2;
-                break;
-            case 5:
-                gym.advertising.influenceGrowth *= 2;
-                break;
-            case 6:
-                stats.agilityBoost *= 2;
-                break;
-            case 7:
-                stats.enduranceBoost *= 2;
-                break;
-            case 8:
-                stats.intelligenceBoost *= 2;
-                break;
-            case 9:
-                gym.members.capacity *= 2;
-                break;
-            case 10:
-                gym.designAds.intelligence *= 2;
-                gym.runCampaigns.intelligence *= 2;
-                break;
-            case 11:
-                gym.advertising.adMulti *= 2;
-                break;
-            case 12:
-                gym.advertising.adGrowth *= 2;
-                break;
-            case 13:
-                gym.advertising.employees.managers.boost *= 2;
-                break;
-            case 14:
-                checks.isPrestige = true;
-                updatePrestigeValues();
-                checkPrestigeUpgradeDisable(prestige.upgrades, prestige.current, "globalUpgrade");
-                break;
-            case 15:
-                gym.campaignGrowth *= 2;
-                break;
-            case 16:
-                stats.allStatBoost *= 2;
-                break;
-            case 17:
-                gym.trainMembers.trainAmount *= 2;
-                break;
-            case 18:
-                gym.money.classMultiplier *= 2;
-                break;
-            case 19:
-                stats.energy.increase *= 2;
-                break;
-            default:
+        if (gym.advertising.influence >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            gym.advertising.influence -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    gym.money.growth *= 2;
+                    break;
+                case 1:
+                    stats.energy.increase *= 2;
+                    break;
+                case 2:
+                    gym.advertising.influenceGrowth *= 2;
+                    break;
+                case 3:
+                    gym.money.growth *= 2;
+                    break;
+                case 4:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 5:
+                    gym.advertising.influenceGrowth *= 2;
+                    break;
+                case 6:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 7:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 8:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                case 9:
+                    gym.members.capacity *= 2;
+                    break;
+                case 10:
+                    gym.designAds.intelligence *= 2;
+                    gym.runCampaigns.intelligence *= 2;
+                    break;
+                case 11:
+                    gym.advertising.adMulti *= 2;
+                    break;
+                case 12:
+                    gym.advertising.adGrowth *= 2;
+                    break;
+                case 13:
+                    gym.advertising.employees.managers.boost *= 2;
+                    break;
+                case 14:
+                    checks.isPrestige = true;
+                    updatePrestigeValues();
+                    checkPrestigeUpgradeDisable(prestige.upgrades, prestige.current, "globalUpgrade");
+                    break;
+                case 15:
+                    gym.campaignGrowth *= 2;
+                    break;
+                case 16:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 17:
+                    gym.trainMembers.trainAmount *= 2;
+                    break;
+                case 18:
+                    gym.money.classMultiplier *= 2;
+                    break;
+                case 19:
+                    stats.energy.increase *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -1691,49 +1724,51 @@ function phase2UpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("upgradeBtn")[1]);
         var upgrade = gym.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                stats.energy.coffee.boost *= 2;
-                break;
-            case 1:
-                stats.energy.increase *= 2;
-                break;
-            case 2:
-                stats.strengthBoost *= 2;
-                break;
-            case 3:
-                stats.enduranceBoost *= 2;
-                break;
-            case 4:
-                stats.agilityBoost *= 2;
-                break;
-            case 5:
-                stats.intelligenceBoost *= 2;
-                break;
-            case 6:
-                stats.energy.increase *= 2;
-                break;
-            case 7:
-                stats.strengthBoost *= 2;
-                break;
-            case 8:
-                stats.agilityBoost *= 2;
-                break;
-            case 9:
-                stats.enduranceBoost *= 2;
-                break;
-            case 10:
-                stats.intelligenceBoost *= 2;
-                break;
-            case 11:
-                stats.allStatBoost *= 2;
-                break;
-            case 12:
-                stats.energy.coffee.timer *= 2;
-                break;
-            default:
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    stats.energy.coffee.boost *= 2;
+                    break;
+                case 1:
+                    stats.energy.increase *= 2;
+                    break;
+                case 2:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 3:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 4:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 5:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                case 6:
+                    stats.energy.increase *= 2;
+                    break;
+                case 7:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 8:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 9:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 10:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                case 11:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 12:
+                    stats.energy.coffee.timer *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -1743,78 +1778,80 @@ function phase2BwUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("bwUpgradeBtn")[1]);
         var upgrade = gym.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                bodyweight.pushups.speedModifier *= 2;
-                startStop(bodyweight.pushups, pushupTimerId, true);
-                break;
-            case 1:
-                bodyweight.pushups.energy /= 2;
-                bodyweight.rows.energy /= 2;
-                break;
-            case 2:
-                bodyweight.rows.speedModifier *= 2;
-                startStop(bodyweight.rows, rowTimerId, true);
-                break;
-            case 3:
-                bodyweight.pullups.speedModifier *= 2;
-                startStop(bodyweight.pullups, pullupTimerId, true);
-                break;
-            case 4:
-                bodyweight.dips.speedModifier *= 2;
-                startStop(bodyweight.dips, dipTimerId, true);
-                break;
-            case 5:
-                bodyweight.pullups.energy /= 2;
-                break;
-            case 6:
-                bodyweight.dips.energy /= 2;
-                break;
-            case 7:
-                bodyweight.squats.speedModifier *= 2;
-                startStop(bodyweight.squats, bwSquatTimerId, true);
-                break;
-            case 8:
-                bodyweight.rdl.speedModifier *= 2;
-                startStop(bodyweight.rdl, bwRdlTimerId, true);
-                break;
-            case 9:
-                bodyweight.rdl.energy /= 2;
-                bodyweight.squats.energy /= 2;
-                break;
-            case 10:
-                bodyweight.pushups.energy *= 2;
-                bodyweight.pushups.strength *= 2;
-                bodyweight.pushups.endurance *= 2;
-                bodyweight.pushups.agility *= 2;
-                bodyweight.rows.energy *= 2;
-                bodyweight.rows.strength *= 2;
-                bodyweight.rows.endurance *= 2;
-                bodyweight.rows.agility *= 2;
-                break;
-            case 11:
-                bodyweight.dips.energy *= 2;
-                bodyweight.dips.strength *= 2;
-                bodyweight.dips.endurance *= 2;
-                bodyweight.dips.agility *= 2;
-                bodyweight.pullups.energy *= 2;
-                bodyweight.pullups.strength *= 2;
-                bodyweight.pullups.endurance *= 2;
-                bodyweight.pullups.agility *= 2;
-                break;
-            case 12:
-                bodyweight.squats.energy *= 2;
-                bodyweight.squats.strength *= 2;
-                bodyweight.squats.endurance *= 2;
-                bodyweight.squats.agility *= 2;
-                bodyweight.rdl.energy *= 2;
-                bodyweight.rdl.strength *= 2;
-                bodyweight.rdl.endurance *= 2;
-                bodyweight.rdl.agility *= 2;
-                break;
-            default:
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    bodyweight.pushups.speedModifier *= 2;
+                    startStop(bodyweight.pushups, pushupTimerId, true);
+                    break;
+                case 1:
+                    bodyweight.pushups.energy /= 2;
+                    bodyweight.rows.energy /= 2;
+                    break;
+                case 2:
+                    bodyweight.rows.speedModifier *= 2;
+                    startStop(bodyweight.rows, rowTimerId, true);
+                    break;
+                case 3:
+                    bodyweight.pullups.speedModifier *= 2;
+                    startStop(bodyweight.pullups, pullupTimerId, true);
+                    break;
+                case 4:
+                    bodyweight.dips.speedModifier *= 2;
+                    startStop(bodyweight.dips, dipTimerId, true);
+                    break;
+                case 5:
+                    bodyweight.pullups.energy /= 2;
+                    break;
+                case 6:
+                    bodyweight.dips.energy /= 2;
+                    break;
+                case 7:
+                    bodyweight.squats.speedModifier *= 2;
+                    startStop(bodyweight.squats, bwSquatTimerId, true);
+                    break;
+                case 8:
+                    bodyweight.rdl.speedModifier *= 2;
+                    startStop(bodyweight.rdl, bwRdlTimerId, true);
+                    break;
+                case 9:
+                    bodyweight.rdl.energy /= 2;
+                    bodyweight.squats.energy /= 2;
+                    break;
+                case 10:
+                    bodyweight.pushups.energy *= 2;
+                    bodyweight.pushups.strength *= 2;
+                    bodyweight.pushups.endurance *= 2;
+                    bodyweight.pushups.agility *= 2;
+                    bodyweight.rows.energy *= 2;
+                    bodyweight.rows.strength *= 2;
+                    bodyweight.rows.endurance *= 2;
+                    bodyweight.rows.agility *= 2;
+                    break;
+                case 11:
+                    bodyweight.dips.energy *= 2;
+                    bodyweight.dips.strength *= 2;
+                    bodyweight.dips.endurance *= 2;
+                    bodyweight.dips.agility *= 2;
+                    bodyweight.pullups.energy *= 2;
+                    bodyweight.pullups.strength *= 2;
+                    bodyweight.pullups.endurance *= 2;
+                    bodyweight.pullups.agility *= 2;
+                    break;
+                case 12:
+                    bodyweight.squats.energy *= 2;
+                    bodyweight.squats.strength *= 2;
+                    bodyweight.squats.endurance *= 2;
+                    bodyweight.squats.agility *= 2;
+                    bodyweight.rdl.energy *= 2;
+                    bodyweight.rdl.strength *= 2;
+                    bodyweight.rdl.endurance *= 2;
+                    bodyweight.rdl.agility *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -1937,6 +1974,11 @@ function globalUpgradeClick(button, prestigeCheck) {
                 gym.designAds.intelligence *= 2;
                 gym.runCampaigns.intelligence *= 2;
                 break;
+            case 24:
+                checks.coffeeClicker = true;
+                checks.coffeeClickerOn = true;
+                updateAutobuyerToggles();
+                break;
             default:
         }
 
@@ -2033,6 +2075,11 @@ function globalBwUpgradeClick(button, prestigeCheck) {
             case 18:
                 bodyweight.gang.strengthAmount *= 2;
                 break;
+            case 19:
+                checks.absorbGangs = true;
+                checks.absorbGangsOn = true;
+                updateAutobuyerToggles();
+                break;
             default:
         }
 
@@ -2121,49 +2168,51 @@ function upgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("upgradeBtn")[1]);
         var upgrade = upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                $("#coffee").removeClass("d-none");
-                break;
-            case 1:
-                stats.energy.coffee.boost *= 2;
-                break;
-            case 2:
-                stats.energy.increase *= 2;
-                break;
-            case 3:
-                stats.strengthBoost *= 2;
-                break;
-            case 4:
-                stats.enduranceBoost *= 2;
-                break;
-            case 5:
-                stats.agilityBoost *= 2;
-                break;
-            case 6:
-                stats.intelligenceBoost *= 2;
-                break;
-            case 7:
-                stats.allStatBoost *= 2;
-                break;
-            case 8:
-                stats.energy.increase *= 2;
-                break;
-            case 9:
-                stats.strengthBoost *= 2;
-                break;
-            case 10:
-                stats.agilityBoost *= 2;
-                break;
-            case 11:
-                stats.enduranceBoost *= 2;
-                break;
-            case 12:
-                stats.intelligenceBoost *= 2;
-                break;
-            default:
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    $("#coffee").removeClass("d-none");
+                    break;
+                case 1:
+                    stats.energy.coffee.boost *= 2;
+                    break;
+                case 2:
+                    stats.energy.increase *= 2;
+                    break;
+                case 3:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 4:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 5:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 6:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                case 7:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 8:
+                    stats.energy.increase *= 2;
+                    break;
+                case 9:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 10:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 11:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 12:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -2173,86 +2222,88 @@ function bwUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("bwUpgradeBtn")[1]);
         var upgrade = bodyweight.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        stats.money -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                bodyweight.pushups.speedModifier *= 2;
-                startStop(bodyweight.pushups, pushupTimerId, true);
-                break;
-            case 1:
-                $("#bwRows").removeClass("d-none");
-                startStop(bodyweight.rows, rowTimerId, true);
-                break;
-            case 2:
-                bodyweight.pushups.energy /= 2;
-                bodyweight.rows.energy /= 2;
-                break;
-            case 3:
-                bodyweight.rows.speedModifier *= 2;
-                startStop(bodyweight.rows, rowTimerId, true);
-                break;
-            case 4:
-                $("#bwPullups").removeClass("d-none");
-                startStop(bodyweight.pullups, pullupTimerId, true);
-                break;
-            case 5:
-                bodyweight.pullups.speedModifier *= 2;
-                startStop(bodyweight.pullups, pullupTimerId, true);
-                break;
-            case 6:
-                bodyweight.dips.speedModifier *= 2;
-                startStop(bodyweight.dips, dipTimerId, true);
-                break;
-            case 7:
-                bodyweight.pullups.energy /= 2;
-                break;
-            case 8:
-                bodyweight.dips.energy /= 2;
-                break;
-            case 9:
-                bodyweight.squats.speedModifier *= 2;
-                startStop(bodyweight.squats, bwSquatTimerId, true);
-                break;
-            case 10:
-                bodyweight.rdl.speedModifier *= 2;
-                startStop(bodyweight.rdl, bwRdlTimerId, true);
-                break;
-            case 11:
-                bodyweight.rdl.energy /= 2;
-                bodyweight.squats.energy /= 2;
-                break;
-            case 12:
-                bodyweight.pushups.energy *= 2;
-                bodyweight.pushups.strength *= 2;
-                bodyweight.pushups.endurance *= 2;
-                bodyweight.pushups.agility *= 2;
-                bodyweight.rows.energy *= 2;
-                bodyweight.rows.strength *= 2;
-                bodyweight.rows.endurance *= 2;
-                bodyweight.rows.agility *= 2;
-                break;
-            case 13:
-                bodyweight.dips.energy *= 2;
-                bodyweight.dips.strength *= 2;
-                bodyweight.dips.endurance *= 2;
-                bodyweight.dips.agility *= 2;
-                bodyweight.pullups.energy *= 2;
-                bodyweight.pullups.strength *= 2;
-                bodyweight.pullups.endurance *= 2;
-                bodyweight.pullups.agility *= 2;
-                break;
-            case 14:
-                bodyweight.squats.energy *= 2;
-                bodyweight.squats.strength *= 2;
-                bodyweight.squats.endurance *= 2;
-                bodyweight.squats.agility *= 2;
-                bodyweight.rdl.energy *= 2;
-                bodyweight.rdl.strength *= 2;
-                bodyweight.rdl.endurance *= 2;
-                bodyweight.rdl.agility *= 2;
-                break;
-            default:
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    bodyweight.pushups.speedModifier *= 2;
+                    startStop(bodyweight.pushups, pushupTimerId, true);
+                    break;
+                case 1:
+                    $("#bwRows").removeClass("d-none");
+                    startStop(bodyweight.rows, rowTimerId, true);
+                    break;
+                case 2:
+                    bodyweight.pushups.energy /= 2;
+                    bodyweight.rows.energy /= 2;
+                    break;
+                case 3:
+                    bodyweight.rows.speedModifier *= 2;
+                    startStop(bodyweight.rows, rowTimerId, true);
+                    break;
+                case 4:
+                    $("#bwPullups").removeClass("d-none");
+                    startStop(bodyweight.pullups, pullupTimerId, true);
+                    break;
+                case 5:
+                    bodyweight.pullups.speedModifier *= 2;
+                    startStop(bodyweight.pullups, pullupTimerId, true);
+                    break;
+                case 6:
+                    bodyweight.dips.speedModifier *= 2;
+                    startStop(bodyweight.dips, dipTimerId, true);
+                    break;
+                case 7:
+                    bodyweight.pullups.energy /= 2;
+                    break;
+                case 8:
+                    bodyweight.dips.energy /= 2;
+                    break;
+                case 9:
+                    bodyweight.squats.speedModifier *= 2;
+                    startStop(bodyweight.squats, bwSquatTimerId, true);
+                    break;
+                case 10:
+                    bodyweight.rdl.speedModifier *= 2;
+                    startStop(bodyweight.rdl, bwRdlTimerId, true);
+                    break;
+                case 11:
+                    bodyweight.rdl.energy /= 2;
+                    bodyweight.squats.energy /= 2;
+                    break;
+                case 12:
+                    bodyweight.pushups.energy *= 2;
+                    bodyweight.pushups.strength *= 2;
+                    bodyweight.pushups.endurance *= 2;
+                    bodyweight.pushups.agility *= 2;
+                    bodyweight.rows.energy *= 2;
+                    bodyweight.rows.strength *= 2;
+                    bodyweight.rows.endurance *= 2;
+                    bodyweight.rows.agility *= 2;
+                    break;
+                case 13:
+                    bodyweight.dips.energy *= 2;
+                    bodyweight.dips.strength *= 2;
+                    bodyweight.dips.endurance *= 2;
+                    bodyweight.dips.agility *= 2;
+                    bodyweight.pullups.energy *= 2;
+                    bodyweight.pullups.strength *= 2;
+                    bodyweight.pullups.endurance *= 2;
+                    bodyweight.pullups.agility *= 2;
+                    break;
+                case 14:
+                    bodyweight.squats.energy *= 2;
+                    bodyweight.squats.strength *= 2;
+                    bodyweight.squats.endurance *= 2;
+                    bodyweight.squats.agility *= 2;
+                    bodyweight.rdl.energy *= 2;
+                    bodyweight.rdl.strength *= 2;
+                    bodyweight.rdl.endurance *= 2;
+                    bodyweight.rdl.agility *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -2262,105 +2313,107 @@ function jobUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("jobUpgradeBtn")[1]);
         var upgrade = job.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        job.followers -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                job.views += 5000;
-                break;
-            case 1:
-                job.makeVideo.speedModifier *= 2;
-                clearInterval(makeVideoTimerId);
-                setupMakeVideoTimer();
-                break;
-            case 2:
-                job.pushupFollowerMod += .0001;
-                break;
-            case 3:
-                job.rowFollowerMod += .0001;
-                break;
-            case 4:
-                setupBrowseRedditTimer();
-                $("#research-tab").removeClass("d-none");
-                $("#researchText").removeClass("d-none");
-                $("#story").prepend("<div id='story4' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>Why do my followers keep leaving?</strong> I'll browse Reddit for some insights and fitness information. (check research tab)<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-                checks.story4 = true;
-                break;
-            case 5:
-                job.viewGrowth *= 2;
-                break;
-            case 6:
-                job.moneyGrowth *= 2;
-                break;
-            case 7:
-                stats.allStatBoost *= 2;
-                break;
-            case 8:
-                research.browseReddit.intelligence *= 2;
-                research.codeBots.intelligence *= 2;
-                break;
-            case 9:
-                job.viewGrowth *= 2;
-                break;
-            case 10:
-                job.pullupFollowerMod += .0001;
-                break;
-            case 11:
-                job.dipFollowerMod += .0001;
-                break;
-            case 12:
-                job.bwSquatFollowerMod += .0001;
-                break;
-            case 13:
-                job.bwRdlFollowerMod += .0001;
-                break;
-            case 14:
-                job.postFollowerMod += .0001;
-                break;
-            case 15:
-                job.viewGrowth *= 2;
-                break;
-            case 16:
-                job.influencerGrowth *= 2;
-                break;
-            case 17:
-                job.influencerMulti *= 2;
-                break;
-            case 18:
-                job.allStatBoost *= 2;
-                break;
-            case 19:
-                job.influencerGrowth *= 2;
-                break;
-            case 20:
-                job.viewGrowth *= 2;
-                break;
-            case 21:
-                job.viewGrowth *= 2;
-                break;
-            case 22:
-                job.followerGrowth *= 2;
-                break;
-            case 23:
-                research.browseReddit.intelligence *= 2;
-                research.codeBots.intelligence *= 2;
-                break;
-            case 24:
-                job.viewGrowth *= 2;
-                break;
-            case 25:
-                research.pointGrowth *= 2;
-                break;
-            case 26:
-                job.moneyGrowth *= 2;
-                break;
-            case 27:
-                research.pointGrowth *= 2;
-                break;
-            case 28:
-                job.moneyGrowth *= 2;
-                break;
-            default:
+        if (job.followers >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            job.followers -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    job.views += 5000;
+                    break;
+                case 1:
+                    job.makeVideo.speedModifier *= 2;
+                    clearInterval(makeVideoTimerId);
+                    setupMakeVideoTimer();
+                    break;
+                case 2:
+                    job.pushupFollowerMod += .0001;
+                    break;
+                case 3:
+                    job.rowFollowerMod += .0001;
+                    break;
+                case 4:
+                    setupBrowseRedditTimer();
+                    $("#research-tab").removeClass("d-none");
+                    $("#researchText").removeClass("d-none");
+                    $("#story").prepend("<div id='story4' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>Why do my followers keep leaving?</strong> I'll browse Reddit for some insights and fitness information. (check research tab)<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    checks.story4 = true;
+                    break;
+                case 5:
+                    job.viewGrowth *= 2;
+                    break;
+                case 6:
+                    job.moneyGrowth *= 2;
+                    break;
+                case 7:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 8:
+                    research.browseReddit.intelligence *= 2;
+                    research.codeBots.intelligence *= 2;
+                    break;
+                case 9:
+                    job.viewGrowth *= 2;
+                    break;
+                case 10:
+                    job.pullupFollowerMod += .0001;
+                    break;
+                case 11:
+                    job.dipFollowerMod += .0001;
+                    break;
+                case 12:
+                    job.bwSquatFollowerMod += .0001;
+                    break;
+                case 13:
+                    job.bwRdlFollowerMod += .0001;
+                    break;
+                case 14:
+                    job.postFollowerMod += .0001;
+                    break;
+                case 15:
+                    job.viewGrowth *= 2;
+                    break;
+                case 16:
+                    job.influencerGrowth *= 2;
+                    break;
+                case 17:
+                    job.influencerMulti *= 2;
+                    break;
+                case 18:
+                    job.allStatBoost *= 2;
+                    break;
+                case 19:
+                    job.influencerGrowth *= 2;
+                    break;
+                case 20:
+                    job.viewGrowth *= 2;
+                    break;
+                case 21:
+                    job.viewGrowth *= 2;
+                    break;
+                case 22:
+                    job.followerGrowth *= 2;
+                    break;
+                case 23:
+                    research.browseReddit.intelligence *= 2;
+                    research.codeBots.intelligence *= 2;
+                    break;
+                case 24:
+                    job.viewGrowth *= 2;
+                    break;
+                case 25:
+                    research.pointGrowth *= 2;
+                    break;
+                case 26:
+                    job.moneyGrowth *= 2;
+                    break;
+                case 27:
+                    research.pointGrowth *= 2;
+                    break;
+                case 28:
+                    job.moneyGrowth *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
@@ -2370,93 +2423,95 @@ function resUpgradeClick(button) {
         var buttonId = $(button).attr("id");
         var id = parseInt(buttonId.split("resUpgradeBtn")[1]);
         var upgrade = research.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        research.points -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            case 0:
-                job.followerGrowth *= 2;
-                break;
-            case 1:
-                stats.energy.increase *= 2;
-                break;
-            case 2:
-                research.pointGrowth *= 2;
-                break;
-            case 3:
-                job.moneyGrowth *= 2;
-                break;
-            case 4:
-                $("#bwDips").removeClass("d-none");
-                startStop(bodyweight.dips, dipTimerId, true);
-                break;
-            case 5:
-                stats.strengthBoost *= 2;
-                break;
-            case 6:
-                research.pointGrowth *= 2;
-                break;
-            case 7:
-                stats.agilityBoost *= 2;
-                break;
-            case 8:
-                stats.enduranceBoost *= 2;
-                break;
-            case 9:
-                stats.intelligenceBoost *= 2;
-                break;
-            case 10:
-                $("#influencerWrap").removeClass("d-none");
-                setupInfluencerTimer();
-                break;
-            case 11:
-                $("#bwRdl").removeClass("d-none");
-                $("#bwSquats").removeClass("d-none");
-                startStop(bodyweight.squats, bwSquatTimerId, true);
-                startStop(bodyweight.rdl, bwRdlTimerId, true);
-                break;
-            case 12:
-                research.browseReddit.intelligence *= 2;
-                research.codeBots.intelligence *= 2;
-                break;
-            case 13:
-                $("#botWrap").removeClass("d-none");
-                setupCodeBotsTimer();
-                break;
-            case 14:
-                research.botMulti *= 2;
-                break;
-            case 15:
-                research.botGrowth *= 2;
-                break;
-            case 16:
-                research.browseReddit.speedModifier *= 2;
-                clearInterval(browseRedditTimerId);
-                setupBrowseRedditTimer();
-                break;
-            case 17:
-                $("#openGym-tab").removeClass("d-none");
-                $("#story").prepend("<div id='story5' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>I'm so rich and strong now</strong>! It's time to fulfill my dream and open a gym. (check Open Gym tab)<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-                checks.isPrestige = true;
-                checks.story5 = true;
-                updatePrestigeValues();
-                checkPrestigeUpgradeDisable(prestige.upgrades, prestige.current, "globalUpgrade");
-                break;
-            case 18:
-                research.postStrengthMod += 1;
-                break;
-            case 19:
-                stats.allStatBoost *= 2;
-                break;
-            case 20:
-                job.followerGrowth *= 2;
-                break;
-            case 21:
-                job.influencerMulti *= 2;
-                break;
-            case 22:
-                stats.energy.increase *= 2;
-                break;
-            default:
+        if (research.points >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            research.points -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    job.followerGrowth *= 2;
+                    break;
+                case 1:
+                    stats.energy.increase *= 2;
+                    break;
+                case 2:
+                    research.pointGrowth *= 2;
+                    break;
+                case 3:
+                    job.moneyGrowth *= 2;
+                    break;
+                case 4:
+                    $("#bwDips").removeClass("d-none");
+                    startStop(bodyweight.dips, dipTimerId, true);
+                    break;
+                case 5:
+                    stats.strengthBoost *= 2;
+                    break;
+                case 6:
+                    research.pointGrowth *= 2;
+                    break;
+                case 7:
+                    stats.agilityBoost *= 2;
+                    break;
+                case 8:
+                    stats.enduranceBoost *= 2;
+                    break;
+                case 9:
+                    stats.intelligenceBoost *= 2;
+                    break;
+                case 10:
+                    $("#influencerWrap").removeClass("d-none");
+                    setupInfluencerTimer();
+                    break;
+                case 11:
+                    $("#bwRdl").removeClass("d-none");
+                    $("#bwSquats").removeClass("d-none");
+                    startStop(bodyweight.squats, bwSquatTimerId, true);
+                    startStop(bodyweight.rdl, bwRdlTimerId, true);
+                    break;
+                case 12:
+                    research.browseReddit.intelligence *= 2;
+                    research.codeBots.intelligence *= 2;
+                    break;
+                case 13:
+                    $("#botWrap").removeClass("d-none");
+                    setupCodeBotsTimer();
+                    break;
+                case 14:
+                    research.botMulti *= 2;
+                    break;
+                case 15:
+                    research.botGrowth *= 2;
+                    break;
+                case 16:
+                    research.browseReddit.speedModifier *= 2;
+                    clearInterval(browseRedditTimerId);
+                    setupBrowseRedditTimer();
+                    break;
+                case 17:
+                    $("#openGym-tab").removeClass("d-none");
+                    $("#story").prepend("<div id='story5' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>I'm so rich and strong now</strong>! It's time to fulfill my dream and open a gym. (check Open Gym tab)<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    checks.isPrestige = true;
+                    checks.story5 = true;
+                    updatePrestigeValues();
+                    checkPrestigeUpgradeDisable(prestige.upgrades, prestige.current, "globalUpgrade");
+                    break;
+                case 18:
+                    research.postStrengthMod += 1;
+                    break;
+                case 19:
+                    stats.allStatBoost *= 2;
+                    break;
+                case 20:
+                    job.followerGrowth *= 2;
+                    break;
+                case 21:
+                    job.influencerMulti *= 2;
+                    break;
+                case 22:
+                    stats.energy.increase *= 2;
+                    break;
+                default:
+            }
         }
     }
 }
