@@ -25,16 +25,12 @@ var fightGangTimerId;
 
 Patch Notes
 
-    autoclick on upgrades bug, check for price first
-    Autofight gang upgrade - 20pt
-    Autoclick coffee - 15pt
-    update description of marketing manager/nutritionist after updates
 
 TODO:
     stats page to show modifiers for everything - for those math nerds :)
     tell trainer which spot to train, global upgrade - 5pts
     Add disabled attribute to buttons for low/no vision users
-
+    gangs give a little money when beaten
    
 Future
 
@@ -1125,10 +1121,12 @@ function setupOneSecondTimer() {
 }
 
 function autobuyUpgrades(upgradeArray, text, points) {
+    var done = false;
     for (var i = 0; i < upgradeArray.length; i++) {
-        if (!upgradeArray[i].isPurchased && points >= upgradeArray[i].cost) {
+        if (!upgradeArray[i].isPurchased && points >= upgradeArray[i].cost && !done) {
             $("#" + text + "Btn" + upgradeArray[i].id).click();
             points -= upgradeArray[i].cost;
+            done = true;
         }
     }
 }
