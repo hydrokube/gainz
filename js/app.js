@@ -29,7 +29,6 @@ Patch Notes
 TODO:
 
     tell trainer which spot to train, global upgrade - 5pts
-    Add disabled attribute to buttons for low/no vision users
     add changelog
     
    
@@ -391,7 +390,6 @@ function load(button, prestigeCheck, firstLoad) {
         if (trainerFocusUpgrade[0] && trainerFocusUpgrade[0].isPurchased) {
             $(".gymTierFocus").removeClass("d-none");
             focusMemberTier(gym.members.focusId);
-            console.log("test");
         }
     }
 

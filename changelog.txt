@@ -1,0 +1,49 @@
+v.31
+    fixed some language on some of the updates to be more clear
+    more tooltips
+    added member tier income per second column and class multiplier to clarify how money is generated
+    minor adjustments to street workout UI
+    modified absorbing enemy gang to happen at 40% of power instead of 30%
+    New global and bodyweight upgrades (early-mid prestige point upgrade options to speed up early game, auto-coffee, auto-absorb)
+    You now get money from absorbing gangs == their current gang members
+    Added a stats page for nerds, let me know if there's anything else special you want to see here
+    A couple of typos, bug fixes
+    Update text for % boost for nutritionists and marketing managers as they get more powerful
+    New 5pt upgrade to focus training on a specific tier
+    Fixed an issue with importing saves into an environment that has newer upgrades
+    Added changelog
+
+v.30
+
+    Added one view per make video completion regardless of follower count
+    Changed Deload to Open Gym and adjusted UI
+    Added prestige points for global and bodyweight
+    Added upgrade area for prestige global and bodyweight upgrades
+    Added many upgrades for global and bodyweight prestige
+    Added Gym, new upgrades and jobs
+    Added Advertising, new upgrades and jobs
+    Pacing/rebalancing for prestige
+    Added street workout gangs
+    Added confidence points
+    Added importing/exporting saves
+    Added custom art in the left nav
+    Fixed a bug for starting/stopping exercises when you purchase upgrades out of order
+    Updated save paths for production, beta, and local testing to avoid corrupting any production saves for beta testers
+    fixed some language on some of the updates to be more clear
+    more tooltips
+    added member tier income per second column and class multiplier to clarify how money is generated
+    minor adjustments to street workout UI
+    modified absorbing enemy gang to happen at 40% of power instead of 30%
+
+v.20
+
+    Added tooltips
+    Ability to start/stop exercises to focus your energy
+    Dark mode is now default
+    Fixed extreme slow down in background tab
+    Energy refreshes every 500ms instead of 5s, ultimately the same speed on a new game but faster refreshing (will need to prestige or restart to see the change)
+    Added new header
+    Doubled energy cost of exercises when they upgrade
+    Added growth per second for most things
+    Moved scripts local to prevent issues with new browser features
+
