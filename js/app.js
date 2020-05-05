@@ -856,7 +856,7 @@ function fightGang() {
             if (bodyweight.gang.rivalFightPowerTemp < 0) {
                 if (math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .4) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
                     bodyweight.gang.rivals[bodyweight.gang.rivalId].isAbsorbed = true;
-                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence and they brought along $" + bodyweight.gang.rivals[bodyweight.gang.rivalId].members + "! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence and they brought along $" + bodyweight.gang.rivals[bodyweight.gang.rivalId].members.toFixed(2) + "! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
                     stats.money += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
                     bodyweight.gang.members += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
                     
