@@ -23,14 +23,9 @@ var fightGangTimerId;
 
 /* 
 
-Patch Notes
-
-
 TODO:
 
-    tell trainer which spot to train, global upgrade - 5pts
-    add changelog
-    
+ 
    
 Future
 

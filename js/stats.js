@@ -1968,7 +1968,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Sales Reps",
-            desc: "<strong>Cost: 5 Global Points</strong> - Buy sales reps as they become available.",
+            desc: "<strong>Cost: 5 Global Points</strong> - Buy sales reps as they become available (toggle in options tab).",
             cost: 5
         },
         {
@@ -1976,7 +1976,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Trainers",
-            desc: "<strong>Cost: 6 Global Points</strong> - Buy trainers as they become available.",
+            desc: "<strong>Cost: 6 Global Points</strong> - Buy trainers as they become available (toggle in options tab).",
             cost: 6
         },
         {
@@ -1984,7 +1984,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Ad Coordinators",
-            desc: "<strong>Cost: 6 Global Points</strong> - Buy ad coordinators as they become available.",
+            desc: "<strong>Cost: 6 Global Points</strong> - Buy ad coordinators as they become available (toggle in options tab).",
             cost: 6
         },
         {
@@ -1992,7 +1992,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Program Coordinators",
-            desc: "<strong>Cost: 8 Global Points</strong> - Buy program coordinators as they become available.",
+            desc: "<strong>Cost: 8 Global Points</strong> - Buy program coordinators as they become available (toggle in options tab).",
             cost: 8
         },
         {
@@ -2000,7 +2000,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Ad Designers",
-            desc: "<strong>Cost: 8 Global Points</strong> - Buy ad designers as they become available.",
+            desc: "<strong>Cost: 8 Global Points</strong> - Buy ad designers as they become available (toggle in options tab).",
             cost: 8
         },
         {
@@ -2008,7 +2008,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Nutritionists",
-            desc: "<strong>Cost: 10 Global Points</strong> - Buy nutritionists as they become available.",
+            desc: "<strong>Cost: 10 Global Points</strong> - Buy nutritionists as they become available (toggle in options tab).",
             cost: 10
         },
         {
@@ -2016,7 +2016,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Marketing Managers",
-            desc: "<strong>Cost: 10 Global Points</strong> - Buy marketing managers as they become available.",
+            desc: "<strong>Cost: 10 Global Points</strong> - Buy marketing managers as they become available (toggle in options tab).",
             cost: 10
         },
         {
@@ -2104,7 +2104,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Intravenous Coffee",
-            desc: "<strong>Cost: 15 Global Points</strong> - Autoclicks coffee.",
+            desc: "<strong>Cost: 15 Global Points</strong> - Autoclicks coffee (toggle in options tab).",
             cost: 15
         },
         {
@@ -2239,7 +2239,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Autobuy Workout Upgrades",
-                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy workout upgrades as they become available.",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy workout upgrades as they become available (toggle in options tab).",
                 cost: 10
             },
             {
@@ -2247,7 +2247,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Autobuy Gym Upgrades",
-                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy gym upgrades as they become available.",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy gym upgrades as they become available (toggle in options tab).",
                 cost: 10
             },
             {
@@ -2255,7 +2255,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Autobuy Advertising Upgrades",
-                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy advertising upgrades as they become available.",
+                desc: "<strong>Cost: 10 Bodyweight Points</strong> - Buy advertising upgrades as they become available (toggle in options tab).",
                 cost: 10
             },
             {
@@ -2279,7 +2279,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Gang Colors",
-                desc: "<strong>Cost: 15 Bodyweight Points</strong> - Auto-Absorb Gangs.",
+                desc: "<strong>Cost: 15 Bodyweight Points</strong> - Auto-Absorb Gangs (toggle in options tab).",
                 cost: 15
             },
         ]
