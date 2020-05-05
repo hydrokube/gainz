@@ -28,9 +28,13 @@ Patch Notes
 
 TODO:
     stats page to show modifiers for everything - for those math nerds :)
+        all modifier multipliers
+        Each exercise energy + stat boosts
+
+
     tell trainer which spot to train, global upgrade - 5pts
     Add disabled attribute to buttons for low/no vision users
-    gangs give a little money when beaten
+    
    
 Future
 
@@ -852,11 +856,13 @@ function fightGang() {
             if (bodyweight.gang.rivalFightPowerTemp < 0) {
                 if (math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .4) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
                     bodyweight.gang.rivals[bodyweight.gang.rivalId].isAbsorbed = true;
+                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence and they brought along $" + bodyweight.gang.rivals[bodyweight.gang.rivalId].members + "! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                    stats.money += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
                     bodyweight.gang.members += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
-                    $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-
+                    
                     // gain confidence points
                     prestige.bw.confidence += .1;
+                    
                 }
                 else {
                     $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Success!</strong> 10% of their members joined me!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
