@@ -1991,7 +1991,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Autobuy Program Coordinators",
-            desc: "<strong>Cost: 8 Global Points</strong> - Buy ad coordinators as they become available.",
+            desc: "<strong>Cost: 8 Global Points</strong> - Buy program coordinators as they become available.",
             cost: 8
         },
         {
@@ -2106,31 +2106,6 @@ var prestige = {
             desc: "<strong>Cost: 15 Global Points</strong> - Autoclicks coffee.",
             cost: 15
         },
-        // {
-        //     id: 7,
-        //     isActive: false,
-        //     isPurchased: false,
-        //     name: "Unlock Lifting",
-        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock lifting gyms.",
-        //     cost: 5
-        // },
-        // {
-        //     id: 8,
-        //     isActive: false,
-        //     isPurchased: false,
-        //     name: "Unlock Yoga",
-        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock yoga gyms.",
-        //     cost: 5
-        // },
-        // {
-        //     id: 9,
-        //     isActive: false,
-        //     isPurchased: false,
-        //     name: "Unlock Cardio",
-        //     desc: "<strong>Cost: 5 Global Points</strong> - Unlock cardio gyms.",
-        //     cost: 5
-        // },
-
     ],
     bw: {
         current: 0,
