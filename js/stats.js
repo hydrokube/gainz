@@ -37,7 +37,7 @@ var stats = {
     totalYogaPrestige: 0,
     totalCardioPrestige: 0,
     saveTime: 0,
-    gameVersion: .3,
+    gameVersion: .31,
 };
 var bodyweight = {
     pushups: {
@@ -1200,6 +1200,7 @@ var gym = {
         current: 0,
         capacity: 50,
         growth: .01,
+        focusId: 0,
         tiers: [
             {
                 id: 0,
@@ -2105,6 +2106,14 @@ var prestige = {
             name: "Intravenous Coffee",
             desc: "<strong>Cost: 15 Global Points</strong> - Autoclicks coffee.",
             cost: 15
+        },
+        {
+            id: 25,
+            isActive: false,
+            isPurchased: false,
+            name: "Focused Training",
+            desc: "<strong>Cost: 5 Global Points</strong> - Choose which tier to focus on for trainers.",
+            cost: 5
         },
     ],
     bw: {

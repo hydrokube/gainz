@@ -27,13 +27,10 @@ Patch Notes
 
 
 TODO:
-    stats page to show modifiers for everything - for those math nerds :)
-        all modifier multipliers
-        Each exercise energy + stat boosts
-
 
     tell trainer which spot to train, global upgrade - 5pts
     Add disabled attribute to buttons for low/no vision users
+    add changelog
     
    
 Future
@@ -90,6 +87,39 @@ function importSave() {
             var decryptedSave = atob(base64Save);
             if (decryptedSave.includes("stats")) {
                 localStorage.setItem(saveName, decryptedSave);
+
+                // fix issue with upgrades not registering by updating all upgrades before loading
+                bodyweight.upgrades = JSON.parse(JSON.stringify(baseBodyweight.upgrades));
+                upgrades = JSON.parse(JSON.stringify(baseUpgrades));
+                job.upgrades = JSON.parse(JSON.stringify(baseJob.upgrades));
+                research.upgrades = JSON.parse(JSON.stringify(baseResearch.upgrades));
+
+                gym.upgrades = JSON.parse(JSON.stringify(baseGym.upgrades));
+                gym.gymUpgrades = JSON.parse(JSON.stringify(baseGym.gymUpgrades));
+                gym.adUpgrades = JSON.parse(JSON.stringify(baseGym.adUpgrades));
+
+                gym.bw.upgrades = JSON.parse(JSON.stringify(baseGym.bw.upgrades));
+                gym.bw.gymUpgrades = JSON.parse(JSON.stringify(baseGym.bw.gymUpgrades));
+                gym.bw.adUpgrades = JSON.parse(JSON.stringify(baseGym.bw.adUpgrades));
+
+                gym.lifting.upgrades = JSON.parse(JSON.stringify(baseGym.lifting.upgrades));
+                gym.lifting.gymUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.gymUpgrades));
+                gym.lifting.adUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.adUpgrades));
+
+                gym.yoga.upgrades = JSON.parse(JSON.stringify(baseGym.yoga.upgrades));
+                gym.yoga.gymUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.gymUpgrades));
+                gym.yoga.adUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.adUpgrades));
+
+                gym.cardio.upgrades = JSON.parse(JSON.stringify(baseGym.cardio.upgrades));
+                gym.cardio.gymUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.gymUpgrades));
+                gym.cardio.adUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.adUpgrades));
+
+                prestige.upgrades = JSON.parse(JSON.stringify(basePrestige.upgrades));
+                prestige.bw.upgrades = JSON.parse(JSON.stringify(basePrestige.bw.upgrades));
+                prestige.lifting.upgrades = JSON.parse(JSON.stringify(basePrestige.lifting.upgrades));
+                prestige.yoga.upgrades = JSON.parse(JSON.stringify(basePrestige.yoga.upgrades));
+                prestige.cardio.upgrades = JSON.parse(JSON.stringify(basePrestige.cardio.upgrades));
+
                 load($("#loadBtn"), false, false);
             }
             else {
@@ -173,6 +203,7 @@ function loadReset() {
     $("#confidenceWrap").addClass("d-none");
     $("#autoBuyers").html("");
     $("#bodyweightExerciseStats").addClass("d-none");
+    $(".gymTierFocus").addClass("d-none");
 }
 
 function load(button, prestigeCheck, firstLoad) {
@@ -232,7 +263,7 @@ function load(button, prestigeCheck, firstLoad) {
                     $.extend(true, gym, saveData[6]);
                 }
                 else {
-                    gym = JSON.parse(JSON.stringify(baseGym));;
+                    gym = JSON.parse(JSON.stringify(baseGym));
                 }
                 if (saveData[7] != null) {
                     $.extend(true, prestige, saveData[7]);
@@ -354,6 +385,13 @@ function load(button, prestigeCheck, firstLoad) {
         updateAutobuyerToggles();
         if (prestige.bw.confidence > 0) {
             $("#confidenceWrap").removeClass("d-none");
+        }
+
+        var trainerFocusUpgrade = prestige.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 25 });
+        if (trainerFocusUpgrade[0] && trainerFocusUpgrade[0].isPurchased) {
+            $(".gymTierFocus").removeClass("d-none");
+            focusMemberTier(gym.members.focusId);
+            console.log("test");
         }
     }
 
@@ -867,10 +905,10 @@ function fightGang() {
                     $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>All of the " + bodyweight.gang.rivals[bodyweight.gang.rivalId].name + " have joined me now!</strong> I've gained .1 confidence and they brought along $" + bodyweight.gang.rivals[bodyweight.gang.rivalId].members.toFixed(2) + "! On to the next contender.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
                     stats.money += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
                     bodyweight.gang.members += bodyweight.gang.rivals[bodyweight.gang.rivalId].members;
-                    
+
                     // gain confidence points
                     prestige.bw.confidence += .1;
-                    
+
                 }
                 else {
                     $("#gangWinLoseMessage").prepend("<div id='gangWinLoseAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Success!</strong> 10% of their members joined me!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
@@ -1273,6 +1311,9 @@ function newGym(type) {
                 default:
             }
 
+            gym.members.focusId = 0;
+            focusMemberTier(0);
+
             $("#story").prepend("<div id='story6' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>My new gym is open!</strong> I can now train my replacement before opening another franchise location.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
             updatePrestigeValues();
         }
@@ -1436,6 +1477,18 @@ function gymMembersPerSecond() {
     }
 }
 
+function focusMemberTier(tier) {
+    gym.members.focusId = tier;
+    for (var i = 0; i < gym.members.tiers.length; i++) {
+        if (i == tier) {
+            $("#gymFocusTier" + i).html("<em>focused</em>");
+        }
+        else {
+            $("#gymFocusTier" + i).html("<a class='text-info' href='#' onclick='focusMemberTier(" + i + ");'>focus</a>");
+        }
+    }
+}
+
 function trainMembersFormula() {
     return math.evaluate(gym.trainMembers.trainAmount * gym.employees.trainers.current * ((gym.employees.nutritionists.current * gym.employees.nutritionists.boost) + 1) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1) * ((prestige.bw.confidence * prestige.bw.confidenceBoost) + 1));
 }
@@ -1468,7 +1521,7 @@ function setupTrainerTimer() {
             gym.trainMembers.total += 1;
             // implement training
             var totalToTrain = trainMembersFormula();
-            for (var i = 0; i < gym.members.tiers.length; i++) {
+            for (var i = gym.members.focusId; i < gym.members.tiers.length; i++) {
                 if (totalToTrain > 0) {
                     if (i != 8) {
                         if (gym.members.tiers[i].current >= totalToTrain) {
@@ -1993,6 +2046,10 @@ function globalUpgradeClick(button, prestigeCheck) {
                 checks.coffeeClicker = true;
                 checks.coffeeClickerOn = true;
                 updateAutobuyerToggles();
+                break;
+            case 25:
+                $(".gymTierFocus").removeClass("d-none");
+                focusMemberTier(0);
                 break;
             default:
         }
