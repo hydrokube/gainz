@@ -172,6 +172,7 @@ function loadReset() {
     $("#gangCompleteWrap").addClass("d-none");
     $("#confidenceWrap").addClass("d-none");
     $("#autoBuyers").html("");
+    $("#bodyweightExerciseStats").addClass("d-none");
 }
 
 function load(button, prestigeCheck, firstLoad) {
@@ -255,6 +256,7 @@ function load(button, prestigeCheck, firstLoad) {
 
     if (checks.gymType == -1 || checks.gymType == 0) {
         startStop(bodyweight.pushups, pushupTimerId, true);
+        $("#bodyweightExerciseStats").removeClass("d-none");
     }
 
     if (checks.gymType == 0) {
@@ -461,6 +463,12 @@ var refreshId = setInterval(function () {
     stats.agility < 1000000 ? $("#agility").html(stats.agility.toFixed(2)) : $("#agility").html(math.format(stats.agility, 3));
     stats.intelligence < 1000000 ? $("#intelligence").html(stats.intelligence.toFixed(2)) : $("#intelligence").html(math.format(stats.intelligence, 3));
 
+    $("#strengthMod").html(math.evaluate((stats.strength * stats.strengthBoost) + 1).toFixed(2));
+    $("#enduranceMod").html(math.evaluate((stats.endurance * stats.enduranceBoost) + 1).toFixed(2));
+    $("#agilityMod").html(math.evaluate((stats.agility * stats.agilityBoost) + 1).toFixed(2));
+    $("#intMod").html(math.evaluate((stats.intelligence * stats.intelligenceBoost) + 1).toFixed(2));
+    $("#allMod").html(math.evaluate((((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1)).toFixed(2));
+
     if (checks.gymType == -1 || checks.gymType == 0) {
         bodyweight.pushups.isStopped ? $("#startStopPushups").html("Start").removeClass("text-danger") : $("#startStopPushups").html("Stop").addClass("text-danger")
         bodyweight.rows.isStopped ? $("#startStopRows").html("Start").removeClass("text-danger") : $("#startStopRows").html("Stop").addClass("text-danger")
@@ -469,12 +477,12 @@ var refreshId = setInterval(function () {
         bodyweight.squats.isStopped ? $("#startStopBwSquats").html("Start").removeClass("text-danger") : $("#startStopBwSquats").html("Stop").addClass("text-danger")
         bodyweight.rdl.isStopped ? $("#startStopBwRdls").html("Start").removeClass("text-danger") : $("#startStopBwRdls").html("Stop").addClass("text-danger")
 
-        refreshProgressBars("pushup", bodyweight.pushups);
-        refreshProgressBars("row", bodyweight.rows);
-        refreshProgressBars("dip", bodyweight.dips);
-        refreshProgressBars("pullup", bodyweight.pullups);
-        refreshProgressBars("bwSquat", bodyweight.squats);
-        refreshProgressBars("bwRdl", bodyweight.rdl);
+        refreshProgressBarsAndStats("pushup", bodyweight.pushups);
+        refreshProgressBarsAndStats("row", bodyweight.rows);
+        refreshProgressBarsAndStats("dip", bodyweight.dips);
+        refreshProgressBarsAndStats("pullup", bodyweight.pullups);
+        refreshProgressBarsAndStats("bwSquat", bodyweight.squats);
+        refreshProgressBarsAndStats("bwRdl", bodyweight.rdl);
     }
 
     if (checks.gymType == -1) {
@@ -1140,10 +1148,15 @@ function autobuyEmployees(employee, text) {
     }
 }
 
-function refreshProgressBars(text, exercise) {
+function refreshProgressBarsAndStats(text, exercise) {
     $("#" + text + "Progress").css("width", ((exercise.current / exercise.max) * 100) + "%");
     $("#" + text + "UpgradeProgress").css("width", ((exercise.total / exercise.tiers[exercise.tier].upgrade) * 100) + "%");
     $("#" + text + "Text").html(exercise.tiers[exercise.tier].name);
+    $("#" + text + "Energy").html(exercise.energy);
+    $("#" + text + "Strength").html(math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
+    $("#" + text + "Endurance").html(math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
+    $("#" + text + "Agility").html(math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
+    exercise.total < 1000000 ? $("#" + text + "Total").html(exercise.total.toFixed(2)) : $("#" + text + "Total").html(math.format(exercise.total, 3));
 }
 
 function toggleAlert(alert) {

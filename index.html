@@ -77,6 +77,10 @@
                             aria-controls="openGymTab" aria-selected="false">Open Gym</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="stats-tab" data-toggle="tab" href="#statsTab" role="tab"
+                            aria-controls="statsTab" aria-selected="false">Stats</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="options-tab" data-toggle="tab" href="#optionsTab" role="tab"
                             aria-controls="optionsTab" aria-selected="false">Options</a>
                     </li>
@@ -114,8 +118,9 @@
 
                 <div id="confidenceWrap" class="d-none">
                     <a href="#" data-toggle="tooltip" class="text-info"
-                        title="Each point gives a 1% boost to all gym functions, but only after you buy a bodyweight upgrade. Confidence is permanent and doesn't reset on prestige." data-html="true"
-                        onclick="toggleAlert(this);">Confidence:</a> <span id="confidence"></span><br /><br />
+                        title="Each point gives a 1% boost to all gym functions, but only after you buy a bodyweight upgrade. Confidence is permanent and doesn't reset on prestige."
+                        data-html="true" onclick="toggleAlert(this);">Confidence:</a> <span
+                        id="confidence"></span><br /><br />
                 </div>
 
                 Money: <span id="money"></span><br />
@@ -248,8 +253,8 @@
                         <div class="row">
                             <div class="col">
                                 <a href="#" data-toggle="tooltip" class="text-warning"
-                                title="Each bar fill gives followers and views. Followers generate views, but you always get 1 view per bar fill."
-                                data-html="true" onclick="toggleAlert(this);">Make YouTube Videos About Exercise</a>
+                                    title="Each bar fill gives followers and views. Followers generate views, but you always get 1 view per bar fill."
+                                    data-html="true" onclick="toggleAlert(this);">Make YouTube Videos About Exercise</a>
                                 <div class="progress">
                                     <div class="progress-bar bg-success" id="makeVideoProgress" role="progressbar"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -270,8 +275,8 @@
                                 </p>
                                 <div id="influencerWrap" class="d-none">
                                     <a href="#" data-toggle="tooltip" class="text-warning"
-                                    title="Each bar fill gives influencers."
-                                    data-html="true" onclick="toggleAlert(this);">Recruit Influencers</a>
+                                        title="Each bar fill gives influencers." data-html="true"
+                                        onclick="toggleAlert(this);">Recruit Influencers</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="influencerProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
@@ -322,9 +327,10 @@
                                 <p> <a href="#" data-toggle="tooltip" class="text-info"
                                         title="Each class increases money per member." data-html="true"
                                         onclick="toggleAlert(this);">Classes:</a> <span id="classes"></span><br />
-                                        <a href="#" data-toggle="tooltip" class="text-info"
-                                        title="Each member's money per second is multiplied by this amount." data-html="true"
-                                        onclick="toggleAlert(this);">Class Multiplier on Money/s:</a> <span id="classMulti"></span></p>
+                                    <a href="#" data-toggle="tooltip" class="text-info"
+                                        title="Each member's money per second is multiplied by this amount."
+                                        data-html="true" onclick="toggleAlert(this);">Class Multiplier on Money/s:</a>
+                                    <span id="classMulti"></span></p>
                                 <strong> <a href="#" data-toggle="tooltip" class="text-info"
                                         title="Each member class earns more money than the one before." data-html="true"
                                         onclick="toggleAlert(this);">Member Breakdown</a></strong>
@@ -342,7 +348,7 @@
                                     <tr>
                                         <td>Novice</td>
                                         <td><span id="gymMemberTier2"></span></td>
-                                        <td><span id="gymAmountTier2"></span></td> 
+                                        <td><span id="gymAmountTier2"></span></td>
                                     </tr>
                                     <tr>
                                         <td>Intermediate</td>
@@ -429,8 +435,8 @@
                             <div class="row">
                                 <div class="col">
                                     <a href="#" data-toggle="tooltip" class="text-warning"
-                                    title="Each bar fill gives campaigns and intelligence. <br /><br />Base intelligence: .05"
-                                    data-html="true" onclick="toggleAlert(this);">Running Ad Campaigns</a>
+                                        title="Each bar fill gives campaigns and intelligence. <br /><br />Base intelligence: .05"
+                                        data-html="true" onclick="toggleAlert(this);">Running Ad Campaigns</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="runCampaignProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -447,8 +453,8 @@
                                             id="campaignGrowth"></span>
                                     </p>
                                     <a href="#" data-toggle="tooltip" class="text-warning"
-                                    title="Each bar fill gives ads and intelligence. <br /><br />Base intelligence: .1"
-                                    data-html="true" onclick="toggleAlert(this);">Designing Ads</a>
+                                        title="Each bar fill gives ads and intelligence. <br /><br />Base intelligence: .1"
+                                        data-html="true" onclick="toggleAlert(this);">Designing Ads</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="designAdProgress" role="progressbar"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -503,7 +509,8 @@
                                 <div class="col">
                                     <a href="#" data-toggle="tooltip" class="text-warning"
                                         title="Each bar fill gives posts and intelligence. <br /><br />Base intelligence: .05"
-                                        data-html="true" onclick="toggleAlert(this);">Browse Reddit Posts About Fitness</a>
+                                        data-html="true" onclick="toggleAlert(this);">Browse Reddit Posts About
+                                        Fitness</a>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" id="browseRedditProgress"
                                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10">
@@ -520,8 +527,8 @@
                                     </p>
                                     <div id="botWrap" class="d-none">
                                         <a href="#" data-toggle="tooltip" class="text-warning"
-                                        title="Each bar fill gives bots and intelligence. <br /><br />Base intelligence: .1"
-                                        data-html="true" onclick="toggleAlert(this);">Code Bots</a>
+                                            title="Each bar fill gives bots and intelligence. <br /><br />Base intelligence: .1"
+                                            data-html="true" onclick="toggleAlert(this);">Code Bots</a>
                                         <div class="progress">
                                             <div class="progress-bar bg-success" id="codeBotsProgress"
                                                 role="progressbar" aria-valuenow="0" aria-valuemin="0"
@@ -648,12 +655,15 @@
                                     Game</button>
                                 <br />
                                 <br />
-                                <button type="button" id="exportBtn" class="btn btn-primary" onclick="exportSave()">Export Save</button><br />
-                                <p>Copy/paste the text below into a different browser to import, or save it to a text file for safe keeping.</p>
+                                <button type="button" id="exportBtn" class="btn btn-primary"
+                                    onclick="exportSave()">Export Save</button><br />
+                                <p>Copy/paste the text below into a different browser to import, or save it to a text
+                                    file for safe keeping.</p>
                                 <div class="form-group">
                                     <textarea class="form-control" id="exportImportArea" rows="6"></textarea>
-                                  </div>
-                                  <button type="button" id="importBtn" class="btn btn-danger" onclick="importSave()">Import Save</button><br /><br />
+                                </div>
+                                <button type="button" id="importBtn" class="btn btn-danger"
+                                    onclick="importSave()">Import Save</button><br /><br />
                                 <div id="saveWrapper"></div>
                                 <div id="loadWrapper"></div>
                                 <div id="resetWrapper"></div>
@@ -680,25 +690,25 @@
                                     <button type='button' id="editGangNameBtn" class="btn btn-primary"
                                         onclick="changeGangName()">Submit</button>
                                 </div>
-                                
+
                                 <button type='button' id="editGangNameBtn" class="btn btn-primary"
-                                onclick="addGangStrength()">Train Gang</button> &nbsp;&nbsp;
+                                    onclick="addGangStrength()">Train Gang</button> &nbsp;&nbsp;
                                 <button type='button' id="editGangNameBtn" class="btn btn-primary"
-                                onclick="addGangMembers()">Recruit Members</button><br /><br />
+                                    onclick="addGangMembers()">Recruit Members</button><br /><br />
                                 <table class="table table-sm">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th> <a href="#" data-toggle="tooltip" class="text-info"
-                                                title="Strength * Members" data-html="true"
-                                                onclick="toggleAlert(this);">Gang Power</a></th>
+                                                    title="Strength * Members" data-html="true"
+                                                    onclick="toggleAlert(this);">Gang Power</a></th>
                                             <th><span id="gangPower"></span></th>
                                         </tr>
                                     </thead>
                                     <tr>
                                         <td>
                                             <a href="#" data-toggle="tooltip" class="text-info"
-                                            title="Strength accumulates over time and is affected by the strength stat" data-html="true"
-                                            onclick="toggleAlert(this);">Gang Strength</a>
+                                                title="Strength accumulates over time and is affected by the strength stat"
+                                                data-html="true" onclick="toggleAlert(this);">Gang Strength</a>
                                         </td>
                                         <td>
                                             <span id="gangStrength"></span>
@@ -707,8 +717,8 @@
                                     <tr>
                                         <td>
                                             <a href="#" data-toggle="tooltip" class="text-info"
-                                            title="Members accumulate over time and is affected by the intelligence stat." data-html="true"
-                                            onclick="toggleAlert(this);">Gang Members</a>
+                                                title="Members accumulate over time and is affected by the intelligence stat."
+                                                data-html="true" onclick="toggleAlert(this);">Gang Members</a>
                                         </td>
                                         <td>
                                             <span id="gangMembers"></span>
@@ -734,16 +744,16 @@
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th> <a href="#" data-toggle="tooltip" class="text-info"
-                                                    title="Strength * Members" data-html="true"
-                                                    onclick="toggleAlert(this);">Gang Power</a></th>
+                                                        title="Strength * Members" data-html="true"
+                                                        onclick="toggleAlert(this);">Gang Power</a></th>
                                                 <th><span id="rivalGangPower"></span></th>
                                             </tr>
                                         </thead>
                                         <tr>
                                             <td>
                                                 <a href="#" data-toggle="tooltip" class="text-info"
-                                                title="Strength accumulates over time, faster for more difficult rivals." data-html="true"
-                                                onclick="toggleAlert(this);">Gang Strength</a>
+                                                    title="Strength accumulates over time, faster for more difficult rivals."
+                                                    data-html="true" onclick="toggleAlert(this);">Gang Strength</a>
                                             </td>
                                             <td>
                                                 <span id="rivalGangStrength"></span>
@@ -752,8 +762,8 @@
                                         <tr>
                                             <td>
                                                 <a href="#" data-toggle="tooltip" class="text-info"
-                                                title="Members accumulate over time, faster for more difficult rivals." data-html="true"
-                                                onclick="toggleAlert(this);">Gang Members</a>
+                                                    title="Members accumulate over time, faster for more difficult rivals."
+                                                    data-html="true" onclick="toggleAlert(this);">Gang Members</a>
                                             </td>
                                             <td>
                                                 <span id="rivalGangMembers"></span>
@@ -762,12 +772,114 @@
                                     </table>
                                     <button type='button' id="gangFightBtn" class="btn btn-primary btn-block"
                                         onclick="fightGang()">Fight Gang</button>
-                                        <br />
-                                        <div id="gangWinLoseMessage"></div>
+                                    <br />
+                                    <div id="gangWinLoseMessage"></div>
 
                                 </div>
                                 <div id="gangCompleteWrap" class="d-none">
-                                    <p>You have successfully vanquished all other street workout gangs. Your gang now consists of a variety of strange individuals all focused on getting gainz.</p>
+                                    <p>You have successfully vanquished all other street workout gangs. Your gang now
+                                        consists of a variety of strange individuals all focused on getting gainz.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="statsTab" role="tabpanel" aria-labelledby="stats-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <h5>Modifiers</h5>
+                                <ul>
+                                    <li><span class="text-info"><span id="strengthMod"></span>x strength modifier</span>. Strength modifier helps:
+                                        <ul>
+                                            <li>Exercise progressions to go up faster (multiplier * 1 for number of
+                                                reps)</li>
+                                            <li>Posts to go up faster, pre-prestige</li>
+                                            <li>Street workout gang strength to go up faster, post-prestige</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="text-info"><span id="enduranceMod"></span>x endurance modifier</span>. Endurance modifier helps:
+                                        <ul>
+                                            <li>Energy max</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="text-info"><span id="agilityMod"></span>x agility modifier</span>. Agility modifier helps:
+                                        <ul>
+                                            <li>Energy recovery</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="text-info"><span id="intMod"></span>x intelligence modifier</span>. Intelligence modifier helps:
+                                        <ul>
+                                            <li>All stat gain from exercise and research/advertising</li>
+                                            <li>Street workout gang members to go up faster, post-prestige</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="text-info"><span id="allMod"></span>x all stat modifier</span>. All stat modifier helps:
+                                        <ul>
+                                            <li>Follower growth, pre-prestige</li>
+                                            <li>All gym and advertising jobs except nutritionists and marketing
+                                                managers, post-prestige</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <h5>Exercises</h5>
+                                <div id="bodyweightExerciseStats" class="d-none">
+                                    <ul>
+                                        <li>Pushups
+                                            <ul>
+                                                <li>Energy: <span id="pushupEnergy"></span></li>
+                                                <li>Strength: <span id="pushupStrength"></span></li>
+                                                <li>Endurance: <span id="pushupEndurance"></span></li>
+                                                <li>Agility: <span id="pushupAgility"></span></li>
+                                                <li>Total Reps: <span id="pushupTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                        <li>Rows
+                                            <ul>
+                                                <li>Energy: <span id="rowEnergy"></span></li>
+                                                <li>Strength: <span id="rowStrength"></span></li>
+                                                <li>Endurance: <span id="rowEndurance"></span></li>
+                                                <li>Agility: <span id="rowAgility"></span></li>
+                                                <li>Total Reps: <span id="rowTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                        <li>Dips
+                                            <ul>
+                                                <li>Energy: <span id="dipEnergy"></span></li>
+                                                <li>Strength: <span id="dipStrength"></span></li>
+                                                <li>Endurance: <span id="dipEndurance"></span></li>
+                                                <li>Agility: <span id="dipAgility"></span></li>
+                                                <li>Total Reps: <span id="dipTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                        <li>Pullups
+                                            <ul>
+                                                <li>Energy: <span id="pullupEnergy"></span></li>
+                                                <li>Strength: <span id="pullupStrength"></span></li>
+                                                <li>Endurance: <span id="pullupEndurance"></span></li>
+                                                <li>Agility: <span id="pullupAgility"></span></li>
+                                                <li>Total Reps: <span id="pullupTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                        <li>Squats
+                                            <ul>
+                                                <li>Energy: <span id="bwSquatEnergy"></span></li>
+                                                <li>Strength: <span id="bwSquatStrength"></span></li>
+                                                <li>Endurance: <span id="bwSquatEndurance"></span></li>
+                                                <li>Agility: <span id="bwSquatAgility"></span></li>
+                                                <li>Total Reps: <span id="bwSquatTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                        <li>Romanian Deadlifts
+                                            <ul>
+                                                <li>Energy: <span id="bwRdlEnergy"></span></li>
+                                                <li>Strength: <span id="bwRdlStrength"></span></li>
+                                                <li>Endurance: <span id="bwRdlEndurance"></span></li>
+                                                <li>Agility: <span id="bwRdlAgility"></span></li>
+                                                <li>Total Reps: <span id="bwRdlTotal"></span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
