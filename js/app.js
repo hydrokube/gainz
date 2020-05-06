@@ -175,6 +175,7 @@ function load(button, prestigeCheck, firstLoad) {
         var saveData = JSON.parse(localStorage.getItem(saveName));
 
         // fix issue with upgrades not registering by updating all upgrades before loading
+
         bodyweight.upgrades = JSON.parse(JSON.stringify(baseBodyweight.upgrades));
         upgrades = JSON.parse(JSON.stringify(baseUpgrades));
         job.upgrades = JSON.parse(JSON.stringify(baseJob.upgrades));
@@ -206,6 +207,8 @@ function load(button, prestigeCheck, firstLoad) {
         prestige.yoga.upgrades = JSON.parse(JSON.stringify(basePrestige.yoga.upgrades));
         prestige.cardio.upgrades = JSON.parse(JSON.stringify(basePrestige.cardio.upgrades));
 
+        //console.log(prestige.upgrades);
+
         if (button != null) {
             loadReset();
         }
@@ -213,39 +216,39 @@ function load(button, prestigeCheck, firstLoad) {
         try {
             if (saveData != null) {
                 if (saveData[5].gymType == -1) {
-                    updateUpgradesAfterLoad(bodyweight.upgrades, saveData[1].upgrades);
-                    updateUpgradesAfterLoad(upgrades, saveData[2]);
-                    updateUpgradesAfterLoad(job.upgrades, saveData[3].upgrades);
-                    updateUpgradesAfterLoad(research.upgrades, saveData[4].upgrades);
+                    saveData[1].upgrades = updateUpgradesAfterLoad(bodyweight.upgrades, saveData[1].upgrades);
+                    saveData[2] = updateUpgradesAfterLoad(upgrades, saveData[2]);
+                    saveData[3].upgrades = updateUpgradesAfterLoad(job.upgrades, saveData[3].upgrades);
+                    saveData[4].upgrades = updateUpgradesAfterLoad(research.upgrades, saveData[4].upgrades);
                 }
                 else {
                     if (saveData[6] != null) {
-                        updateUpgradesAfterLoad(gym.upgrades, saveData[6].upgrades);
-                        updateUpgradesAfterLoad(gym.gymUpgrades, saveData[6].gymUpgrades);
-                        updateUpgradesAfterLoad(gym.adUpgrades, saveData[6].adUpgrades);
+                        saveData[6].upgrades = updateUpgradesAfterLoad(gym.upgrades, saveData[6].upgrades);
+                        saveData[6].gymUpgrades = updateUpgradesAfterLoad(gym.gymUpgrades, saveData[6].gymUpgrades);
+                        saveData[6].adUpgrades = updateUpgradesAfterLoad(gym.adUpgrades, saveData[6].adUpgrades);
 
-                        updateUpgradesAfterLoad(gym.bw.upgrades, saveData[6].bw.upgrades);
-                        updateUpgradesAfterLoad(gym.bw.gymUpgrades, saveData[6].bw.gymUpgrades);
-                        updateUpgradesAfterLoad(gym.bw.adUpgrades, saveData[6].bw.adUpgrades);
+                        saveData[6].bw.upgrades = updateUpgradesAfterLoad(gym.bw.upgrades, saveData[6].bw.upgrades);
+                        saveData[6].bw.gymUpgrades = updateUpgradesAfterLoad(gym.bw.gymUpgrades, saveData[6].bw.gymUpgrades);
+                        saveData[6].bw.adUpgrades = updateUpgradesAfterLoad(gym.bw.adUpgrades, saveData[6].bw.adUpgrades);
 
-                        updateUpgradesAfterLoad(gym.lifting.upgrades, saveData[6].lifting.upgrades);
-                        updateUpgradesAfterLoad(gym.lifting.gymUpgrades, saveData[6].lifting.gymUpgrades);
-                        updateUpgradesAfterLoad(gym.lifting.adUpgrades, saveData[6].lifting.adUpgrades);
+                        saveData[6].lifting.upgrades = updateUpgradesAfterLoad(gym.lifting.upgrades, saveData[6].lifting.upgrades);
+                        saveData[6].lifting.gymUpgrades = updateUpgradesAfterLoad(gym.lifting.gymUpgrades, saveData[6].lifting.gymUpgrades);
+                        saveData[6].lifting.adUpgrades = updateUpgradesAfterLoad(gym.lifting.adUpgrades, saveData[6].lifting.adUpgrades);
 
-                        updateUpgradesAfterLoad(gym.yoga.upgrades, saveData[6].yoga.upgrades);
-                        updateUpgradesAfterLoad(gym.yoga.gymUpgrades, saveData[6].yoga.gymUpgrades);
-                        updateUpgradesAfterLoad(gym.yoga.adUpgrades, saveData[6].yoga.adUpgrades);
+                        saveData[6].yoga.upgrades = updateUpgradesAfterLoad(gym.yoga.upgrades, saveData[6].yoga.upgrades);
+                        saveData[6].yoga.gymUpgrades = updateUpgradesAfterLoad(gym.yoga.gymUpgrades, saveData[6].yoga.gymUpgrades);
+                        saveData[6].yoga.adUpgrades = updateUpgradesAfterLoad(gym.yoga.adUpgrades, saveData[6].yoga.adUpgrades);
 
-                        updateUpgradesAfterLoad(gym.cardio.upgrades, saveData[6].cardio.upgrades);
-                        updateUpgradesAfterLoad(gym.cardio.gymUpgrades, saveData[6].cardio.gymUpgrades);
-                        updateUpgradesAfterLoad(gym.cardio.adUpgrades, saveData[6].cardio.adUpgrades);
+                        saveData[6].cardio.upgrades = updateUpgradesAfterLoad(gym.cardio.upgrades, saveData[6].cardio.upgrades);
+                        saveData[6].cardio.gymUpgrades = updateUpgradesAfterLoad(gym.cardio.gymUpgrades, saveData[6].cardio.gymUpgrades);
+                        saveData[6].cardio.adUpgrades = updateUpgradesAfterLoad(gym.cardio.adUpgrades, saveData[6].cardio.adUpgrades);
                     }
                     if (saveData[7] != null) {
-                        updateUpgradesAfterLoad(prestige.upgrades, saveData[7].upgrades);
-                        updateUpgradesAfterLoad(prestige.bw.upgrades, saveData[7].bw.upgrades);
-                        updateUpgradesAfterLoad(prestige.lifting.upgrades, saveData[7].lifting.upgrades);
-                        updateUpgradesAfterLoad(prestige.yoga.upgrades, saveData[7].yoga.upgrades);
-                        updateUpgradesAfterLoad(prestige.cardio.upgrades, saveData[7].cardio.upgrades);
+                        saveData[7].upgrades = updateUpgradesAfterLoad(prestige.upgrades, saveData[7].upgrades);
+                        saveData[7].bw.upgrades = updateUpgradesAfterLoad(prestige.bw.upgrades, saveData[7].bw.upgrades);
+                        saveData[7].lifting.upgrades = updateUpgradesAfterLoad(prestige.lifting.upgrades, saveData[7].lifting.upgrades);
+                        saveData[7].yoga.upgrades = updateUpgradesAfterLoad(prestige.yoga.upgrades, saveData[7].yoga.upgrades);
+                        saveData[7].cardio.upgrades = updateUpgradesAfterLoad(prestige.cardio.upgrades, saveData[7].cardio.upgrades);
                     }
                 }
 
@@ -781,15 +784,46 @@ function writeAllPrestigeUpgrades(array1, divText, text1, function1, points) {
 
 function updateUpgradesAfterLoad(upgradeArray, saveDataArray) {
     try {
+        var purchasedArray = [];
+        var purchased = false;
+        var active = false;
         for (var i = 0; upgradeArray.length > i; i++) {
+            purchased = false;
+            active = false;
             for (var j = 0; saveDataArray.length > j; j++) {
                 if (upgradeArray[i].id == saveDataArray[j].id) {
-                    saveDataArray[j].name = upgradeArray[i].name;
-                    saveDataArray[j].desc = upgradeArray[i].desc;
-                    saveDataArray[j].cost = upgradeArray[i].cost;
+                    if (saveDataArray[j].isPurchased) {
+                        purchased = true;
+                    }
+                    if (saveDataArray[j].isActive) {
+                        active = true;
+                    }
+                    if (purchased || active) {
+                        var valueToPush = new Array();
+                        valueToPush[0] = upgradeArray[i].id;
+                        valueToPush[1] = saveDataArray[j].isPurchased;
+                        valueToPush[2] = saveDataArray[j].isActive
+                        purchasedArray.push(valueToPush);
+                    }
                 }
             }
         }
+        saveDataArray = JSON.parse(JSON.stringify(upgradeArray));
+
+        for (var i = 0; saveDataArray.length > i; i++) {
+            for (var j = 0; purchasedArray.length > j; j++) {
+                if (saveDataArray[i].id == purchasedArray[j][0]) {
+                    if (purchasedArray[j][1] == true) {
+                        saveDataArray[i].isPurchased = true;
+                    }
+                    if (purchasedArray[j][2] == true) {
+                        saveDataArray[i].isActive = true;
+                    }
+                }
+            }
+        }
+        upgradeArray = JSON.parse(JSON.stringify(saveDataArray));
+        return upgradeArray;
     }
     catch (ex) {
         console.log(ex);
