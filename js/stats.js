@@ -37,7 +37,7 @@ var stats = {
     totalYogaPrestige: 0,
     totalCardioPrestige: 0,
     saveTime: 0,
-    gameVersion: .32,
+    gameVersion: .33,
 };
 var bodyweight = {
     pushups: {
