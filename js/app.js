@@ -25,7 +25,9 @@ var fightGangTimerId;
 
 TODO:
 
- 
+    gang stat adjustment
+    10k manager upgrade replace
+    infinity stats + saving/importing/exporting?
    
 Future
 
@@ -1760,6 +1762,9 @@ function adUpgradeClick(button) {
                     break;
                 case 19:
                     stats.energy.increase *= 2;
+                    break;
+                case 20:
+                    gym.advertising.employees.managers.boost *= 2;
                     break;
                 default:
             }

@@ -1503,7 +1503,7 @@ var gym = {
             isActive: false,
             isPurchased: false,
             name: "Manager Training",
-            desc: "<strong>Cost: 10000 influence</strong> - Managers are twice as effective.",
+            desc: "<strong>Cost: 10000 influence</strong> - Marketing managers are twice as effective.",
             cost: 10000,
         },
         {
@@ -1553,6 +1553,14 @@ var gym = {
             name: "Teach Bulking",
             desc: "<strong>Cost: 250 influence</strong> - Eat big to get big. Doubles energy recovery.",
             cost: 250,
+        },
+        {
+            id: 20,
+            isActive: false,
+            isPurchased: false,
+            name: "Manager Training",
+            desc: "<strong>Cost: 1000 influence</strong> - Marketing managers are twice as effective.",
+            cost: 1000,
         },
     ],
     gymUpgrades: [
