@@ -1,3 +1,7 @@
+v.32
+    fixed a saving/importing/loading bug that could cause duplicate prestige upgrades that were broken
+    lowered last three gang rival's strength and members 1.5x of the previous isntead of 2x so that gangs are completed sooner in a run
+
 v.31
     fixed some language on some of the updates to be more clear
     more tooltips
