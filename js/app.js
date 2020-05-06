@@ -82,38 +82,6 @@ function importSave() {
             if (decryptedSave.includes("stats")) {
                 localStorage.setItem(saveName, decryptedSave);
 
-                // fix issue with upgrades not registering by updating all upgrades before loading
-                bodyweight.upgrades = JSON.parse(JSON.stringify(baseBodyweight.upgrades));
-                upgrades = JSON.parse(JSON.stringify(baseUpgrades));
-                job.upgrades = JSON.parse(JSON.stringify(baseJob.upgrades));
-                research.upgrades = JSON.parse(JSON.stringify(baseResearch.upgrades));
-
-                gym.upgrades = JSON.parse(JSON.stringify(baseGym.upgrades));
-                gym.gymUpgrades = JSON.parse(JSON.stringify(baseGym.gymUpgrades));
-                gym.adUpgrades = JSON.parse(JSON.stringify(baseGym.adUpgrades));
-
-                gym.bw.upgrades = JSON.parse(JSON.stringify(baseGym.bw.upgrades));
-                gym.bw.gymUpgrades = JSON.parse(JSON.stringify(baseGym.bw.gymUpgrades));
-                gym.bw.adUpgrades = JSON.parse(JSON.stringify(baseGym.bw.adUpgrades));
-
-                gym.lifting.upgrades = JSON.parse(JSON.stringify(baseGym.lifting.upgrades));
-                gym.lifting.gymUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.gymUpgrades));
-                gym.lifting.adUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.adUpgrades));
-
-                gym.yoga.upgrades = JSON.parse(JSON.stringify(baseGym.yoga.upgrades));
-                gym.yoga.gymUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.gymUpgrades));
-                gym.yoga.adUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.adUpgrades));
-
-                gym.cardio.upgrades = JSON.parse(JSON.stringify(baseGym.cardio.upgrades));
-                gym.cardio.gymUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.gymUpgrades));
-                gym.cardio.adUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.adUpgrades));
-
-                prestige.upgrades = JSON.parse(JSON.stringify(basePrestige.upgrades));
-                prestige.bw.upgrades = JSON.parse(JSON.stringify(basePrestige.bw.upgrades));
-                prestige.lifting.upgrades = JSON.parse(JSON.stringify(basePrestige.lifting.upgrades));
-                prestige.yoga.upgrades = JSON.parse(JSON.stringify(basePrestige.yoga.upgrades));
-                prestige.cardio.upgrades = JSON.parse(JSON.stringify(basePrestige.cardio.upgrades));
-
                 load($("#loadBtn"), false, false);
             }
             else {
@@ -203,6 +171,38 @@ function loadReset() {
 function load(button, prestigeCheck, firstLoad) {
     if (!prestigeCheck) {
         var saveData = JSON.parse(localStorage.getItem(saveName));
+
+        // fix issue with upgrades not registering by updating all upgrades before loading
+        bodyweight.upgrades = JSON.parse(JSON.stringify(baseBodyweight.upgrades));
+        upgrades = JSON.parse(JSON.stringify(baseUpgrades));
+        job.upgrades = JSON.parse(JSON.stringify(baseJob.upgrades));
+        research.upgrades = JSON.parse(JSON.stringify(baseResearch.upgrades));
+
+        gym.upgrades = JSON.parse(JSON.stringify(baseGym.upgrades));
+        gym.gymUpgrades = JSON.parse(JSON.stringify(baseGym.gymUpgrades));
+        gym.adUpgrades = JSON.parse(JSON.stringify(baseGym.adUpgrades));
+
+        gym.bw.upgrades = JSON.parse(JSON.stringify(baseGym.bw.upgrades));
+        gym.bw.gymUpgrades = JSON.parse(JSON.stringify(baseGym.bw.gymUpgrades));
+        gym.bw.adUpgrades = JSON.parse(JSON.stringify(baseGym.bw.adUpgrades));
+
+        gym.lifting.upgrades = JSON.parse(JSON.stringify(baseGym.lifting.upgrades));
+        gym.lifting.gymUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.gymUpgrades));
+        gym.lifting.adUpgrades = JSON.parse(JSON.stringify(baseGym.lifting.adUpgrades));
+
+        gym.yoga.upgrades = JSON.parse(JSON.stringify(baseGym.yoga.upgrades));
+        gym.yoga.gymUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.gymUpgrades));
+        gym.yoga.adUpgrades = JSON.parse(JSON.stringify(baseGym.yoga.adUpgrades));
+
+        gym.cardio.upgrades = JSON.parse(JSON.stringify(baseGym.cardio.upgrades));
+        gym.cardio.gymUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.gymUpgrades));
+        gym.cardio.adUpgrades = JSON.parse(JSON.stringify(baseGym.cardio.adUpgrades));
+
+        prestige.upgrades = JSON.parse(JSON.stringify(basePrestige.upgrades));
+        prestige.bw.upgrades = JSON.parse(JSON.stringify(basePrestige.bw.upgrades));
+        prestige.lifting.upgrades = JSON.parse(JSON.stringify(basePrestige.lifting.upgrades));
+        prestige.yoga.upgrades = JSON.parse(JSON.stringify(basePrestige.yoga.upgrades));
+        prestige.cardio.upgrades = JSON.parse(JSON.stringify(basePrestige.cardio.upgrades));
 
         if (button != null) {
             loadReset();
