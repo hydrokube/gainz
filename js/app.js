@@ -103,7 +103,7 @@ function save() {
     let saveData = [stats, bodyweight, upgrades, job, research, checks, gym, prestige, null, null, null, null, null, null, null, null, null, null, null, null];
     localStorage.setItem(saveName, JSON.stringify(saveData));
 
-    //$("#saveWrapper").html("<div id='saveAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Saved</strong><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>")
+    $("#saveWrapper").html("<div id='saveAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Saved</strong><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>")
     $("#saveAlert").alert();
     setTimeout(function () {
         $("#saveAlert").alert('close');
@@ -206,8 +206,6 @@ function load(button, prestigeCheck, firstLoad) {
         prestige.lifting.upgrades = JSON.parse(JSON.stringify(basePrestige.lifting.upgrades));
         prestige.yoga.upgrades = JSON.parse(JSON.stringify(basePrestige.yoga.upgrades));
         prestige.cardio.upgrades = JSON.parse(JSON.stringify(basePrestige.cardio.upgrades));
-
-        //console.log(prestige.upgrades);
 
         if (button != null) {
             loadReset();
