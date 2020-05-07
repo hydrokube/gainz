@@ -27,7 +27,19 @@ var refreshId;
 TODO:
 
     infinity stats + saving/importing/exporting?
-   
+        main stats
+        energy
+        classes
+        money
+        influence
+        campaigns
+        ads
+        gang strength
+        gang power
+        gang members
+        
+    fix formatting of stats page with high numbers
+
 Future
 
     lifting
@@ -498,11 +510,17 @@ function setupRefresh() {
         stats.agility < 1000000 ? $("#agility").html(stats.agility.toFixed(2)) : $("#agility").html(math.format(stats.agility, 3));
         stats.intelligence < 1000000 ? $("#intelligence").html(stats.intelligence.toFixed(2)) : $("#intelligence").html(math.format(stats.intelligence, 3));
 
-        $("#strengthMod").html(math.evaluate((stats.strength * stats.strengthBoost) + 1).toFixed(2));
-        $("#enduranceMod").html(math.evaluate((stats.endurance * stats.enduranceBoost) + 1).toFixed(2));
-        $("#agilityMod").html(math.evaluate((stats.agility * stats.agilityBoost) + 1).toFixed(2));
-        $("#intMod").html(math.evaluate((stats.intelligence * stats.intelligenceBoost) + 1).toFixed(2));
-        $("#allMod").html(math.evaluate((((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1)).toFixed(2));
+        let strengthMod = math.evaluate((stats.strength * stats.strengthBoost) + 1);
+        let enduranceMod = math.evaluate((stats.endurance * stats.enduranceBoost) + 1);
+        let agilitymod = math.evaluate((stats.agility * stats.agilityBoost) + 1);
+        let intMod = math.evaluate((stats.intelligence * stats.intelligenceBoost) + 1);
+        let allMod = math.evaluate((((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
+
+        strengthMod < 1000000 ? $("#strengthMod").html(strengthMod.toFixed(2)) : $("#strengthMod").html(math.format(strengthMod, 3));
+        enduranceMod < 1000000 ? $("#enduranceMod").html(enduranceMod.toFixed(2)) : $("#enduranceMod").html(math.format(enduranceMod, 3));
+        agilitymod < 1000000 ? $("#agilityMod").html(agilitymod.toFixed(2)) : $("#agilityMod").html(math.format(agilitymod, 3));
+        intMod < 1000000 ? $("#intMod").html(intMod.toFixed(2)) : $("#intMod").html(math.format(intMod, 3));
+        allMod < 1000000 ? $("#allMod").html(allMod.toFixed(2)) : $("#allMod").html(math.format(allMod, 3));
 
         if (checks.gymType == -1 || checks.gymType == 0) {
             bodyweight.pushups.isStopped ? $("#startStopPushups").html("Start").removeClass("text-danger") : $("#startStopPushups").html("Stop").addClass("text-danger")
@@ -1104,6 +1122,9 @@ function exerciseTick(exercise) {
         }
         else {
             exercise.total += math.evaluate(1 + (stats.strength * stats.strengthBoost));
+            if (exercise.total > 1e200) {
+                exercise.total = 1e200;
+            }
             if (exercise.total > exercise.tiers[exercise.tier].upgrade && exercise.tier != 4) {
                 exercise.strength *= exercise.tiers[exercise.tier].multiplier;
                 exercise.endurance *= exercise.tiers[exercise.tier].multiplier;
@@ -1112,8 +1133,17 @@ function exerciseTick(exercise) {
                 exercise.tier += 1;
             }
             stats.strength += math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            if (stats.strength > 1e200) {
+                stats.strength = 1e200;
+            }
             stats.endurance += math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            if (stats.endurance > 1e200) {
+                stats.endurance = 1e200;
+            }
             stats.agility += math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            if (stats.agility > 1e200) {
+                stats.agility = 1e200;
+            }
             exercise.current = 0;
         }
     }
@@ -1135,15 +1165,34 @@ function setupOneSecondTimer() {
         }
         else {
             stats.money += gymMoneyPerSecond();
+            if (stats.money > 1e200) {
+                stats.money = 1e200;
+            }
             gym.advertising.influence += gymInfluencePerSecond();
+            if (gym.advertising.influence > 1e200) {
+                gym.advertising.influence = 1e200;
+            }
+
             let totalToAdd = gymMembersPerSecond();
             gym.members.current += totalToAdd;
             gym.members.tiers[0].current += totalToAdd;
             gym.advertising.campaignGrowth += gymCampaignGrowthPerSecond();
 
+            if (gym.advertising.campaignGrowth > 1e200) {
+                gym.advertising.campaignGrowth = 1e200;
+            }
+
             // street gang
             bodyweight.gang.strength += math.evaluate(bodyweight.gang.strengthAmount * ((stats.strength * stats.strengthBoost) + 1) * bodyweight.gang.on);
+            if (bodyweight.gang.strength > 1e100) {
+                bodyweight.gang.strength = 1e100;
+            }
+
             bodyweight.gang.members += math.evaluate(bodyweight.gang.memberAmount * ((stats.intelligence * stats.intelligenceBoost) + 1) * bodyweight.gang.on);
+            if (bodyweight.gang.members > 1e100) {
+                bodyweight.gang.members = 1e100;
+            }
+
 
             for (let i = 0; i < bodyweight.gang.rivals.length; i++) {
                 bodyweight.gang.rivals[i].strength += bodyweight.gang.rivals[i].strengthAmount * bodyweight.gang.on;
@@ -1216,13 +1265,17 @@ function autobuyEmployees(employee, text) {
 }
 
 function refreshProgressBarsAndStats(text, exercise) {
+
+    let strength = math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1));
+    let endurance = math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1));
+    let agility = math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1));
     $("#" + text + "Progress").css("width", ((exercise.current / exercise.max) * 100) + "%");
     $("#" + text + "UpgradeProgress").css("width", ((exercise.total / exercise.tiers[exercise.tier].upgrade) * 100) + "%");
     $("#" + text + "Text").html(exercise.tiers[exercise.tier].name);
     $("#" + text + "Energy").html(exercise.energy);
-    $("#" + text + "Strength").html(math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
-    $("#" + text + "Endurance").html(math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
-    $("#" + text + "Agility").html(math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1)).toFixed(2));
+    strength < 1000000 ? $("#" + text + "Strength").html(strength.toFixed(2)) : $("#" + text + "Strength").html(math.format(strength, 3));
+    endurance < 1000000 ? $("#" + text + "Endurance").html(endurance.toFixed(2)) : $("#" + text + "Endurance").html(math.format(endurance, 3));
+    agility < 1000000 ? $("#" + text + "Agility").html(agility.toFixed(2)) : $("#" + text + "Agility").html(math.format(agility, 3));
     exercise.total < 1000000 ? $("#" + text + "Total").html(exercise.total.toFixed(2)) : $("#" + text + "Total").html(math.format(exercise.total, 3));
 }
 
@@ -1486,7 +1539,13 @@ function gymAdsPerSecond() {
     return math.evaluate(gymAdFormula() / ((gym.designAds.max / increase) / (gym.designAds.speed / 1000)));
 }
 function gymCampaignFormula() {
-    return math.evaluate(gym.advertising.campaignGrowth * gym.advertising.employees.coordinators.current * ((gym.advertising.employees.managers.current * gym.advertising.employees.managers.boost) + 1) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
+    let total = math.evaluate(gym.advertising.campaignGrowth * gym.advertising.employees.coordinators.current * ((gym.advertising.employees.managers.current * gym.advertising.employees.managers.boost) + 1) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
+    if (total > 1e200) {
+        return 1e200;
+    }
+    else {
+        return total;
+    }
 }
 function gymAdFormula() {
     return math.evaluate(gym.advertising.adGrowth * gym.advertising.employees.designers.current * ((gym.advertising.employees.managers.current * gym.advertising.employees.managers.boost) + 1) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
@@ -1509,11 +1568,13 @@ function gymMembersPerSecond() {
 function focusMemberTier(tier) {
     gym.members.focusId = tier;
     for (let i = 0; i < gym.members.tiers.length; i++) {
-        if (i == tier) {
-            $("#gymFocusTier" + i).html("<em>focused</em>");
-        }
-        else {
-            $("#gymFocusTier" + i).html("<a class='text-info' href='#' onclick='focusMemberTier(" + i + ");'>focus</a>");
+        if (i != 8) {
+            if (i == tier) {
+                $("#gymFocusTier" + i).html("<em>focused</em>");
+            }
+            else {
+                $("#gymFocusTier" + i).html("<a class='text-info' href='#' onclick='focusMemberTier(" + i + ");'>focus</a>");
+            }
         }
     }
 }
@@ -1550,6 +1611,7 @@ function setupTrainerTimer() {
             gym.trainMembers.total += 1;
             // implement training
             let totalToTrain = trainMembersFormula();
+            let totalToTrainOriginal = trainMembersFormula();
             for (let i = gym.members.focusId; i < gym.members.tiers.length; i++) {
                 if (totalToTrain > 0) {
                     if (i != 8) {
@@ -1562,6 +1624,11 @@ function setupTrainerTimer() {
                             totalToTrain -= gym.members.tiers[i].current;
                             gym.members.tiers[i + 1].current += gym.members.tiers[i].current;
                             gym.members.tiers[i].current = 0;
+                        }
+                    }
+                    else {
+                        if (totalToTrain == totalToTrainOriginal) {
+                            focusMemberTier(0);
                         }
                     }
                 }
@@ -1581,6 +1648,9 @@ function setupClassesTimer() {
         else {
             gym.createClasses.total += 1;
             gym.classes += createClassesFormula();
+            if (gym.classes > 1e200) {
+                gym.classes = 1e200;
+            }
             gym.createClasses.current = 0;
         }
     }, gym.createClasses.speed / gym.createClasses.speedModifier);
@@ -1595,7 +1665,13 @@ function setupCampaignTimer() {
         else {
             gym.runCampaigns.total += 1;
             gym.advertising.campaigns += gymCampaignFormula();
+            if (gym.advertising.campaigns > 1e200) {
+                gym.advertising.campaigns = 1e200;
+            }
             stats.intelligence += math.evaluate(gym.runCampaigns.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            if (stats.intelligence > 1e200) {
+                stats.intelligence = 1e200;
+            }
             gym.runCampaigns.current = 0;
         }
     }, gym.runCampaigns.speed / gym.runCampaigns.speedModifier);
@@ -1610,7 +1686,13 @@ function setupAdTimer() {
         else {
             gym.designAds.total += 1;
             gym.advertising.ads += gymAdFormula();
+            if (gym.advertising.ads > 1e200) {
+                gym.advertising.ads = 1e200;
+            }
             stats.intelligence += math.evaluate(gym.designAds.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            if (stats.intelligence > 1e200) {
+                stats.intelligence = 1e200;
+            }
             gym.designAds.current = 0;
         }
     }, gym.designAds.speed / gym.designAds.speedModifier);

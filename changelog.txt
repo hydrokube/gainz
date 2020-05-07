@@ -1,11 +1,20 @@
-v.33
+v.34 - 5/7/2020
+
+    fixed stat page formatting for large numbers
+    locked most stats at 1e200 to reduce possible corruption issues resulting from exporting/importing when numbers are at infinity
+    changed trainer focus to turn off if you have no one left to train in that focused area
+
+v.33 - 5/6/2020
+
     fixed autobuyers turning back on after prestige
 
-v.32
+v.32 - 5/6/2020
+
     fixed a saving/importing/loading bug that could cause duplicate prestige upgrades that were broken
     lowered last three gang rival's strength and members 1.5x of the previous isntead of 2x so that gangs are completed sooner in a run
 
-v.31
+v.31 - 5/5/2020
+
     fixed some language on some of the updates to be more clear
     more tooltips
     added member tier income per second column and class multiplier to clarify how money is generated
@@ -20,7 +29,7 @@ v.31
     Fixed an issue with importing saves into an environment that has newer upgrades
     Added changelog
 
-v.30
+v.30 - 4/30/2020
 
     Added one view per make video completion regardless of follower count
     Changed Deload to Open Gym and adjusted UI
@@ -42,7 +51,7 @@ v.30
     minor adjustments to street workout UI
     modified absorbing enemy gang to happen at 40% of power instead of 30%
 
-v.20
+v.20 - 4/24/2020
 
     Added tooltips
     Ability to start/stop exercises to focus your energy
