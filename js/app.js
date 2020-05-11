@@ -20,33 +20,25 @@ var designAdTimerId;
 var fightGangTimerId;
 var refreshId;
 
+var liftingBenchTimerId;
+var liftingRowTimerId;
+var liftingOhpTimerId;
+var liftingSquatsTimerId;
+var liftingDlsTimerId;
+var liftingCurlsTimerId;
+
 //#region notes
 
 /* 
 
 TODO:
 
-    infinity stats + saving/importing/exporting?
-        main stats
-        energy
-        classes
-        money
-        influence
-        campaigns
-        ads
-        gang strength
-        gang power
-        gang members
-        
-    fix formatting of stats page with high numbers
+    consider a spending area for the special 4 stats?
+    world class prestige?
+    gang fights closer in a larger range?
 
 Future
 
-    lifting
-        run comps 
-        leadership stat that increases the stat growth of all proteges
-        competitions will give you money
-        each upgrade gives 1.01* the energy cost and stat boost
     yoga
         Run through routines and different types of yoga
         Flexibility that increases a stat or resource of your choice, unlock ability to add another eventually. 
@@ -112,7 +104,32 @@ function importSave() {
 function save() {
     let date = new Date();
     stats.saveTime = date.getTime();
-    let saveData = [stats, bodyweight, upgrades, job, research, checks, gym, prestige, null, null, null, null, null, null, null, null, null, null, null, null];
+
+    let bodyweightPrep = JSON.parse(JSON.stringify(bodyweight));
+    let upgradesPrep = JSON.parse(JSON.stringify(upgrades));
+    let jobPrep = JSON.parse(JSON.stringify(job));
+    let researchPrep = JSON.parse(JSON.stringify(research));
+    let gymPrep = JSON.parse(JSON.stringify(gym));
+    let prestigePrep = JSON.parse(JSON.stringify(prestige));
+
+    trimUpgradeSaveData(bodyweightPrep.upgrades);
+    trimUpgradeSaveData(upgradesPrep);
+    trimUpgradeSaveData(jobPrep.upgrades);
+    trimUpgradeSaveData(researchPrep.upgrades);
+    trimUpgradeSaveData(gymPrep.upgrades);
+    trimUpgradeSaveData(gymPrep.gymUpgrades);
+    trimUpgradeSaveData(gymPrep.adUpgrades);
+    trimUpgradeSaveData(gymPrep.bw.upgrades);
+    trimUpgradeSaveData(gymPrep.bw.gymUpgrades);
+    trimUpgradeSaveData(gymPrep.bw.adUpgrades);
+    trimUpgradeSaveData(gymPrep.lifting.upgrades);
+    trimUpgradeSaveData(gymPrep.lifting.gymUpgrades);
+    trimUpgradeSaveData(gymPrep.lifting.adUpgrades);
+    trimUpgradeSaveData(prestigePrep.upgrades);
+    trimUpgradeSaveData(prestigePrep.bw.upgrades);
+    trimUpgradeSaveData(prestigePrep.lifting.upgrades);
+
+    let saveData = [stats, bodyweightPrep, upgradesPrep, jobPrep, researchPrep, checks, gymPrep, prestigePrep, lifting, null, null, null, null, null, null, null, null, null, null, null];
     localStorage.setItem(saveName, JSON.stringify(saveData));
 
     $("#saveWrapper").html("<div id='saveAlert' class='alert alert-success alert-dismissible fade show' role='alert'><strong>Saved</strong><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>")
@@ -141,6 +158,12 @@ function loadReset() {
     clearInterval(runCampaignTimerId);
     clearInterval(designAdTimerId);
     clearInterval(fightGangTimerId);
+    clearInterval(liftingBenchTimerId);
+    clearInterval(liftingRowTimerId);
+    clearInterval(liftingOhpTimerId);
+    clearInterval(liftingSquatsTimerId);
+    clearInterval(liftingDlsTimerId);
+    clearInterval(liftingCurlsTimerId);
     $("#work-tab").addClass("d-none");
     $("#followerWrap").addClass("d-none");
     $("#research-tab").addClass("d-none");
@@ -162,6 +185,7 @@ function loadReset() {
     $("#resUpgrades").html("");
     $("#globalUpgrades").html("");
     $("#globalBwUpgrades").html("");
+    $("#globalLiftingUpgrades").html("");
     $("#gymUpgrades").html("");
     $("#gymBwUpgrades").html("");
     $("#adUpgrades").html("");
@@ -174,12 +198,18 @@ function loadReset() {
     $("#phase1Research").removeClass("d-none");
     $("#phase2Research").addClass("d-none");
     $("#gang-tab").addClass("d-none");
+    $("#comp-tab").addClass("d-none");
     $("#gangRivalWrap").removeClass("d-none");
     $("#gangCompleteWrap").addClass("d-none");
     $("#confidenceWrap").addClass("d-none");
+    $("#leadershipWrap").addClass("d-none");
     $("#autoBuyers").html("");
-    $("#bodyweightExerciseStats").addClass("d-none");
     $(".gymTierFocus").addClass("d-none");
+    $("#bwWorkoutWrap").addClass("d-none");
+    $("#liftingWorkoutWrap").addClass("d-none");
+    $("#globalLiftingUpgradesModalTrigger").addClass("d-none");
+    $("#newGymLifting").addClass("d-none");
+    $("#createCompBtn").removeClass("d-none");
 }
 
 function load(button, prestigeCheck, firstLoad) {
@@ -187,7 +217,6 @@ function load(button, prestigeCheck, firstLoad) {
         let saveData = JSON.parse(localStorage.getItem(saveName));
 
         // fix issue with upgrades not registering by updating all upgrades before loading
-
         bodyweight.upgrades = JSON.parse(JSON.stringify(baseBodyweight.upgrades));
         upgrades = JSON.parse(JSON.stringify(baseUpgrades));
         job.upgrades = JSON.parse(JSON.stringify(baseJob.upgrades));
@@ -253,13 +282,14 @@ function load(button, prestigeCheck, firstLoad) {
                         saveData[6].cardio.gymUpgrades = updateUpgradesAfterLoad(gym.cardio.gymUpgrades, saveData[6].cardio.gymUpgrades);
                         saveData[6].cardio.adUpgrades = updateUpgradesAfterLoad(gym.cardio.adUpgrades, saveData[6].cardio.adUpgrades);
                     }
-                    if (saveData[7] != null) {
-                        saveData[7].upgrades = updateUpgradesAfterLoad(prestige.upgrades, saveData[7].upgrades);
-                        saveData[7].bw.upgrades = updateUpgradesAfterLoad(prestige.bw.upgrades, saveData[7].bw.upgrades);
-                        saveData[7].lifting.upgrades = updateUpgradesAfterLoad(prestige.lifting.upgrades, saveData[7].lifting.upgrades);
-                        saveData[7].yoga.upgrades = updateUpgradesAfterLoad(prestige.yoga.upgrades, saveData[7].yoga.upgrades);
-                        saveData[7].cardio.upgrades = updateUpgradesAfterLoad(prestige.cardio.upgrades, saveData[7].cardio.upgrades);
-                    }
+                }
+
+                if (saveData[7] != null) {
+                    saveData[7].upgrades = updateUpgradesAfterLoad(prestige.upgrades, saveData[7].upgrades);
+                    saveData[7].bw.upgrades = updateUpgradesAfterLoad(prestige.bw.upgrades, saveData[7].bw.upgrades);
+                    saveData[7].lifting.upgrades = updateUpgradesAfterLoad(prestige.lifting.upgrades, saveData[7].lifting.upgrades);
+                    saveData[7].yoga.upgrades = updateUpgradesAfterLoad(prestige.yoga.upgrades, saveData[7].yoga.upgrades);
+                    saveData[7].cardio.upgrades = updateUpgradesAfterLoad(prestige.cardio.upgrades, saveData[7].cardio.upgrades);
                 }
 
                 $.extend(true, stats, saveData[0]);
@@ -280,6 +310,12 @@ function load(button, prestigeCheck, firstLoad) {
                 else {
                     prestige = JSON.parse(JSON.stringify(basePrestige));
                 }
+                if (saveData[8] != null) {
+                    $.extend(true, lifting, saveData[8]);
+                }
+                else {
+                    lifting = JSON.parse(JSON.stringify(baseLifting));
+                }
             }
         }
         catch (ex) {
@@ -296,7 +332,7 @@ function load(button, prestigeCheck, firstLoad) {
 
     if (checks.gymType == -1 || checks.gymType == 0) {
         startStop(bodyweight.pushups, pushupTimerId, true);
-        $("#bodyweightExerciseStats").removeClass("d-none");
+        $("#bwWorkoutWrap").removeClass("d-none");
     }
 
     if (checks.gymType == 0) {
@@ -395,16 +431,26 @@ function load(button, prestigeCheck, firstLoad) {
         if (prestige.bw.confidence > 0) {
             $("#confidenceWrap").removeClass("d-none");
         }
+        if (prestige.lifting.leadership > 0) {
+            $("#leadershipWrap").removeClass("d-none");
+        }
 
         let trainerFocusUpgrade = prestige.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 25 });
         if (trainerFocusUpgrade[0] && trainerFocusUpgrade[0].isPurchased) {
             $(".gymTierFocus").removeClass("d-none");
             focusMemberTier(gym.members.focusId);
         }
+
+        let liftingGymUpgrade = prestige.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 26 });
+        if (liftingGymUpgrade[0] && liftingGymUpgrade[0].isPurchased) {
+            $("#globalLiftingUpgradesModalTrigger").removeClass("d-none");
+            $("#newGymLifting").removeClass("d-none");
+        }
     }
 
     writeAllPrestigeUpgrades(prestige.upgrades, "globalUpgrades", "globalUpgrade", "globalUpgradeClick", prestige.current);
     writeAllPrestigeUpgrades(prestige.bw.upgrades, "globalBwUpgrades", "globalBwUpgrade", "globalBwUpgradeClick", prestige.bw.current);
+    writeAllPrestigeUpgrades(prestige.lifting.upgrades, "globalLiftingUpgrades", "globalLiftingUpgrade", "globalLiftingUpgradeClick", prestige.lifting.current);
 
     switch (checks.gymType) {
         case 0:
@@ -414,6 +460,22 @@ function load(button, prestigeCheck, firstLoad) {
             if (prestige.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
                 $("#gang-tab").removeClass("d-none");
                 $("#gangName").html(bodyweight.gang.name);
+            }
+            break;
+        case 1:
+            $("#liftingWorkoutWrap").removeClass("d-none");
+            startStop(lifting.bench, liftingBenchTimerId, true);
+            startStop(lifting.rows, liftingRowTimerId, true);
+            startStop(lifting.ohp, liftingOhpTimerId, true);
+            startStop(lifting.squats, liftingSquatsTimerId, true);
+            startStop(lifting.dls, liftingDlsTimerId, true);
+            startStop(lifting.curls, liftingCurlsTimerId, true);
+
+            writeAllUpgrades(gym.upgrades, gym.lifting.upgrades, "upgrades", "upgrade", "liftingUpgrade", "phase2UpgradeClick", "phase2LiftingUpgradeClick");
+            writeAllUpgrades(gym.gymUpgrades, gym.lifting.gymUpgrades, "gymUpgrades", "gymUpgrade", "gymLiftingUpgrade", "gymUpgradeClick", "gymLiftingUpgradeClick");
+            writeAllUpgrades(gym.adUpgrades, gym.lifting.adUpgrades, "adUpgrades", "adUpgrade", "adLiftingUpgrade", "adUpgradeClick", "adLiftingUpgradeClick");
+            if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
+                $("#comp-tab").removeClass("d-none");
             }
             break;
         default:
@@ -530,12 +592,28 @@ function setupRefresh() {
             bodyweight.squats.isStopped ? $("#startStopBwSquats").html("Start").removeClass("text-danger") : $("#startStopBwSquats").html("Stop").addClass("text-danger")
             bodyweight.rdl.isStopped ? $("#startStopBwRdls").html("Start").removeClass("text-danger") : $("#startStopBwRdls").html("Stop").addClass("text-danger")
 
-            refreshProgressBarsAndStats("pushup", bodyweight.pushups);
-            refreshProgressBarsAndStats("row", bodyweight.rows);
-            refreshProgressBarsAndStats("dip", bodyweight.dips);
-            refreshProgressBarsAndStats("pullup", bodyweight.pullups);
-            refreshProgressBarsAndStats("bwSquat", bodyweight.squats);
-            refreshProgressBarsAndStats("bwRdl", bodyweight.rdl);
+            let finalMessage = "Energy and stat growth is doubled every progression.";
+            refreshProgressBarsAndStats("pushup", bodyweight.pushups, "Incline Pushups -> Pushups -> Diamond Pushups -> Pseudo Planche Pushups -> Planche Pushups<br /><br />", finalMessage);
+            refreshProgressBarsAndStats("row", bodyweight.rows, "Incline Rows -> Horizontal Rows -> Tuck Front Lever Rows -> Advanced Tuck Front Lever Rows -> Front Lever Rows<br /><br />", finalMessage);
+            refreshProgressBarsAndStats("dip", bodyweight.dips, "Support Holds -> Dip Negatives -> Dips -> Ring Dips -> Rings Turned-Out Dips<br /><br />", finalMessage);
+            refreshProgressBarsAndStats("pullup", bodyweight.pullups, "Arch Hangs -> Pullup Negatives -> Pullups -> Assisted One-Arm Pullups -> One-Arm Pullups<br /><br />", finalMessage);
+            refreshProgressBarsAndStats("bwSquat", bodyweight.squats, "Assisted Squat -> Squat -> Split Squat -> Bulgarian Split Squat -> Pistol Squat<br /><br />", finalMessage);
+            refreshProgressBarsAndStats("bwRdl", bodyweight.rdl, "Romanian Deadlifts (No Weight) -> Single-Legged Deadlifts -> Banded Nordic Curl Negatives -> Banded Nordic Curls -> Nordic Curls<br /><br />", finalMessage);
+        }
+        else if (checks.gymType == 1) {
+            lifting.bench.isStopped ? $("#startStopLiftingBench").html("Start").removeClass("text-danger") : $("#startStopLiftingBench").html("Stop").addClass("text-danger");
+            lifting.rows.isStopped ? $("#startStopLiftingRow").html("Start").removeClass("text-danger") : $("#startStopLiftingRow").html("Stop").addClass("text-danger")
+            lifting.ohp.isStopped ? $("#startStopliftingOhp").html("Start").removeClass("text-danger") : $("#startStopliftingOhp").html("Stop").addClass("text-danger")
+            lifting.squats.isStopped ? $("#startStopliftingSquats").html("Start").removeClass("text-danger") : $("#startStopliftingSquats").html("Stop").addClass("text-danger")
+            lifting.dls.isStopped ? $("#startStopliftingDls").html("Start").removeClass("text-danger") : $("#startStopliftingDls").html("Stop").addClass("text-danger")
+            lifting.curls.isStopped ? $("#startStopliftingCurls").html("Start").removeClass("text-danger") : $("#startStopliftingCurls").html("Stop").addClass("text-danger")
+            let finalMessage = "Energy and stat growth are multiplied by 1.02 each weight increase.";
+            refreshProgressBarsAndStats("liftingBench", lifting.bench, "", finalMessage);
+            refreshProgressBarsAndStats("liftingRow", lifting.rows, "", finalMessage);
+            refreshProgressBarsAndStats("liftingOhp", lifting.ohp, "", finalMessage);
+            refreshProgressBarsAndStats("liftingSquats", lifting.squats, "", finalMessage);
+            refreshProgressBarsAndStats("liftingDls", lifting.dls, "", finalMessage);
+            refreshProgressBarsAndStats("liftingCurls", lifting.curls, "", finalMessage);
         }
 
         if (checks.gymType == -1) {
@@ -625,11 +703,9 @@ function setupRefresh() {
             gymAdsPerSecond() < 1000000 ? $("#adsDesigned").append(" <span class='text-success'>(" + gymAdsPerSecond().toFixed(3) + "/s)</span>") : $("#adsDesigned").append(" <span class='text-success'>(" + math.format(gymAdsPerSecond(), 3) + "/s)</span>");
 
             checkUpgradeDisable(gym.upgrades, stats.money, "upgrade", false);
-            checkUpgradeDisable(gym.bw.upgrades, stats.money, "bwUpgrade", false);
+
             checkUpgradeDisable(gym.gymUpgrades, stats.money, "gymUpgrade", false);
-            checkUpgradeDisable(gym.bw.gymUpgrades, stats.money, "gymBwUpgrade", false);
             checkUpgradeDisable(gym.adUpgrades, gym.advertising.influence, "adUpgrade", false);
-            checkUpgradeDisable(gym.bw.adUpgrades, gym.advertising.influence, "adBwUpgrade", false);
 
             checkEmployeeDisable(gym.employees.sales, stats.money, "sales");
             checkEmployeeDisable(gym.employees.trainers, stats.money, "trainer");
@@ -647,6 +723,11 @@ function setupRefresh() {
             }
             prestige.bw.confidence < 1000000 ? $("#confidence").html(prestige.bw.confidence.toFixed(2)) : $("#confidence").html(math.format(prestige.bw.confidence, 3));
 
+            if (prestige.lifting.leadership > 0) {
+                $("#leadershipWrap").removeClass("d-none");
+            }
+            prestige.lifting.leadership < 1000000 ? $("#leadership").html(prestige.lifting.leadership.toFixed(2)) : $("#leadership").html(math.format(prestige.lifting.leadership, 3));
+
             for (let i = 0; i < gym.members.tiers.length; i++) {
                 let amountAtTier = math.evaluate(gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1)))));
                 $("#gymMemberTier" + i).html(gym.members.tiers[i].current.toFixed(3));
@@ -656,8 +737,29 @@ function setupRefresh() {
             let classMulti = math.evaluate((gym.classes * gym.money.classMultiplier) + 1)
             classMulti < 1000000 ? $("#classMulti").html(classMulti.toFixed(3) + "x") : $("#classMulti").html(math.format(classMulti, 3) + "x");
 
-            if (prestige.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
-                writeGangInfo();
+            switch (checks.gymType) {
+                case 0:
+                    if (prestige.bw.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
+                        writeGangInfo();
+                    }
+                    checkUpgradeDisable(gym.bw.upgrades, stats.money, "bwUpgrade", false);
+                    checkUpgradeDisable(gym.bw.gymUpgrades, stats.money, "gymBwUpgrade", false);
+                    checkUpgradeDisable(gym.bw.adUpgrades, gym.advertising.influence, "adBwUpgrade", false);
+                    break;
+                case 1:
+                    checkUpgradeDisable(gym.lifting.upgrades, stats.money, "liftingUpgrade", false);
+                    checkUpgradeDisable(gym.lifting.gymUpgrades, stats.money, "gymliftingUpgrade", false);
+                    checkUpgradeDisable(gym.lifting.adUpgrades, gym.advertising.influence, "adliftingUpgrade", false);
+                    checkLiftingCompDisable(lifting.comps.conferences, "liftingLocalConference", null, null);
+                    checkLiftingCompDisable(lifting.comps.regionalConferences, "liftingRegionalConference", lifting.comps.conferences, "liftingLocalConference");
+                    checkLiftingCompDisable(lifting.comps.stateConferences, "liftingStateConference", lifting.comps.regionalConferences, "liftingRegionalConference");
+                    checkLiftingCompDisable(lifting.comps.nationalConferences, "liftingNationalConference", lifting.comps.stateConferences, "liftingStateConference");
+                    checkLiftingCompDisable(lifting.comps.worldConferences, "liftingWorldConference", lifting.comps.nationalConferences, "liftingNationalConference");
+                    if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
+                        writeCompInfo();
+                    }
+                    break;
+                default:
             }
         }
     }, 50);
@@ -724,11 +826,21 @@ function setupCoffeeTimer() {
 
 //#region generic functions
 
+function trimUpgradeSaveData(upgradeArray) {
+    for (let i = 0; i < upgradeArray.length; i++) {
+        upgradeArray[i].name = "";
+        upgradeArray[i].desc = "";
+    }
+}
+
 function writeAllUpgrades(array1, array2, divText, text1, text2, function1, function2) {
     tempUpgrades = array1;
     if (array2 != null) {
         tempUpgrades = tempUpgrades.concat(array2);
     }
+    tempUpgrades.sort(function (a, b) {
+        return a.name < b.name ? 1 : -1
+    });
     tempUpgrades.sort(function (a, b) {
         return a.cost > b.cost ? 1 : -1
     });
@@ -770,8 +882,12 @@ function writeAllUpgrades(array1, array2, divText, text1, text2, function1, func
 function writeAllPrestigeUpgrades(array1, divText, text1, function1, points) {
     tempUpgrades = array1;
     tempUpgrades.sort(function (a, b) {
+        return a.name < b.name ? 1 : -1
+    });
+    tempUpgrades.sort(function (a, b) {
         return a.cost > b.cost ? 1 : -1
     });
+
 
     // split into 3 columns
     let rowId = 0;
@@ -891,6 +1007,33 @@ function checkEmployeeDisable(employee, points, text) {
     }
     else {
         $("#" + text + "Btn").addClass("disabled").removeClass("btn-outline-warning").addClass("btn-secondary");
+    }
+}
+
+function checkLiftingCompDisable(compType, text, previousCompType, text2) {
+    let cost = compType.cost
+    cost < 1000000 ? $("#" + text + "Cost").html(cost.toFixed(0)) : $("#" + text + "Cost").html(math.format(cost, 3));
+    $("#" + text + "Owned").html(compType.current);
+    if (lifting.comps.competitions.current >= cost && !compType.hidden) {
+        if (previousCompType != null) {
+            previousCompType.hidden = true;
+        }
+        $("#" + text + "Btn").removeClass("disabled").removeClass("btn-secondary").addClass("btn-outline-warning");
+    }
+    else {
+        $("#" + text + "Btn").addClass("disabled").removeClass("btn-outline-warning").addClass("btn-secondary");
+    }
+    if (previousCompType != null && previousCompType.hidden) {
+        $("#" + text2 + "Wrap").addClass("d-none");
+        $("#" + text2 + "Btn").addClass("disabled");
+    }
+    else if (previousCompType != null) {
+        $("#" + text2 + "Wrap").removeClass("d-none");
+    }
+    else {
+        if (compType.current > 0) {
+            $("#createCompBtn").addClass("d-none");
+        }
     }
 }
 
@@ -1051,6 +1194,15 @@ function writeGangInfo() {
     }
 }
 
+function writeCompInfo() {
+    lifting.comps.competitions.current < 100000 ? $("#liftingCompetitions").html(lifting.comps.competitions.current.toFixed(2)) : $("#liftingCompetitions").html(math.format(lifting.comps.competitions.current, 3));
+    lifting.comps.conferences.current < 100000 ? $("#liftingLocalConferences").html(lifting.comps.conferences.current.toFixed(2)) : $("#liftingLocalConferences").html(math.format(lifting.comps.conferences.current, 3));
+    lifting.comps.regionalConferences.current < 100000 ? $("#liftingRegionalConferences").html(lifting.comps.regionalConferences.current.toFixed(2)) : $("#liftingRegionalConferences").html(math.format(lifting.comps.regionalConferences.current, 3));
+    lifting.comps.stateConferences.current < 100000 ? $("#liftingStateConferences").html(lifting.comps.stateConferences.current.toFixed(2)) : $("#liftingStateConferences").html(math.format(lifting.comps.stateConferences.current, 3));
+    lifting.comps.nationalConferences.current < 100000 ? $("#liftingNationalConferences").html(lifting.comps.nationalConferences.current.toFixed(2)) : $("#liftingNationalConferences").html(math.format(lifting.comps.nationalConferences.current, 3))
+    lifting.comps.worldConferences.current < 100000 ? $("#liftingWorldConferences").html(lifting.comps.worldConferences.current.toFixed(2)) : $("#liftingWorldConferences").html(math.format(lifting.comps.worldConferences.current, 3));
+}
+
 function updatePrestigeValues() {
     $("#pointsReceived").html(prestige.total + 1);
     checks.gymType == 0 || checks.gymType == -1 ? $("#bwPointsReceived").html(prestige.bw.total + 1) : $("#bwPointsReceived").html("0");
@@ -1094,6 +1246,24 @@ function startStop(exercise, timerId, load) {
             case 5:
                 setupBwRdlTimer();
                 break;
+            case 6:
+                setupLiftingBenchTimer();
+                break;
+            case 7:
+                setupLiftingRowTimer();
+                break;
+            case 8:
+                setupLiftingOhpTimer();
+                break;
+            case 9:
+                setupLiftingSquatsTimer();
+                break;
+            case 10:
+                setupLiftingDlsTimer();
+                break;
+            case 11:
+                setupLiftingCurlsTimer();
+                break;
             default:
         }
         if (!load) {
@@ -1121,26 +1291,43 @@ function exerciseTick(exercise) {
             exercise.current += exercise.increase;
         }
         else {
-            exercise.total += math.evaluate(1 + (stats.strength * stats.strengthBoost));
+            let totalToAdd = math.evaluate(1 + (stats.strength * stats.strengthBoost));
+            exercise.total += totalToAdd;
             if (exercise.total > 1e200) {
                 exercise.total = 1e200;
             }
-            if (exercise.total > exercise.tiers[exercise.tier].upgrade && exercise.tier != 4) {
-                exercise.strength *= exercise.tiers[exercise.tier].multiplier;
-                exercise.endurance *= exercise.tiers[exercise.tier].multiplier;
-                exercise.agility *= exercise.tiers[exercise.tier].multiplier;
-                exercise.energy *= 2;
-                exercise.tier += 1;
+            if (checks.gymType == -1 || checks.gymType == 0) {
+                if (exercise.total > exercise.tiers[exercise.tier].upgrade && exercise.tier != 4) {
+                    exercise.strength *= exercise.tiers[exercise.tier].multiplier;
+                    exercise.endurance *= exercise.tiers[exercise.tier].multiplier;
+                    exercise.agility *= exercise.tiers[exercise.tier].multiplier;
+                    exercise.energy *= 2;
+                    exercise.tier += 1;
+                }
             }
-            stats.strength += math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            else if (checks.gymType == 1) {
+                if (exercise.weight < exercise.maxWeight) {
+                    exercise.repsToNext += totalToAdd;
+                    if (exercise.repsToNext >= exercise.repsToNextBase) {
+                        exercise.repsToNext = 0;
+                        exercise.repsToNextBase += 1;
+                        exercise.strength *= exercise.multi;
+                        exercise.endurance *= exercise.multi;
+                        exercise.agility *= exercise.multi;
+                        exercise.energy *= math.evaluate(exercise.multi);
+                        exercise.weight += exercise.weightIncrease;
+                    }
+                }
+            }
+            stats.strength += math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1) * ((prestige.lifting.leadership * prestige.lifting.leadershipBoost) + 1));
             if (stats.strength > 1e200) {
                 stats.strength = 1e200;
             }
-            stats.endurance += math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            stats.endurance += math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1) * ((prestige.lifting.leadership * prestige.lifting.leadershipBoost) + 1));
             if (stats.endurance > 1e200) {
                 stats.endurance = 1e200;
             }
-            stats.agility += math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            stats.agility += math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1) * ((prestige.lifting.leadership * prestige.lifting.leadershipBoost) + 1));
             if (stats.agility > 1e200) {
                 stats.agility = 1e200;
             }
@@ -1193,21 +1380,53 @@ function setupOneSecondTimer() {
                 bodyweight.gang.members = 1e100;
             }
 
-
             for (let i = 0; i < bodyweight.gang.rivals.length; i++) {
                 bodyweight.gang.rivals[i].strength += bodyweight.gang.rivals[i].strengthAmount * bodyweight.gang.on;
                 bodyweight.gang.rivals[i].members += bodyweight.gang.rivals[i].memberAmount * bodyweight.gang.on;
             }
 
+            lifting.comps.competitions.current += math.evaluate(lifting.comps.conferences.current * ((lifting.dls.weight * lifting.comps.conferences.mod) + 1));
+            lifting.comps.conferences.current += math.evaluate(lifting.comps.regionalConferences.current * ((lifting.squats.weight * lifting.comps.regionalConferences.mod) + 1));
+            lifting.comps.regionalConferences.current += math.evaluate(lifting.comps.stateConferences.current * ((lifting.rows.weight * lifting.comps.stateConferences.mod) + 1));
+            lifting.comps.stateConferences.current += math.evaluate(lifting.comps.nationalConferences.current * ((lifting.bench.weight * lifting.comps.nationalConferences.mod) + 1));
+            lifting.comps.nationalConferences.current += math.evaluate(lifting.comps.worldConferences.current * ((lifting.ohp.weight * lifting.comps.worldConferences.mod) + 1));
+
+            if (lifting.comps.competitions > 1e200) {
+                lifting.comps.competitions = 1e200;
+            }
+            if (lifting.comps.conferences > 1e200) {
+                lifting.comps.conferences = 1e200;
+            }
+            if (lifting.comps.regionalConferences > 1e200) {
+                lifting.comps.regionalConferences = 1e200;
+            }
+            if (lifting.comps.stateConferences > 1e200) {
+                lifting.comps.stateConferences = 1e200;
+            }
+            if (lifting.comps.nationalConferences > 1e200) {
+                lifting.comps.nationalConferences = 1e200;
+            }
+
+
             // check for autoclickers
-            if (checks.bwGymBuyerOn) {
+            if (checks.bwGymBuyerOn && checks.gymType == 0) {
                 autobuyUpgrades(gym.gymUpgrades, "gymUpgrade", stats.money);
             }
-            if (checks.bwUpgradeBuyerOn) {
+            if (checks.bwUpgradeBuyerOn && checks.gymType == 0) {
                 autobuyUpgrades(gym.upgrades, "upgrade", stats.money);
                 autobuyUpgrades(gym.bw.upgrades, "bwUpgrade", stats.money);
             }
-            if (checks.bwAdBuyerOn) {
+            if (checks.bwAdBuyerOn && checks.gymType == 0) {
+                autobuyUpgrades(gym.adUpgrades, "adUpgrade", gym.advertising.influence);
+            }
+            if (checks.liftingGymBuyerOn && checks.gymType == 1) {
+                autobuyUpgrades(gym.gymUpgrades, "gymUpgrade", stats.money);
+            }
+            if (checks.liftingUpgradeBuyerOn && checks.gymType == 1) {
+                autobuyUpgrades(gym.upgrades, "upgrade", stats.money);
+                autobuyUpgrades(gym.lifting.upgrades, "liftingUpgrade", stats.money);
+            }
+            if (checks.liftingAdBuyerOn && checks.gymType == 1) {
                 autobuyUpgrades(gym.adUpgrades, "adUpgrade", gym.advertising.influence);
             }
             if (checks.gymSalesBuyerOn) {
@@ -1246,6 +1465,14 @@ function setupOneSecondTimer() {
             if (checks.absorbGangsOn && checks.gymType == 0 && found && math.evaluate(gangPower(bodyweight.gang.strength, bodyweight.gang.members) * .4) >= gangPower(bodyweight.gang.rivals[bodyweight.gang.rivalId].strength, bodyweight.gang.rivals[bodyweight.gang.rivalId].members)) {
                 $("#gangFightBtn").click();
             }
+
+            if (checks.conferenceBuyerOn) {
+                autobuyConferences(lifting.comps.worldConferences, "liftingWorldConferenceBtn");
+                autobuyConferences(lifting.comps.nationalConferences, "liftingNationalConferenceBtn");
+                autobuyConferences(lifting.comps.stateConferences, "liftingStateConferenceBtn");
+                autobuyConferences(lifting.comps.regionalConferences, "liftingRegionalConferenceBtn");
+                autobuyConferences(lifting.comps.conferences, "liftingLocalConferenceBtn");
+            }
         }
     }, 1000);
 }
@@ -1264,23 +1491,59 @@ function autobuyEmployees(employee, text) {
     }
 }
 
-function refreshProgressBarsAndStats(text, exercise) {
+function autobuyConferences(compType, text) {
+    if (lifting.comps.competitions.current >= compType.cost) {
+        $("#" + text).click();
+    }
+}
 
+function refreshProgressBarsAndStats(text, exercise, progression, finalMessage) {
     let strength = math.evaluate(exercise.strength * ((stats.intelligence * stats.intelligenceBoost) + 1));
+    var strengthFormat = strength < 1000000 ? strength.toFixed(2) : math.format(strength, 3);
     let endurance = math.evaluate(exercise.endurance * ((stats.intelligence * stats.intelligenceBoost) + 1));
+    var enduranceFormat = endurance < 1000000 ? endurance.toFixed(2) : math.format(endurance, 3);
     let agility = math.evaluate(exercise.agility * ((stats.intelligence * stats.intelligenceBoost) + 1));
+    var agilityFormat = agility < 1000000 ? agility.toFixed(2) : math.format(agility, 3);
+    var totalFormat = exercise.total < 1000000 ? exercise.total.toFixed(2) : math.format(exercise.total, 3);
+
     $("#" + text + "Progress").css("width", ((exercise.current / exercise.max) * 100) + "%");
-    $("#" + text + "UpgradeProgress").css("width", ((exercise.total / exercise.tiers[exercise.tier].upgrade) * 100) + "%");
-    $("#" + text + "Text").html(exercise.tiers[exercise.tier].name);
-    $("#" + text + "Energy").html(exercise.energy);
-    strength < 1000000 ? $("#" + text + "Strength").html(strength.toFixed(2)) : $("#" + text + "Strength").html(math.format(strength, 3));
-    endurance < 1000000 ? $("#" + text + "Endurance").html(endurance.toFixed(2)) : $("#" + text + "Endurance").html(math.format(endurance, 3));
-    agility < 1000000 ? $("#" + text + "Agility").html(agility.toFixed(2)) : $("#" + text + "Agility").html(math.format(agility, 3));
-    exercise.total < 1000000 ? $("#" + text + "Total").html(exercise.total.toFixed(2)) : $("#" + text + "Total").html(math.format(exercise.total, 3));
+    if (checks.gymType == -1 || checks.gymType == 0) {
+        $("#" + text + "UpgradeProgress").css("width", ((exercise.total / exercise.tiers[exercise.tier].upgrade) * 100) + "%");
+        $("#" + text + "Text").html(exercise.tiers[exercise.tier].name);
+    }
+    else if (checks.gymType == 1) {
+        $("#" + text + "UpgradeProgress").css("width", ((exercise.repsToNext / exercise.repsToNextBase) * 100) + "%");
+        $("#" + text + "Text").html(exercise.name + " (" + exercise.weight + "lbs)");
+    }
+
+    $("#" + text + "Tooltip").prop("title", progression + "Energy: " + exercise.energy.toFixed(2) + "<br />Strength: " + strengthFormat + "<br />Endurance: " + enduranceFormat + "<br />Agility: " + agilityFormat + "<br />Total Reps:" + totalFormat + "<br /><br />" + finalMessage).tooltip("_fixTitle");
 }
 
 function toggleAlert(alert) {
     $(alert).tooltip("toggle");
+}
+
+function buyLiftingComp(button, compType) {
+    if (!$(button).hasClass("disabled")) {
+        if (lifting.comps.competitions.current >= compType.cost) {
+            if (compType.id == 5 && compType.current < 10) {
+                prestige.lifting.leadership += .1;
+            }
+            compType.current += 1;
+            lifting.comps.competitions.current -= compType.cost;
+            compType.cost *= compType.multi;
+
+            switch (compType.id) {
+                case 1:
+                    break;
+                default:
+            }
+        }
+    }
+}
+
+function addCompetition() {
+    lifting.comps.competitions.current += 1;
 }
 
 //#endregion
@@ -1321,6 +1584,43 @@ function setupBwSquatTimer() {
         exerciseTick(bodyweight.squats);
     }, bodyweight.squats.speed / bodyweight.squats.speedModifier);
 }
+
+function setupLiftingBenchTimer() {
+    liftingBenchTimerId = setInterval(function () {
+        exerciseTick(lifting.bench);
+    }, lifting.bench.speed / lifting.bench.speedModifier);
+}
+
+function setupLiftingRowTimer() {
+    liftingRowTimerId = setInterval(function () {
+        exerciseTick(lifting.rows);
+    }, lifting.rows.speed / lifting.rows.speedModifier);
+}
+
+function setupLiftingOhpTimer() {
+    liftingOhpTimerId = setInterval(function () {
+        exerciseTick(lifting.ohp);
+    }, lifting.ohp.speed / lifting.ohp.speedModifier);
+}
+
+function setupLiftingSquatsTimer() {
+    liftingSquatsTimerId = setInterval(function () {
+        exerciseTick(lifting.squats);
+    }, lifting.squats.speed / lifting.squats.speedModifier);
+}
+
+function setupLiftingDlsTimer() {
+    liftingDlsTimerId = setInterval(function () {
+        exerciseTick(lifting.dls);
+    }, lifting.dls.speed / lifting.dls.speedModifier);
+}
+
+function setupLiftingCurlsTimer() {
+    liftingCurlsTimerId = setInterval(function () {
+        exerciseTick(lifting.curls);
+    }, lifting.curls.speed / lifting.curls.speedModifier);
+}
+
 
 //#endregion
 
@@ -1367,6 +1667,7 @@ function newGym(type) {
             job = JSON.parse(JSON.stringify(baseJob));
             research = JSON.parse(JSON.stringify(baseResearch));
             gym = JSON.parse(JSON.stringify(baseGym));
+            lifting = JSON.parse(JSON.stringify(baseLifting));
 
             bodyweight.gang.name = gang;
             $("#gym-tab").removeClass("d-none");
@@ -1398,6 +1699,7 @@ function newGym(type) {
 
             $("#story").prepend("<div id='story6' class='alert alert-primary alert-dismissible fade show fixed-bottom' role='alert'><strong>My new gym is open!</strong> I can now train my replacement before opening another franchise location.<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
             updatePrestigeValues();
+            updateAutobuyerToggles();
         }
     }
 }
@@ -1413,6 +1715,9 @@ function reapplyPrestige(upgradeArray, text, type) {
                 case 0:
                     globalBwUpgradeClick($("#" + text + "Btn" + upgradeArray[i].id), true);
                     break;
+                case 0:
+                    globalLiftingUpgradeClick($("#" + text + "Btn" + upgradeArray[i].id), true);
+                    break;
                 default:
             }
 
@@ -1422,18 +1727,27 @@ function reapplyPrestige(upgradeArray, text, type) {
 
 function updateAutobuyerToggles() {
     $("#autoBuyers").html("");
-    if (checks.absorbGangs || checks.coffeeClicker || checks.bwAdBuyer || checks.bwUpgradeBuyer || checks.bwAdBuyer || checks.gymSalesBuyer || checks.gymTrainerBuyer || checks.gymCoordinatorBuyer || checks.gymNutritionistBuyer || checks.adCoordinatorBuyer || checks.adDesignerBuyer || checks.adManagerBuyer) {
+    if (checks.liftingAdBuyer || checks.liftingGymBuyer || checks.liftingUpgradeBuyer || checks.conferenceBuyer || checks.absorbGangs || checks.coffeeClicker || checks.bwAdBuyer || checks.bwUpgradeBuyer || checks.bwAdBuyer || checks.gymSalesBuyer || checks.gymTrainerBuyer || checks.gymCoordinatorBuyer || checks.gymNutritionistBuyer || checks.adCoordinatorBuyer || checks.adDesignerBuyer || checks.adManagerBuyer) {
         $("#autoBuyers").append("<h5>Autobuyers</h5>");
         $("#autoBuyers").append("<div class='form-group' id='autoBuyerGroup'></div>");
     }
-    if (checks.bwUpgradeBuyer) {
+    if (checks.bwUpgradeBuyer && checks.gymType == 0) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='bwUpgradeBuyer' onchange='toggleAutobuyer(0);'" + (checks.bwUpgradeBuyerOn ? " checked" : "") + "><label class='form-check-label' for='bwUpgradeBuyer'>Buy Workout Upgrades</label></div>");
     }
-    if (checks.bwGymBuyer) {
+    if (checks.bwGymBuyer && checks.gymType == 0) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='bwGymBuyer' onchange='toggleAutobuyer(1);'" + (checks.bwGymBuyerOn ? " checked" : "") + "><label class='form-check-label' for='bwGymBuyer'>Buy Gym Upgrades</label></div>");
     }
-    if (checks.bwAdBuyer) {
+    if (checks.bwAdBuyer && checks.gymType == 0) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='bwAdBuyer' onchange='toggleAutobuyer(2);'" + (checks.bwAdBuyerOn ? " checked" : "") + "><label class='form-check-label' for='bwAdBuyer'>Buy Advertising Upgrades</label></div>");
+    }
+    if (checks.liftingUpgradeBuyer && checks.gymType == 1) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='liftingUpgradeBuyer' onchange='toggleAutobuyer(12);'" + (checks.liftingUpgradeBuyerOn ? " checked" : "") + "><label class='form-check-label' for='liftingUpgradeBuyer'>Buy Workout Upgrades</label></div>");
+    }
+    if (checks.liftingGymBuyer && checks.gymType == 1) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='liftingGymBuyer' onchange='toggleAutobuyer(13);'" + (checks.liftingGymBuyerOn ? " checked" : "") + "><label class='form-check-label' for='liftingGymBuyer'>Buy Gym Upgrades</label></div>");
+    }
+    if (checks.liftingAdBuyer && checks.gymType == 1) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='liftingAdBuyer' onchange='toggleAutobuyer(14);'" + (checks.liftingAdBuyerOn ? " checked" : "") + "><label class='form-check-label' for='liftingAdBuyer'>Buy Advertising Upgrades</label></div>");
     }
     if (checks.gymSalesBuyer) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='gymSalesBuyer' onchange='toggleAutobuyer(3);'" + (checks.gymSalesBuyerOn ? " checked" : "") + "><label class='form-check-label' for='gymSalesBuyer'>Buy Sales Representatives</label></div>");
@@ -1461,6 +1775,9 @@ function updateAutobuyerToggles() {
     }
     if (checks.absorbGangs && checks.gymType == 0) {
         $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='absorbGangs' onchange='toggleAutobuyer(11);'" + (checks.absorbGangsOn ? " checked" : "") + "><label class='form-check-label' for='absorbGangs'>Absorb Gangs</label></div>");
+    }
+    if (checks.conferenceBuyer && checks.gymType == 1) {
+        $("#autoBuyerGroup").append("<div class='form-group form-check'><input type='checkbox' class='form-check-input' id='buyConferences' onchange='toggleAutobuyer(15);'" + (checks.conferenceBuyerOn ? " checked" : "") + "><label class='form-check-label' for='buyConferences'>Buy Conferences</label></div>");
     }
 }
 
@@ -1502,6 +1819,18 @@ function toggleAutobuyer(buyerId) {
         case 11:
             checks.absorbGangsOn ? checks.absorbGangsOn = false : checks.absorbGangsOn = true;
             break;
+        case 11:
+            checks.liftingUpgradeBuyerOn ? checks.liftingUpgradeBuyerOn = false : checks.liftingUpgradeBuyerOn = true;
+            break;
+        case 11:
+            checks.liftingGymBuyerOn ? checks.liftingGymBuyerOn = false : checks.liftingGymBuyerOn = true;
+            break;
+        case 11:
+            checks.liftingAdBuyerOn ? checks.liftingAdBuyerOn = false : checks.liftingAdBuyerOn = true;
+            break;
+        case 11:
+            checks.conferenceBuyerOn ? checks.conferenceBuyerOn = false : checks.conferenceBuyerOn = true;
+            break; F
         default:
     }
 }
@@ -1668,7 +1997,7 @@ function setupCampaignTimer() {
             if (gym.advertising.campaigns > 1e200) {
                 gym.advertising.campaigns = 1e200;
             }
-            stats.intelligence += math.evaluate(gym.runCampaigns.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            stats.intelligence += math.evaluate(gym.runCampaigns.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1) * ((prestige.lifting.leadership * prestige.lifting.leadershipBoost) + 1));
             if (stats.intelligence > 1e200) {
                 stats.intelligence = 1e200;
             }
@@ -1689,7 +2018,7 @@ function setupAdTimer() {
             if (gym.advertising.ads > 1e200) {
                 gym.advertising.ads = 1e200;
             }
-            stats.intelligence += math.evaluate(gym.designAds.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1));
+            stats.intelligence += math.evaluate(gym.designAds.intelligence * ((stats.intelligence * stats.intelligenceBoost) + 1) * ((prestige.lifting.leadership * prestige.lifting.leadershipBoost) + 1));
             if (stats.intelligence > 1e200) {
                 stats.intelligence = 1e200;
             }
@@ -1807,6 +2136,22 @@ function gymBwUpgradeClick(button) {
     }
 }
 
+function gymLiftingUpgradeClick(button) {
+    if (!$(button).hasClass("disabled")) {
+        let buttonId = $(button).attr("id");
+        let id = parseInt(buttonId.split("gymLiftingUpgradeBtn")[1]);
+        let upgrade = gym.lifting.gymUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+
+                default:
+            }
+        }
+    }
+}
+
 function adUpgradeClick(button) {
     if (!$(button).hasClass("disabled")) {
         let buttonId = $(button).attr("id");
@@ -1865,7 +2210,7 @@ function adUpgradeClick(button) {
                     checkPrestigeUpgradeDisable(prestige.upgrades, prestige.current, "globalUpgrade");
                     break;
                 case 15:
-                    gym.campaignGrowth *= 2;
+                    gym.advertising.campaignGrowth *= 2;
                     break;
                 case 16:
                     stats.allStatBoost *= 2;
@@ -1893,10 +2238,27 @@ function adBwUpgradeClick(button) {
         let buttonId = $(button).attr("id");
         let id = parseInt(buttonId.split("adBwUpgradeBtn")[1]);
         let upgrade = gym.bw.adUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
-        upgrade[0].isPurchased = true;
-        gym.advertising.influence -= upgrade[0].cost;
-        switch (upgrade[0].id) {
-            default:
+        if (gym.advertising.influence >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            gym.advertising.influence -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                default:
+            }
+        }
+    }
+}
+
+function adLiftingUpgradeClick(button) {
+    if (!$(button).hasClass("disabled")) {
+        let buttonId = $(button).attr("id");
+        let id = parseInt(buttonId.split("adLiftingUpgradeBtn")[1]);
+        let upgrade = gym.lifting.adUpgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
+        if (gym.advertising.influence >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            gym.advertising.influence -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                default:
+            }
         }
     }
 }
@@ -2038,6 +2400,89 @@ function phase2BwUpgradeClick(button) {
     }
 }
 
+function phase2LiftingUpgradeClick(button) {
+    if (!$(button).hasClass("disabled")) {
+        let buttonId = $(button).attr("id");
+        let id = parseInt(buttonId.split("liftingUpgradeBtn")[1]);
+        let upgrade = gym.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
+        if (stats.money >= upgrade[0].cost) {
+            upgrade[0].isPurchased = true;
+            stats.money -= upgrade[0].cost;
+            switch (upgrade[0].id) {
+                case 0:
+                    lifting.bench.speedModifier *= 2;
+                    startStop(lifting.bench, liftingBenchTimerId, true);
+                    break;
+                case 1:
+                    lifting.bench.energy /= 2;
+                    lifting.rows.energy /= 2;
+                    break;
+                case 2:
+                    lifting.rows.speedModifier *= 2;
+                    startStop(lifting.rows, liftingRowTimerId, true);
+                    break;
+                case 3:
+                    lifting.ohp.speedModifier *= 2;
+                    startStop(lifting.ohp, liftingOhpTimerId, true);
+                    break;
+                case 4:
+                    lifting.curls.speedModifier *= 2;
+                    startStop(lifting.curls, liftingCurlsTimerId, true);
+                    break;
+                case 5:
+                    lifting.ohp.energy /= 2;
+                    break;
+                case 6:
+                    lifting.curls.energy /= 2;
+                    break;
+                case 7:
+                    lifting.squats.speedModifier *= 2;
+                    startStop(lifting.squats, liftingSquatsTimerId, true);
+                    break;
+                case 8:
+                    lifting.dls.speedModifier *= 2;
+                    startStop(lifting.dls, liftingDlsTimerId, true);
+                    break;
+                case 9:
+                    lifting.squats.energy /= 2;
+                    lifting.dls.energy /= 2;
+                    break;
+                case 10:
+                    lifting.bench.energy *= 2;
+                    lifting.bench.strength *= 2;
+                    lifting.bench.endurance *= 2;
+                    lifting.bench.agility *= 2;
+                    lifting.rows.energy *= 2;
+                    lifting.rows.strength *= 2;
+                    lifting.rows.endurance *= 2;
+                    lifting.rows.agility *= 2;
+                    break;
+                case 11:
+                    lifting.ohp.energy *= 2;
+                    lifting.ohp.strength *= 2;
+                    lifting.ohp.endurance *= 2;
+                    lifting.ohp.agility *= 2;
+                    lifting.curls.energy *= 2;
+                    lifting.curls.strength *= 2;
+                    lifting.curls.endurance *= 2;
+                    lifting.curls.agility *= 2;
+                    break;
+                case 12:
+                    lifting.squats.energy *= 2;
+                    lifting.squats.strength *= 2;
+                    lifting.squats.endurance *= 2;
+                    lifting.squats.agility *= 2;
+                    lifting.dls.energy *= 2;
+                    lifting.strength *= 2;
+                    lifting.endurance *= 2;
+                    lifting.agility *= 2;
+                    break;
+                default:
+            }
+        }
+    }
+}
+
 function globalUpgradeClick(button, prestigeCheck) {
     if (!$(button).hasClass("disabled") || prestigeCheck) {
         let buttonId = $(button).attr("id");
@@ -2061,6 +2506,7 @@ function globalUpgradeClick(button, prestigeCheck) {
             case 2:
                 stats.energy.increase *= 2;
                 stats.energy.originalMax *= 2;
+                stats.energy.current = stats.energy.originalMax;
                 break;
             case 3:
                 gym.advertising.employees.coordinators.current += 1;
@@ -2181,6 +2627,10 @@ function globalUpgradeClick(button, prestigeCheck) {
                 $(".gymTierFocus").removeClass("d-none");
                 focusMemberTier(0);
                 break;
+            case 26:
+                $("#globalLiftingUpgradesModalTrigger").removeClass("d-none");
+                $("#newGymLifting").removeClass("d-none");
+                break;
             default:
         }
 
@@ -2295,6 +2745,114 @@ function globalBwUpgradeClick(button, prestigeCheck) {
 
         updatePrestigeValues();
         checkPrestigeUpgradeDisable(prestige.bw.upgrades, prestige.bw.current, "globalBwUpgrade");
+    }
+}
+
+function globalLiftingUpgradeClick(button, prestigeCheck) {
+    if (!$(button).hasClass("disabled") || prestigeCheck) {
+        let buttonId = $(button).attr("id");
+        let id = parseInt(buttonId.split("globalLiftingUpgradeBtn")[1]);
+        let upgrade = prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == id });
+        upgrade[0].isPurchased = true;
+        if (!prestigeCheck) {
+            prestige.lifting.current -= upgrade[0].cost;
+        }
+        switch (upgrade[0].id) {
+            case 0:
+                $("#comp-tab").removeClass("d-none");
+                break;
+            case 1:
+                prestige.lifting.leadershipBoost = 0;
+                prestige.lifting.leadershipBoost += .01;
+                break;
+            case 2:
+                lifting.bench.energy /= 2;
+                break;
+            case 3:
+                lifting.rows.energy /= 2;
+                break;
+            case 4:
+                lifting.ohp.energy /= 2;
+                break;
+            case 5:
+                lifting.curls.energy /= 2;
+                break;
+            case 6:
+                lifting.bench.strength *= 2;
+                lifting.bench.endurance *= 2;
+                lifting.bench.agility *= 2;
+                break;
+            case 7:
+                lifting.rows.strength *= 2;
+                lifting.rows.endurance *= 2;
+                lifting.rows.agility *= 2;
+                break;
+            case 8:
+                lifting.squats.energy /= 2;
+                break;
+            case 9:
+                lifting.dls.energy /= 2;
+                break;
+            case 10:
+                lifting.ohp.strength *= 2;
+                lifting.ohp.endurance *= 2;
+                lifting.ohp.agility *= 2;
+                break;
+            case 11:
+                lifting.curls.strength *= 2;
+                lifting.curls.endurance *= 2;
+                lifting.curls.agility *= 2;
+                break;
+            case 12:
+                lifting.squats.strength *= 2;
+                lifting.squats.endurance *= 2;
+                lifting.squats.agility *= 2;
+                break;
+            case 13:
+                lifting.dls.strength *= 2;
+                lifting.dls.endurance *= 2;
+                lifting.dls.agility *= 2;
+                break;
+            case 14:
+                if (!checks.liftingUpgradeBuyer) {
+                    checks.liftingUpgradeBuyerOn = true;
+                }
+                checks.liftingUpgradeBuyer = true;
+                updateAutobuyerToggles();
+                break;
+            case 15:
+                if (!checks.liftingGymBuyer) {
+                    checks.liftingGymBuyerOn = true;
+                }
+                checks.liftingGymBuyer = true;
+                updateAutobuyerToggles();
+                break;
+            case 16:
+                if (!checks.liftingAdBuyer) {
+                    checks.liftingAdBuyerOn = true;
+                }
+                checks.liftingAdBuyer = true;
+                updateAutobuyerToggles();
+                break;
+            case 17:
+                lifting.comps.competitions.mod *= 2;
+                lifting.comps.conferences.mod *= 2;
+                lifting.comps.regionalConferences.mod *= 2;
+                lifting.comps.stateConferences.mod *= 2;
+                lifting.comps.nationalConferences.mod *= 2;
+                break;
+            case 18:
+                if (!checks.conferenceBuyer) {
+                    checks.conferenceBuyerOn = true;
+                }
+                checks.conferenceBuyer = true;
+                updateAutobuyerToggles();
+                break;
+            default:
+        }
+
+        updatePrestigeValues();
+        checkPrestigeUpgradeDisable(prestige.lifting.upgrades, prestige.lifting.current, "globalLiftingUpgrade");
     }
 }
 

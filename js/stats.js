@@ -37,7 +37,7 @@ var stats = {
     totalYogaPrestige: 0,
     totalCardioPrestige: 0,
     saveTime: 0,
-    gameVersion: .34,
+    gameVersion: .4,
 };
 var bodyweight = {
     pushups: {
@@ -528,6 +528,182 @@ var bodyweight = {
             },
         ],
     },
+};
+
+var lifting = {
+    bench: {
+        id: 6,
+        name: "Bench Press",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        energy: 4,
+        strength: .2,
+        endurance: .1,
+        agility: .04,
+        weight: 45,
+        weightIncrease: 5,
+        multi: 1.02,
+        maxWeight: 750,
+        repsToNext: 0,
+        repsToNextBase: 2,
+    },
+    rows: {
+        id: 7,
+        name: "Barbell Row",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        energy: 4,
+        strength: .1,
+        endurance: .2,
+        agility: .04,
+        weight: 45,
+        weightIncrease: 5,
+        multi: 1.02,
+        maxWeight: 750,
+        repsToNext: 0,
+        repsToNextBase: 2,
+    },
+    ohp: {
+        id: 8,
+        name: "Overhead Press",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 50,
+        energy: 1,
+        strength: .01,
+        endurance: .025,
+        agility: .05,
+        weight: 45,
+        weightIncrease: 2.5,
+        multi: 1.02,
+        maxWeight: 400,
+        repsToNext: 0,
+        repsToNextBase: 5,
+    },
+    squats: {
+        id: 9,
+        name: "Squats",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        energy: 8,
+        strength: .3,
+        endurance: .2,
+        agility: .2,
+        weight: 45,
+        weightIncrease: 10,
+        multi: 1.02,
+        maxWeight: 1500,
+        repsToNext: 0,
+        repsToNextBase: 2,
+    },
+    dls: {
+        id: 10,
+        name: "Deadlift",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 100,
+        energy: 8,
+        strength: .4,
+        endurance: .1,
+        agility: .2,
+        weight: 45,
+        weightIncrease: 10,
+        multi: 1.02,
+        maxWeight: 1500,
+        repsToNext: 0,
+        repsToNextBase: 2,
+    },
+    curls: {
+        id: 11,
+        name: "Barbell Curls",
+        isStopped: 0,
+        total: 0,
+        current: 0,
+        increase: 10,
+        speed: 1000,
+        speedModifier: 1,
+        max: 50,
+        energy: 1,
+        strength: .025,
+        endurance: .03,
+        agility: .03,
+        weight: 45,
+        weightIncrease: 1.25,
+        multi: 1.02,
+        maxWeight: 225,
+        repsToNext: 0,
+        repsToNextBase: 10,
+    },
+    comps: {
+        competitions: {
+            id: 0,
+            current: 0,
+            mod: .01,
+        },
+        conferences: {
+            id: 1,
+            current: 0,
+            cost: 10,
+            multi: 2,
+            mod: .01,
+            hidden: false,
+        },
+        regionalConferences: {
+            id: 2,
+            current: 0,
+            cost: 10000,
+            multi: 2,
+            mod: .01,
+            hidden: false,
+        },
+        stateConferences: {
+            id: 3,
+            current: 0,
+            cost: 10000000,
+            multi: 2,
+            mod: .01,
+            hidden: false,
+        },
+        nationalConferences: {
+            id: 4,
+            current: 0,
+            cost: 10000000000,
+            multi: 2,
+            mod: .01,
+            hidden: false,
+        },
+        worldConferences: {
+            id: 5,
+            current: 0,
+            cost: 10000000000000,
+            multi: 2,
+            mod: .01,
+            hidden: false,
+        },
+    }
 };
 
 var upgrades = [
@@ -1881,7 +2057,110 @@ var gym = {
     },
     lifting: {
         upgrades: [
-
+            {
+                id: 0,
+                isActive: false,
+                isPurchased: false,
+                name: "Bench Technique",
+                desc: "<strong>Cost: $2.5</strong> - Better bench technique will let me rep faster. Doubles bench speed.",
+                cost: 2.5,
+            },
+            {
+                id: 1,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay Coach to Teach You",
+                desc: "<strong>Cost: $25</strong> - My coach wants to show me the correct way to do bench and rows. Halves the energy expenditure of bench and rows.",
+                cost: 25,
+            },
+            {
+                id: 2,
+                isActive: false,
+                isPurchased: false,
+                name: "Grip Training",
+                desc: "<strong>Cost: $50</strong> - Get some grip trainers to practice holding onto the bar better. Doubles row speed.",
+                cost: 50,
+            },
+            {
+                id: 3,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Overhead Press Training",
+                desc: "<strong>Cost: $250</strong> - My coach keeps wanting more money. Doubles overhead press speed.",
+                cost: 250,
+            },
+            {
+                id: 4,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Curl Training",
+                desc: "<strong>Cost: $250</strong> - Get those massive biceps. Doubles curl speed.",
+                cost: 250,
+            },
+            {
+                id: 5,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Overhead Press Form Training",
+                desc: "<strong>Cost: $500</strong> - I'm losing the bar in front of me, and coach is there for me. Halves the energy expenditure of overhead press.",
+                cost: 500,
+            },
+            {
+                id: 6,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Curl Form Training",
+                desc: "<strong>Cost: $500</strong> - Curls are very hard to do correctly. Halves the energy expenditure of curls.",
+                cost: 500,
+            },
+            {
+                id: 7,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Squat Training",
+                desc: "<strong>Cost: $1000</strong> - Coach is really putting me to work. Doubles Squat Speed.",
+                cost: 1000,
+            },
+            {
+                id: 8,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay Deadlift Training",
+                desc: "<strong>Cost: $1000</strong> - I better be good enough to take over this gym by the end of it. Doubles deadlift speed.",
+                cost: 1000,
+            },
+            {
+                id: 9,
+                isActive: false,
+                isPurchased: false,
+                name: "Pay for Leg Hypertrophy Guide",
+                desc: "<strong>Cost: $2500</strong> - Seems reasonable, coach is reselling it. Halves the energy expenditure of leg exercises.",
+                cost: 2500,
+            },
+            {
+                id: 10,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Bench and Rows",
+                desc: "<strong>Cost: $5000</strong> - Best coach I've ever had, hands down. Double energy expenditure of bench and rows, but double stat gains as well.",
+                cost: 5000,
+            },
+            {
+                id: 11,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Overhead Press and Curls",
+                desc: "<strong>Cost: $10000</strong> - Also the only coach I've worked with so far. Double energy expenditure of overhead press and curls, but double stat gains as well.",
+                cost: 10000,
+            },
+            {
+                id: 12,
+                isActive: false,
+                isPurchased: false,
+                name: "Better Form for Bodyweight Legs Exercises",
+                desc: "<strong>Cost: $25000</strong> - I'm nearly ready to take over this gym. Double energy expenditure of leg exercises, but double stat gains as well.",
+                cost: 25000,
+            }
         ],
         gymUpgrades: [
 
@@ -2123,6 +2402,14 @@ var prestige = {
             desc: "<strong>Cost: 5 Global Points</strong> - Choose which tier to focus on for trainers.",
             cost: 5
         },
+        {
+            id: 26,
+            isActive: false,
+            isPurchased: false,
+            name: "Lifting Gyms",
+            desc: "<strong>Cost: 5 Global Points</strong> - Unlock lifting gyms.",
+            cost: 5
+        },
     ],
     bw: {
         current: 0,
@@ -2295,8 +2582,161 @@ var prestige = {
     lifting: {
         current: 0,
         total: 0,
+        leadership: 0,
+        leadershipBoost: 0,
         upgrades: [
-
+            {
+                id: 0,
+                isActive: false,
+                isPurchased: false,
+                name: "Competitions",
+                desc: "<strong>Cost: 1 Lifting Point</strong> - Unlock competitions.",
+                cost: 1
+            },
+            {
+                id: 1,
+                isActive: false,
+                isPurchased: false,
+                name: "Unlock Permanent Leadership",
+                desc: "<strong>Cost: 2 Lifting Points</strong> - Leadership gained from creating world-wide conferences provides a permanent 1% per point boost to all stat gain.",
+                cost: 2
+            },
+            {
+                id: 2,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Bench",
+                desc: "<strong>Cost: 2 Lifting Points</strong> - Bench uses half the energy.",
+                cost: 2
+            },
+            {
+                id: 3,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Rows",
+                desc: "<strong>Cost: 2 Lifting Points</strong> - Rows use half the energy.",
+                cost: 2
+            },
+            {
+                id: 4,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Overhead Press",
+                desc: "<strong>Cost: 3 Lifting Points</strong> - Overhead press uses half the energy.",
+                cost: 3
+            },
+            {
+                id: 5,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Curls",
+                desc: "<strong>Cost: 3 Lifting Points</strong> - Curls use half the energy.",
+                cost: 3
+            },
+            {
+                id: 6,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Bench",
+                desc: "<strong>Cost: 4 Lifting Points</strong> - Bench gives double stats per bar fill.",
+                cost: 4
+            },
+            {
+                id: 7,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Rows",
+                desc: "<strong>Cost: 4 Lifting Points</strong> - Rows give double stats per bar fill.",
+                cost: 4
+            },
+            {
+                id: 8,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Squats",
+                desc: "<strong>Cost: 5 Lifting Points</strong> - Squats use half the energy.",
+                cost: 5
+            },
+            {
+                id: 9,
+                isActive: false,
+                isPurchased: false,
+                name: "Half-Energy Deadlifts",
+                desc: "<strong>Cost: 5 Lifting Points</strong> - Deadlifts use half the energy.",
+                cost: 5
+            },
+            {
+                id: 10,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Overhead press",
+                desc: "<strong>Cost: 6 Lifting Points</strong> - Overhead press gives double stats per bar fill.",
+                cost: 6
+            },
+            {
+                id: 11,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Curls",
+                desc: "<strong>Cost: 6 Lifting Points</strong> - Curls give double stats per bar fill.",
+                cost: 6
+            },
+            {
+                id: 12,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Squats",
+                desc: "<strong>Cost: 8 Lifting Points</strong> - Squats give double stats per bar fill.",
+                cost: 8
+            },
+            {
+                id: 13,
+                isActive: false,
+                isPurchased: false,
+                name: "Double Stat Deadlifts",
+                desc: "<strong>Cost: 8 Lifting Points</strong> - Deadlifts give double stats per bar fill.",
+                cost: 8
+            },
+            {
+                id: 14,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Workout Upgrades",
+                desc: "<strong>Cost: 10 Lifting Points</strong> - Buy workout upgrades as they become available (toggle in options tab).",
+                cost: 10
+            },
+            {
+                id: 15,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Gym Upgrades",
+                desc: "<strong>Cost: 10 Lifting Points</strong> - Buy gym upgrades as they become available (toggle in options tab).",
+                cost: 10
+            },
+            {
+                id: 16,
+                isActive: false,
+                isPurchased: false,
+                name: "Autobuy Advertising Upgrades",
+                desc: "<strong>Cost: 10 Lifting Points</strong> - Buy advertising upgrades as they become available (toggle in options tab).",
+                cost: 10
+            },
+            {
+                id: 17,
+                isActive: false,
+                isPurchased: false,
+                name: "Competition Strength",
+                desc: "<strong>Cost: 4 Lifting Points</strong> - Lifting weights provide double the modifier for competitions.",
+                cost: 4
+            },
+            {
+                id: 18,
+                isActive: false,
+                isPurchased: false,
+                name: "Conference Help",
+                desc: "<strong>Cost: 15 Lifting Points</strong> - Autobuy Conferences (toggle in options tab).",
+                cost: 15
+            },
         ],
     },
     yoga: {
@@ -2345,10 +2785,18 @@ var checks = {
     bwGymBuyerOn: false,
     bwAdBuyer: false,
     bwAdBuyerOn: false,
+    liftingUpgradeBuyer: false,
+    liftingUpgradeBuyerOn: false,
+    liftingGymBuyer: false,
+    liftingGymBuyerOn: false,
+    liftingAdBuyer: false,
+    liftingAdBuyerOn: false,
     coffeeClicker: false,
     coffeeClickerOn: false,
     absorbGangs: false,
     absorbGangsOn: false,
+    conferenceBuyer: false,
+    conferenceBuyerOn: false,
 };
 
 
@@ -2360,3 +2808,4 @@ var baseResearch = JSON.parse(JSON.stringify(research));
 var baseChecks = JSON.parse(JSON.stringify(checks));
 var baseGym = JSON.parse(JSON.stringify(gym));
 var basePrestige = JSON.parse(JSON.stringify(prestige));
+var baseLifting = JSON.parse(JSON.stringify(lifting));

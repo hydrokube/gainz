@@ -1,3 +1,13 @@
+v.4 - 5/11/2020
+
+    trimmed upgrade data out of save to minimize save size
+    added lifting gyms
+    added lifting competition unlock
+    added lifting prestige upgrades
+    tooltips will now update automatically, removed exercise data from stats page as a result
+    fixed bug with 25 influence advertising upgrade not working
+    fixed a Chrome bug with upgrades switching position
+
 v.34 - 5/7/2020
 
     fixed stat page formatting for large numbers
