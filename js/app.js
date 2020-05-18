@@ -34,8 +34,6 @@ var liftingCurlsTimerId;
 TODO:
 
     consider a spending area for the special 4 stats?
-    world class prestige?
-    gang fights closer in a larger range?
 
 Future
 
@@ -757,7 +755,9 @@ function setupRefresh() {
                     checkLiftingCompDisable(lifting.comps.worldConferences, "liftingWorldConference", lifting.comps.nationalConferences, "liftingNationalConference");
                     if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
                         writeCompInfo();
+                        $("#compMoneyMulti").html(Math.pow(lifting.comps.competitions.current, .001).toFixed(2));
                     }
+                    
                     break;
                 default:
             }
@@ -1715,7 +1715,7 @@ function reapplyPrestige(upgradeArray, text, type) {
                 case 0:
                     globalBwUpgradeClick($("#" + text + "Btn" + upgradeArray[i].id), true);
                     break;
-                case 0:
+                case 1:
                     globalLiftingUpgradeClick($("#" + text + "Btn" + upgradeArray[i].id), true);
                     break;
                 default:
@@ -1849,6 +1849,9 @@ function gymMoneyPerSecond() {
     let total = 0;
     for (let i = 0; i < gym.members.tiers.length; i++) {
         total += math.evaluate(((gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1))) * ((gym.classes * gym.money.classMultiplier) + 1)))));
+    }
+    if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
+        total *= Math.pow(lifting.comps.competitions.current, .001);
     }
     return math.evaluate(total + gym.money.flatIncrease);
 }
@@ -2846,6 +2849,7 @@ function globalLiftingUpgradeClick(button, prestigeCheck) {
                     checks.conferenceBuyerOn = true;
                 }
                 checks.conferenceBuyer = true;
+                lifting.comps.competitions.current = 10;
                 updateAutobuyerToggles();
                 break;
             default:

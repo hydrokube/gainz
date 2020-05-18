@@ -1,3 +1,9 @@
+v.41 - 5/7/2020
+
+    added 10 competitions for free with the "Competition Help" upgrade so you don't have to click
+    added a money multiplier to competitions, competitions ^ .001
+    fixed a bug with lifting prestige upgrades not re-applying properly
+
 v.4 - 5/11/2020
 
     trimmed upgrade data out of save to minimize save size
