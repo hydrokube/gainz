@@ -1,4 +1,4 @@
-v.41 - 5/7/2020
+v.41 - 5/18/2020
 
     added 10 competitions for free with the "Competition Help" upgrade so you don't have to click
     added a money multiplier to competitions, competitions ^ .001
