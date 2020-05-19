@@ -1850,7 +1850,7 @@ function gymMoneyPerSecond() {
     for (let i = 0; i < gym.members.tiers.length; i++) {
         total += math.evaluate(((gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1))) * ((gym.classes * gym.money.classMultiplier) + 1)))));
     }
-    if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
+    if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased && lifting.comps.competitions.current > 0) {
         total *= Math.pow(lifting.comps.competitions.current, .001);
     }
     return math.evaluate(total + gym.money.flatIncrease);
