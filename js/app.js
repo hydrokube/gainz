@@ -1836,7 +1836,7 @@ function toggleAutobuyer(buyerId) {
             break;
         case 15:
             checks.conferenceBuyerOn ? checks.conferenceBuyerOn = false : checks.conferenceBuyerOn = true;
-            break; F
+            break; 
         default:
     }
 }
