@@ -35,6 +35,12 @@ TODO:
 
     consider a spending area for the special 4 stats?
 
+    workout upgrades autobuyer for lifting
+
+    1. 25% speed increase for all bar fill
+    2. double money
+    3. double research/influence
+
 Future
 
     yoga
@@ -1819,16 +1825,16 @@ function toggleAutobuyer(buyerId) {
         case 11:
             checks.absorbGangsOn ? checks.absorbGangsOn = false : checks.absorbGangsOn = true;
             break;
-        case 11:
+        case 12:
             checks.liftingUpgradeBuyerOn ? checks.liftingUpgradeBuyerOn = false : checks.liftingUpgradeBuyerOn = true;
             break;
-        case 11:
+        case 13:
             checks.liftingGymBuyerOn ? checks.liftingGymBuyerOn = false : checks.liftingGymBuyerOn = true;
             break;
-        case 11:
+        case 14:
             checks.liftingAdBuyerOn ? checks.liftingAdBuyerOn = false : checks.liftingAdBuyerOn = true;
             break;
-        case 11:
+        case 15:
             checks.conferenceBuyerOn ? checks.conferenceBuyerOn = false : checks.conferenceBuyerOn = true;
             break; F
         default:
