@@ -35,7 +35,8 @@ TODO:
 
     consider a spending area for the special 4 stats?
 
-    workout upgrades autobuyer for lifting
+    spend unused prestige points on generators
+    issue with clicking fitness
 
     1. 25% speed increase for all bar fill
     2. double money
@@ -89,7 +90,7 @@ function importSave() {
         if (confirm("Are you sure you want to import this save?")) {
             let base64Save = $("#exportImportArea").val();
             let decryptedSave = atob(base64Save);
-            if (decryptedSave.includes("stats")) {
+            if (decryptedSave.includes("gameVersion")) {
                 localStorage.setItem(saveName, decryptedSave);
 
                 load($("#loadBtn"), false, false);
