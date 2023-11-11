@@ -2222,7 +2222,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Still Insta-Famous",
-            desc: "<strong>Cost: 1 Global Point</strong> - Always start with a flat $.05/s. This money is not affected by any doubling upgrades",
+            desc: "<strong>Cost: 1 Global Point</strong> - Always start with a flat $.10/s. This money is not affected by any doubling upgrades",
             cost: 1
         },
         {
@@ -2366,7 +2366,7 @@ var prestige = {
             isActive: false,
             isPurchased: false,
             name: "Good Investing",
-            desc: "<strong>Cost: 5 Global Points</strong> - Always start with an additional flat $.05/s. This money is not affected by any doubling upgrades.",
+            desc: "<strong>Cost: 5 Global Points</strong> - Always start with an additional flat $.10/s. This money is not affected by any doubling upgrades.",
             cost: 5
         },
         {

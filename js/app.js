@@ -2566,7 +2566,7 @@ function globalUpgradeClick(button, prestigeCheck) {
                 stats.money += 10;
                 break;
             case 1:
-                gym.money.flatIncrease += .05;
+                gym.money.flatIncrease += .10;
                 break;
             case 2:
                 stats.energy.increase *= 2;
@@ -2656,7 +2656,7 @@ function globalUpgradeClick(button, prestigeCheck) {
                 stats.allStatBoost *= 2;
                 break;
             case 19:
-                gym.money.flatIncrease += .05;
+                gym.money.flatIncrease += .10;
                 break;
             case 20:
                 gym.employees.sales.current += 1;
