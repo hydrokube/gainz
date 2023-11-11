@@ -845,7 +845,7 @@ function getPayDay() {
             }
         }
         else {
-            stats.money += math.evalute(gymMoneyPerSecond() * stats.payday.boost);
+            stats.money += math.evaluate(gymMoneyPerSecond() * stats.payday.boost);
             if (stats.money > 1e200) {
                 stats.money = 1e200;
             }
