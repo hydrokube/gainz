@@ -11,6 +11,7 @@ var oneSecondTimerId;
 var browseRedditTimerId;
 var codeBotsTimerId;
 var coffeeTimerId;
+var payDayTimerId;
 var saveName;
 var saveTimerId;
 var trainerTimerId;
@@ -158,6 +159,7 @@ function loadReset() {
     clearInterval(browseRedditTimerId);
     clearInterval(codeBotsTimerId);
     clearInterval(coffeeTimerId);
+    clearInterval(payDayTimerId);
     clearInterval(trainerTimerId);
     clearInterval(createClassesTimerId);
     clearInterval(runCampaignTimerId);
@@ -184,6 +186,7 @@ function loadReset() {
     $("#upgrades").html("");
     $("#resUpgrades").html("");
     $("#coffee").addClass("d-none");
+    $("#payDay").addClass("d-none");
     $("#story").html("");
     $("#upgrades").html("");
     $("#jobUpgrades").html("");
@@ -412,9 +415,13 @@ function load(button, prestigeCheck, firstLoad) {
         if (upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
             $("#coffee").removeClass("d-none");
         }
+        if (upgrades.filter(function (upgradeArray) { return upgradeArray.id == 29 })[0].isPurchased) {
+            $("#payDay").removeClass("d-none");
+        }
     }
     else {
         $("#coffee").removeClass("d-none");
+        $("#payDay").removeClass("d-none");
         $("#openGym-tab").removeClass("d-none");
         $("#gym-tab").removeClass("d-none");
         $("#research-tab").removeClass("d-none");
@@ -489,6 +496,9 @@ function load(button, prestigeCheck, firstLoad) {
     if (stats.energy.coffee.isActive || stats.energy.coffee.isCooldown) {
         setupCoffeeTimer();
     }
+    if (stats.payday.isActive || stats.payday.isCooldown) {
+        setupPayDayTimer();
+    }
 
     if (button != null) {
         $("#loadWrapper").html("<div id='loadAlert' class='alert alert-info alert-dismissible fade show' role='alert'><strong>Loaded.</strong><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>")
@@ -555,6 +565,16 @@ function setupRefresh() {
             $("#coffeeBtn").html("Drink Coffee");
             $("#coffeeBtn").removeClass("disabled");
             clearInterval(coffeeTimerId);
+        }
+
+        if (stats.payday.isCooldown == true) {
+            $("#payDayBtn").html("waiting for pay day - " + (stats.payday.cooldown - stats.payday.current) + "s");
+            $("#payDayBtn").addClass("disabled");
+        }
+        else {
+            $("#payDayBtn").html("Pay Day!");
+            $("#payDayBtn").removeClass("disabled");
+            clearInterval(payDayTimerId);
         }
 
         energyPerSecond < 1000000 ? $("#energyPerSecond").html("<span class='text-success'>(" + energyPerSecond.toFixed(2) + "/s)</span>") : "<span class='text-success'>(" + math.format(energyPerSecond, 3) + "/s)</span>";
@@ -811,6 +831,29 @@ function drinkCoffee() {
     }
 }
 
+function getPayDay() {
+    if (!$("#PayDayBtn").hasClass("disabled")) {
+        $("#PayDayBtn").addClass("disabled");
+        stats.payday.total += 1;
+        stats.payday.isCooldown = true;
+        if (checks.gymType == -1) {
+            if (math.evaluate(stats.money + (job.views * job.moneyGrowth)) > 0) {
+                stats.money += math.evaluate((job.views * job.moneyGrowth) * stats.payday.boost);
+            }
+            else {
+                stats.money = 0;
+            }
+        }
+        else {
+            stats.money += math.evalute(gymMoneyPerSecond() * stats.payday.boost);
+            if (stats.money > 1e200) {
+                stats.money = 1e200;
+            }
+        }
+        setupPayDayTimer();
+    }
+}
+
 function setupCoffeeTimer() {
     coffeeTimerId = setInterval(function () {
         if (stats.energy.coffee.current < stats.energy.coffee.timer) {
@@ -825,6 +868,18 @@ function setupCoffeeTimer() {
                 stats.energy.coffee.current = 0;
                 stats.energy.coffee.isCooldown = false;
             }
+        }
+    }, 1000);
+}
+
+function setupPayDayTimer() {
+    coffeeTimerId = setInterval(function () {
+        if (stats.payday.current < stats.payday.cooldown) {
+            stats.payday.current += 1;
+        }
+        else {
+            stats.payday.current = 0;
+            stats.payday.isCooldown = false;
         }
     }, 1000);
 }
@@ -3190,6 +3245,9 @@ function jobUpgradeClick(button) {
                     break;
                 case 28:
                     job.moneyGrowth *= 2;
+                    break;
+                case 29:
+                    $("#payDay").removeClass("d-none");
                     break;
                 default:
             }

@@ -26,6 +26,13 @@ var stats = {
     intelligenceBoost: .001,
     allStatBoost: .000125,
     money: 0,
+    payday: {
+        total: 0,
+        current: 0,
+        cooldown: 300,
+        boost: 100,
+        isCooldown: false,
+    },
     prestigePoints: 0,
     bodyweightPoints: 0,
     liftingPoints: 0,
@@ -853,6 +860,14 @@ var job = {
             isPurchased: false,
             name: "Go Viral Accidentally",
             desc: "<strong>Cost: 1 follower</strong> - Not sure what happened. Adds 5000 views",
+            cost: 1,
+        },
+        {
+            id: 29,
+            isActive: false,
+            isPurchased: false,
+            name: "Collect Revenue",
+            desc: "<strong>Cost: 1 followers</strong> - Allows you to periodically collect your earnings!",
             cost: 1,
         },
         {
