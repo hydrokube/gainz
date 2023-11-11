@@ -415,7 +415,7 @@ function load(button, prestigeCheck, firstLoad) {
         if (upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
             $("#coffee").removeClass("d-none");
         }
-        if (upgrades.filter(function (upgradeArray) { return upgradeArray.id == 29 })[0].isPurchased) {
+        if (job.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 29 })[0].isPurchased) {
             $("#payDay").removeClass("d-none");
         }
     }
@@ -496,7 +496,7 @@ function load(button, prestigeCheck, firstLoad) {
     if (stats.energy.coffee.isActive || stats.energy.coffee.isCooldown) {
         setupCoffeeTimer();
     }
-    if (stats.payday.isActive || stats.payday.isCooldown) {
+    if (stats.payday.isCooldown) {
         setupPayDayTimer();
     }
 
@@ -873,7 +873,7 @@ function setupCoffeeTimer() {
 }
 
 function setupPayDayTimer() {
-    coffeeTimerId = setInterval(function () {
+    payDayTimerId = setInterval(function () {
         if (stats.payday.current < stats.payday.cooldown) {
             stats.payday.current += 1;
         }

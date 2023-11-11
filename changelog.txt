@@ -1,3 +1,8 @@
+v.42 - 11/11/2023
+
+    Added "Pay Day" button to help speed up the game with some active play. It unlocks very quickly and stays unlocked on all subsequent playthroughs.
+    Note to all doubters - I am indeed Brendan's dad.
+
 v.41 - 5/18/2020
 
     added 10 competitions for free with the "Competition Help" upgrade so you don't have to click
