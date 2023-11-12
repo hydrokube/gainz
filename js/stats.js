@@ -841,7 +841,7 @@ var job = {
     views: 0.00,
     influencers: 0.00,
     influencerGrowth: .025,
-    influencerMulti: .00002,
+    influencerMulti: .00003,
     followerGrowth: .1,
     viewGrowth: .001,
     moneyGrowth: .00001,
@@ -1125,7 +1125,7 @@ var research = {
     pointGrowth: .0001,
     botGrowth: 0.25,
     botSpeed: 1000,
-    botMulti: .00002,
+    botMulti: .00005,
     upgrades: [
         {
             id: 0,
