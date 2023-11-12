@@ -1336,7 +1336,7 @@ var gym = {
         },
         sales: {
             current: 0,
-            boost: .01,
+            boost: .02,
             cost: 1,
             costMultiplier: 2,
         },
