@@ -1330,7 +1330,7 @@ var gym = {
         },
         nutritionists: {
             current: 0,
-            boost: .01,
+            boost: .02,
             cost: 1,
             costMultiplier: 2,
         },
@@ -1472,7 +1472,7 @@ var gym = {
             },
             managers: {
                 current: 0,
-                boost: .01,
+                boost: .02,
                 cost: 1,
                 costMultiplier: 2,
             },
