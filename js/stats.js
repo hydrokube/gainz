@@ -1445,7 +1445,7 @@ var gym = {
                 id: 8,
                 name: "World Class",
                 current: 0,
-                multiplier: .10,
+                multiplier: .20,
             },
         ]
     },
