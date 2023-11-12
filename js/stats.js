@@ -1456,7 +1456,7 @@ var gym = {
         adGrowth: .1,
         adMulti: .00001,
         influence: 0,
-        influenceGrowth: .00001,
+        influenceGrowth: .00002,
         employees: {
             coordinators: {
                 current: 0.00,
