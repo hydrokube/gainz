@@ -1383,7 +1383,7 @@ var gym = {
     },
     money: {
         flatIncrease: 0.00,
-        growth: 0.0001,
+        growth: 0.0002,
         classMultiplier: 0.002
     },
     classes: 0,
