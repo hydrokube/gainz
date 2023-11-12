@@ -2,7 +2,8 @@ v.50 - 11/11/2023
 
     Added "Pay Day" button to help speed up the game with some active play. It unlocks very quickly and stays unlocked on all subsequent playthroughs.
     Doubled early game followers and research
-    50% faster gym progress
+    50% faster gym and ad progress in gyms
+    Fixed some incorrect values when showing rate of growth per second for some values
     To all the doubters out there - I am indeed Brendan's dad!
 
 v.41 - 5/18/2020
