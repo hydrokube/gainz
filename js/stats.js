@@ -840,8 +840,8 @@ var job = {
     followers: 0.00,
     views: 0.00,
     influencers: 0.00,
-    influencerGrowth: .025,
-    influencerMulti: .00003,
+    influencerGrowth: .05,
+    influencerMulti: .00005,
     followerGrowth: .1,
     viewGrowth: .001,
     moneyGrowth: .00001,
@@ -1366,7 +1366,7 @@ var gym = {
         current: 0,
         increase: 0,
         speed: 1000,
-        speedModifier: 1.5,
+        speedModifier: 3,
         max: 100,
         barIncrease: 1.00,
         intelligence: .05,
@@ -1376,7 +1376,7 @@ var gym = {
         current: 0,
         increase: 0,
         speed: 1000,
-        speedModifier: 1.5,
+        speedModifier: 2,
         max: 200,
         barIncrease: 1.00,
         intelligence: .1,
@@ -1384,7 +1384,7 @@ var gym = {
     money: {
         flatIncrease: 0.00,
         growth: 0.0001,
-        classMultiplier: 0.001
+        classMultiplier: 0.002
     },
     classes: 0,
     members: {
