@@ -2445,7 +2445,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Unlock Permanent Confidence",
-                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Confidence gained from absorbing gangs provides a permanent 1% per point boost to all gym functions.",
+                desc: "<strong>Cost: 2 Bodyweight Points</strong> - Confidence gained from absorbing gangs provides a permanent 2% per point boost to all gym functions.",
                 cost: 2
             },
             {
@@ -2613,7 +2613,7 @@ var prestige = {
                 isActive: false,
                 isPurchased: false,
                 name: "Unlock Permanent Leadership",
-                desc: "<strong>Cost: 2 Lifting Points</strong> - Leadership gained from creating world-wide conferences provides a permanent 1% per point boost to all stat gain.",
+                desc: "<strong>Cost: 2 Lifting Points</strong> - Leadership gained from creating world-wide conferences provides a permanent 2% per point boost to all stat gain.",
                 cost: 2
             },
             {
