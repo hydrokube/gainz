@@ -2721,7 +2721,7 @@ function globalBwUpgradeClick(button, prestigeCheck) {
                 break;
             case 1:
                 prestige.bw.confidenceBoost = 0;
-                prestige.bw.confidenceBoost += .01;
+                prestige.bw.confidenceBoost += .02;
                 break;
             case 2:
                 bodyweight.pushups.energy /= 2;
@@ -2828,7 +2828,7 @@ function globalLiftingUpgradeClick(button, prestigeCheck) {
                 break;
             case 1:
                 prestige.lifting.leadershipBoost = 0;
-                prestige.lifting.leadershipBoost += .01;
+                prestige.lifting.leadershipBoost += .02;
                 break;
             case 2:
                 lifting.bench.energy /= 2;
