@@ -656,11 +656,11 @@ function setupRefresh() {
             stats.money < 1000000 ? $("#money").html(stats.money.toFixed(2)) : $("#money").html(math.format(stats.money, 3));
             moneyPerSecond < 1000000 ? $("#money").append(" <span class='text-success'>(" + moneyPerSecond.toFixed(2) + "/s)</span>") : $("#money").append(" <span class='text-success'>(" + math.format(moneyPerSecond, 3) + "/s)</span>");
 
-            let viewsPerSecond = math.evaluate(((job.viewGrowth * (job.followers + followerFormula())) + 1) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000)));
+            let viewsPerSecond = math.evaluate(((job.viewGrowth * (job.followers + followerFormula())) + 1) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000)) * job.makeVideo.speedModifier);
             job.views < 1000000 ? $("#views").html(job.views.toFixed(2)) : $("#views").html(math.format(job.views, 3));
             viewsPerSecond < 1000000 ? $("#views").append(" <span class='text-success'>(" + viewsPerSecond.toFixed(3) + "/s)</span>") : $("#views").append(" <span class='text-success'>(" + math.format(viewsPerSecond, 3) + "/s)</span>");
 
-            let followersPerSecond = math.evaluate(followerFormula()) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000));
+            let followersPerSecond = math.evaluate((followerFormula()) / ((job.makeVideo.max / job.makeVideo.increase) / (job.makeVideo.speed / 1000)) * job.makeVideo.speedModifier);
             job.followers < 1000000 ? $(".followers").html(job.followers.toFixed(2)) : $(".followers").html(math.format(job.followers, 3));
             followersPerSecond < 1000000 ? $(".followers").append(" <span class='text-success'>(" + followersPerSecond.toFixed(3) + "/s)</span>") : $(".followers").append(" <span class='text-success'>(" + math.format(followersPerSecond, 3) + "/s)</span>");
 
@@ -670,11 +670,11 @@ function setupRefresh() {
                 followerGrowthPerSecond < 1000000 ? $("#followerGrowth").append(" <span class='text-success'>(" + followerGrowthPerSecond.toFixed(4) + "/s)</span>") : $("#followerGrowth").append(" <span class='text-success'>(" + math.format(followerGrowthPerSecond, 3) + "/s)</span>");
             }
 
-            let influencersPerSecond = math.evaluate(job.influencerGrowth / ((job.recruitInfluencers.max / job.recruitInfluencers.increase) / (job.recruitInfluencers.speed / 1000)));
+            let influencersPerSecond = math.evaluate(job.influencerGrowth / ((job.recruitInfluencers.max / job.recruitInfluencers.increase) / (job.recruitInfluencers.speed / 1000)) * job.recruitInfluencers.speedModifier);
             job.influencers < 1000000 ? $("#influencers").html(job.influencers.toFixed(2)) : $("#influencers").html(math.format(job.influencers, 3));
             influencersPerSecond < 1000000 ? $("#influencers").append(" <span class='text-success'>(" + influencersPerSecond.toFixed(4) + "/s)</span>") : $("#influencers").append(" <span class='text-success'>(" + math.format(influencersPerSecond, 3) + "/s)</span>");
 
-            let postsPerSecond = math.evaluate(postFormula() / ((research.browseReddit.max / research.browseReddit.increase) / (research.browseReddit.speed / 1000)));
+            let postsPerSecond = math.evaluate(postFormula() / ((research.browseReddit.max / research.browseReddit.increase) / (research.browseReddit.speed / 1000)) * research.browseReddit.speedModifier);
             research.posts < 1000000 ? $("#posts").html(research.posts.toFixed(2)) : $("#posts").html(math.format(research.posts, 3));
             postsPerSecond < 1000000 ? $("#posts").append(" <span class='text-success'>(" + postsPerSecond.toFixed(2) + "/s)</span>") : $("#posts").append(" <span class='text-success'>(" + math.format(postsPerSecond, 3) + "/s)</span>");
 
@@ -688,7 +688,7 @@ function setupRefresh() {
             research.points < 1000000 ? $("#research").html(research.points.toFixed(2)) : $("#research").html(math.format(research.points, 3));
             researchPerSecond < 1000000 ? $("#research").append(" <span class='text-success'>(" + researchPerSecond.toFixed(3) + "/s)</span>") : $("#research").append(" <span class='text-success'>(" + math.format(researchPerSecond, 3) + "/s)</span>");
 
-            let botsPerSecond = math.evaluate(research.botGrowth / ((research.codeBots.max / research.codeBots.increase) / (research.codeBots.speed / 1000)));
+            let botsPerSecond = math.evaluate(research.botGrowth / ((research.codeBots.max / research.codeBots.increase) / (research.codeBots.speed / 1000)) * research.codeBots.speedModifier);
             research.bots < 1000000 ? $("#bots").html(research.bots.toFixed(2)) : $("#bots").html(math.format(research.bots, 3));
             botsPerSecond < 1000000 ? $("#bots").append(" <span class='text-success'>(" + botsPerSecond.toFixed(4) + "/s)</span>") : $("#bots").append(" <span class='text-success'>(" + math.format(botsPerSecond, 3) + "/s)</span>");
 
@@ -1923,14 +1923,14 @@ function gymInfluencePerSecond() {
 }
 function gymCampaignsPerSecond() {
     let increase = math.evaluate(gym.advertising.employees.coordinators.current * gym.runCampaigns.barIncrease);
-    return math.evaluate(gymCampaignFormula() / ((gym.runCampaigns.max / increase) / (gym.runCampaigns.speed / 1000)));
+    return math.evaluate(gymCampaignFormula() / ((gym.runCampaigns.max / increase) / (gym.runCampaigns.speed / 1000)) * gym.runCampaigns.speedModifier);
 }
 function gymCampaignGrowthPerSecond() {
     return math.evaluate(gym.advertising.ads * gym.advertising.adMulti);
 }
 function gymAdsPerSecond() {
     let increase = math.evaluate(gym.advertising.employees.designers.current * gym.designAds.barIncrease);
-    return math.evaluate(gymAdFormula() / ((gym.designAds.max / increase) / (gym.designAds.speed / 1000)));
+    return math.evaluate(gymAdFormula() / ((gym.designAds.max / increase) / (gym.designAds.speed / 1000)) * gym.designAds.speedModifier);
 }
 function gymCampaignFormula() {
     let total = math.evaluate(gym.advertising.campaignGrowth * gym.advertising.employees.coordinators.current * ((gym.advertising.employees.managers.current * gym.advertising.employees.managers.boost) + 1) * (((stats.strength + stats.endurance + stats.agility + stats.intelligence) * stats.allStatBoost) + 1));
@@ -1979,7 +1979,7 @@ function trainMembersFormula() {
 
 function gymMembersTrainedPerSecond() {
     let increase = math.evaluate(gym.employees.trainers.current * gym.trainMembers.barIncrease);
-    return math.evaluate(trainMembersFormula() / ((gym.trainMembers.max / increase) / (gym.trainMembers.speed / 1000)));
+    return math.evaluate(trainMembersFormula() / ((gym.trainMembers.max / increase) / (gym.trainMembers.speed / 1000)) * gym.trainMembers.speedModifier);
 }
 
 function createClassesFormula() {
@@ -1988,7 +1988,7 @@ function createClassesFormula() {
 
 function gymClassesPerSecond() {
     let increase = math.evaluate(gym.employees.coordinators.current * gym.createClasses.barIncrease);
-    return math.evaluate(createClassesFormula() / ((gym.createClasses.max / increase) / (gym.createClasses.speed / 1000)));
+    return math.evaluate(createClassesFormula() / ((gym.createClasses.max / increase) / (gym.createClasses.speed / 1000)) * gym.createClasses.speedModifier);
 }
 
 function getEmployeeCost(employee) {
