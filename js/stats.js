@@ -1454,7 +1454,7 @@ var gym = {
         campaignGrowth: 1,
         ads: 0,
         adGrowth: .1,
-        adMulti: .00001,
+        adMulti: .00002,
         influence: 0,
         influenceGrowth: .00002,
         employees: {
