@@ -4,6 +4,7 @@ v.50 - 11/12/2023
     Doubled pre-prestige speed
     Roughly doubled post-prestige speed
     Fixed some incorrect values when showing rate of growth per second for some values
+    Added donate button at the top
     To all the doubters out there - I am indeed Brendan's dad!
 
 v.41 - 5/18/2020
