@@ -832,8 +832,8 @@ function drinkCoffee() {
 }
 
 function getPayDay() {
-    if (!$("#PayDayBtn").hasClass("disabled")) {
-        $("#PayDayBtn").addClass("disabled");
+    if (!$("#payDayBtn").hasClass("disabled")) {
+        $("#payDayBtn").addClass("disabled");
         stats.payday.total += 1;
         stats.payday.isCooldown = true;
         if (checks.gymType == -1) {
