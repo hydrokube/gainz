@@ -1,7 +1,7 @@
 var stats = {
     energy: {
         current: 10,
-        increase: 0.01,
+        increase: 0.02,
         speed: 500,
         speedModifier: 1,
         max: 10,

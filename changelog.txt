@@ -1,3 +1,6 @@
+v.51 - 11/13/2023
+    Based on some feedback, doubled starting energy speed regen to help keep pace with the increased game speed
+
 v.50 - 11/12/2023
 
     Added "Pay Day" button to help speed up the game with some active play (100x current money/s per click). It unlocks very quickly and stays unlocked on all subsequent playthroughs.
