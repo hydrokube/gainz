@@ -668,14 +668,14 @@ var lifting = {
         competitions: {
             id: 0,
             current: 0,
-            mod: .1,
+            mod: .025,
         },
         conferences: {
             id: 1,
             current: 0,
             cost: 10,
             multi: 2,
-            mod: .1,
+            mod: .025,
             hidden: false,
         },
         regionalConferences: {
@@ -683,7 +683,7 @@ var lifting = {
             current: 0,
             cost: 10000,
             multi: 2,
-            mod: .1,
+            mod: .025,
             hidden: false,
         },
         stateConferences: {
@@ -691,7 +691,7 @@ var lifting = {
             current: 0,
             cost: 10000000,
             multi: 2,
-            mod: .1,
+            mod: .025,
             hidden: false,
         },
         nationalConferences: {
@@ -699,7 +699,7 @@ var lifting = {
             current: 0,
             cost: 10000000000,
             multi: 2,
-            mod: .1,
+            mod: .025,
             hidden: false,
         },
         worldConferences: {
@@ -707,7 +707,7 @@ var lifting = {
             current: 0,
             cost: 10000000000000,
             multi: 2,
-            mod: .1,
+            mod: .025,
             hidden: false,
         },
     }

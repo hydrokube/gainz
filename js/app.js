@@ -782,7 +782,7 @@ function setupRefresh() {
                     checkLiftingCompDisable(lifting.comps.worldConferences, "liftingWorldConference", lifting.comps.nationalConferences, "liftingNationalConference");
                     if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased) {
                         writeCompInfo();
-                        $("#compMoneyMulti").html(Math.pow(lifting.comps.competitions.current, .01).toFixed(2));
+                        $("#compMoneyMulti").html(Math.pow(lifting.comps.competitions.current, .015).toFixed(2));
                     }
                     
                     break;
@@ -1913,7 +1913,7 @@ function gymMoneyPerSecond() {
         total += math.evaluate(((gym.members.tiers[i].current * ((gym.money.growth * (gym.members.tiers[i].multiplier * (i + 1))) * ((gym.classes * gym.money.classMultiplier) + 1)))));
     }
     if (prestige.lifting.upgrades.filter(function (upgradeArray) { return upgradeArray.id == 0 })[0].isPurchased && lifting.comps.competitions.current > 0) {
-        total *= Math.pow(lifting.comps.competitions.current, .01);
+        total *= Math.pow(lifting.comps.competitions.current, .015);
     }
     return math.evaluate(total + gym.money.flatIncrease);
 }
