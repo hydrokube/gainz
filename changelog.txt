@@ -1,3 +1,6 @@
+v.53 1/13/2024
+    Made the lifting competitions more in line with the other boosts to play. They were missed in the initial changes.
+
 v.52 11/13/2023
     Fixed payday button being clickable when disabled
 
